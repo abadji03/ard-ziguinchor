@@ -1,0 +1,770 @@
+// Prisma schema for ARD Ziguinchor backend
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// AUTHENTIFICATION & AUTORISATION
+// ============================================
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITEUR
+  REDACTEUR
+  CONTRIBUTEUR
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  password     String
+  nom          String
+  prenom       String
+  telephone    String?
+  role         Role      @default(REDACTEUR)
+  actif        Boolean   @default(true)
+  dernierLogin DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  actualites Actualite[]
+  documents  Document[]
+  projets    Projet[]
+
+  @@map("users")
+}
+
+// ============================================
+// ENTITÉS GÉOGRAPHIQUES
+// ============================================
+
+model Departement {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  code        String   @unique
+  superficie  Float?
+  population  Int?
+  description String?  @db.Text
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  arrondissements Arrondissement[]
+  communes        Commune[]
+  projets         Projet[]
+  indicateurs     Indicateur[]
+  documents       Document[]
+
+  @@map("departements")
+}
+
+model Arrondissement {
+  id            String      @id @default(cuid())
+  nom           String
+  code          String      @unique
+  description   String?
+  departementId String
+  departement   Departement @relation(fields: [departementId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  communes  Commune[]
+  documents Document[]
+
+  @@unique([nom, departementId])
+  @@map("arrondissements")
+}
+
+model Commune {
+  id               String          @id @default(cuid())
+  nom              String
+  code             String
+  latitude         Float?
+  longitude        Float?
+  superficie       Float?
+  population       Int?
+  description      String?         @db.Text
+  image            String?
+  departementId    String
+  departement      Departement     @relation(fields: [departementId], references: [id], onDelete: Cascade)
+  arrondissementId String?
+  arrondissement   Arrondissement? @relation(fields: [arrondissementId], references: [id])
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  // Relations
+  projets     Projet[]
+  indicateurs Indicateur[]
+  documents   Document[]
+
+  @@unique([code, departementId])
+  @@map("communes")
+}
+
+// ============================================
+// CATÉGORISATION
+// ============================================
+
+model CategorieActualite {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  slug        String   @unique
+  description String?
+  couleur     String?  @default("#0A5CCF")
+  icone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  actualites Actualite[]
+
+  @@map("categories_actualite")
+}
+
+model CategorieDocument {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  slug        String   @unique
+  description String?
+  couleur     String?  @default("#0A5CCF")
+  icone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  documents Document[]
+
+  @@map("categories_document")
+}
+
+model Secteur {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  slug        String   @unique
+  description String?
+  icone       String?
+  couleur     String?  @default("#F4B400")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  projets     Projet[]
+  indicateurs Indicateur[]
+
+  @@map("secteurs")
+}
+
+// ============================================
+// MÉDIAS
+// ============================================
+
+model Media {
+  id        String   @id @default(cuid())
+  nom       String
+  fichier   String // URL ou chemin du fichier
+  type      String // image, video, document
+  format    String? // jpg, png, mp4, pdf, etc.
+  taille    Int? // en octets
+  largeur   Int? // pour images/vidéos
+  hauteur   Int?
+  texteAlt  String? // Texte alternatif pour accessibilité
+  legende   String?
+  credit    String?
+  ordre     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  galerieMedia GalerieMedia[]
+  projets      Projet[]       @relation("ProjetMedia")
+  actualites   Actualite[]
+  evenements   Evenement[]
+  partenaires  Partenaire[]
+  programmes   Programme[]
+  opportunites Opportunite[]
+  albums       Album[]
+
+  @@map("medias")
+}
+
+model Galerie {
+  id          String   @id @default(cuid())
+  nom         String
+  description String?
+  slug        String   @unique
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  albums        Album[]
+  galerieMedias GalerieMedia[]
+
+  @@map("galeries")
+}
+
+model Album {
+  id          String   @id @default(cuid())
+  titre       String
+  description String?
+  galerieId   String
+  galerie     Galerie  @relation(fields: [galerieId], references: [id], onDelete: Cascade)
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  medias Media[]
+
+  @@map("albums")
+}
+
+model GalerieMedia {
+  id        String @id @default(cuid())
+  galerieId String
+  mediaId   String
+  ordre     Int    @default(0)
+
+  galerie Galerie @relation(fields: [galerieId], references: [id], onDelete: Cascade)
+  media   Media   @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@unique([galerieId, mediaId])
+  @@map("galerie_media")
+}
+
+// ============================================
+// CONTENU PRINCIPAL
+// ============================================
+
+model Actualite {
+  id              String              @id @default(cuid())
+  titre           String
+  slug            String              @unique
+  resume          String?             @db.Text
+  contenu         String              @db.Text
+  imagePrincipale String?
+  auteurId        String?
+  auteur          User?               @relation(fields: [auteurId], references: [id])
+  categorieId     String?
+  categorie       CategorieActualite? @relation(fields: [categorieId], references: [id])
+  statut          String              @default("brouillon") // brouillon, publie, archive
+  datePublication DateTime?
+  vue             Int                 @default(0)
+  tempsLecture    Int? // en minutes
+  tags            String[] // Array de tags
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  // Relations
+  projetId     String?
+  projet       Projet?     @relation(fields: [projetId], references: [id])
+  programmeId  String?
+  programme    Programme?  @relation(fields: [programmeId], references: [id])
+  documents    Document[]
+  medias       Media[]
+  evenement    Evenement?
+  partenaire   Partenaire? @relation(fields: [partenaireId], references: [id])
+  partenaireId String?
+
+  @@map("actualites")
+}
+
+model Projet {
+  id               String       @id @default(cuid())
+  titre            String
+  slug             String       @unique
+  resume           String?      @db.Text
+  description      String       @db.Text
+  objectifs        String?      @db.Text
+  resultats        String?      @db.Text
+  secteurId        String
+  secteur          Secteur      @relation(fields: [secteurId], references: [id])
+  statut           String       @default("planifie") // planifie, encours, realise, suspendu
+  niveauAvancement Int          @default(0) // 0-100
+  budget           Float?
+  budgetExecute    Float?
+  devise           String       @default("FCFA")
+  dateDebut        DateTime?
+  dateFin          DateTime?
+  dateFinReelle    DateTime?
+  latitude         Float?
+  longitude        Float?
+  beneficiaires    Int?
+  reference        String?
+  imagePrincipale  String?
+  createurId       String?
+  createur         User?        @relation(fields: [createurId], references: [id])
+  departementId    String?
+  departement      Departement? @relation(fields: [departementId], references: [id])
+  communeId        String?
+  commune          Commune?     @relation(fields: [communeId], references: [id])
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Relations
+  actualites  Actualite[]
+  documents   Document[]
+  partenaires PartenaireProjet[]
+  indicateurs Indicateur[]
+  medias      Media[]            @relation("ProjetMedia")
+  evenements  Evenement[]
+  programme   Programme?         @relation(fields: [programmeId], references: [id])
+  programmeId String?
+
+  @@map("projets")
+}
+
+model Programme {
+  id              String    @id @default(cuid())
+  nom             String
+  acronyme        String?
+  slug            String    @unique
+  resume          String?   @db.Text
+  description     String    @db.Text
+  objectifs       String?   @db.Text
+  organismePilote String?
+  dateDebut       DateTime?
+  dateFin         DateTime?
+  budget          Float?
+  statut          String    @default("actif") // actif, termine, suspendu
+  image           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  actualites  Actualite[]
+  projets     Projet[]
+  documents   Document[]
+  evenements  Evenement[]
+  partenaires PartenaireProgramme[]
+  indicateurs Indicateur[]
+  medias      Media[]
+
+  @@map("programmes")
+}
+
+model Document {
+  id                String             @id @default(cuid())
+  titre             String
+  slug              String             @unique
+  resume            String?            @db.Text
+  fichier           String // URL du fichier
+  format            String // pdf, docx, xlsx, etc.
+  typePlanification String             @default("AUTRE") // REGIONALE, TERRITORIALE, AUTRE
+  sousType          String? // PDC, PDD, PLD, PIC, Schema, etc.
+  taille            Int? // en octets
+  nombrePages       Int?
+  auteur            String?
+  datePublication   DateTime?
+  langue            String             @default("fr")
+  version           String             @default("1.0")
+  statut            String             @default("publie") // brouillon, publie, archive
+  telechargements   Int                @default(0)
+  createurId        String?
+  createur          User?              @relation(fields: [createurId], references: [id])
+  categorieId       String?
+  categorie         CategorieDocument? @relation(fields: [categorieId], references: [id])
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  // Relations
+  actualiteId      String?
+  actualite        Actualite?      @relation(fields: [actualiteId], references: [id])
+  programmeId      String?
+  programme        Programme?      @relation(fields: [programmeId], references: [id])
+  projetId         String?
+  projet           Projet?         @relation(fields: [projetId], references: [id])
+  partenaireId     String?
+  partenaire       Partenaire?     @relation(fields: [partenaireId], references: [id])
+  evenement        Evenement?      @relation(fields: [evenementId], references: [id])
+  evenementId      String?
+  opportunites     Opportunite[]
+  departement      Departement?    @relation(fields: [departementId], references: [id])
+  departementId    String?
+  arrondissement   Arrondissement? @relation(fields: [arrondissementId], references: [id])
+  arrondissementId String?
+  commune          Commune?        @relation(fields: [communeId], references: [id])
+  communeId        String?
+
+  @@map("documents")
+}
+
+model Evenement {
+  id                 String    @id @default(cuid())
+  titre              String
+  slug               String    @unique
+  resume             String?   @db.Text
+  description        String    @db.Text
+  lieu               String
+  latitude           Float?
+  longitude          Float?
+  dateDebut          DateTime
+  dateFin            DateTime?
+  heureDebut         String?
+  heureFin           String?
+  organisateur       String?
+  capacite           Int?
+  inscriptionOuverte Boolean   @default(true)
+  statut             String    @default("a_venir") // a_venir, en_cours, termine, annule
+  image              String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // Relations
+  actualiteId  String?     @unique
+  actualite    Actualite?  @relation(fields: [actualiteId], references: [id])
+  programmeId  String?
+  programme    Programme?  @relation(fields: [programmeId], references: [id])
+  projetId     String?
+  projet       Projet?     @relation(fields: [projetId], references: [id])
+  partenaireId String?
+  partenaire   Partenaire? @relation(fields: [partenaireId], references: [id])
+  documents    Document[]
+  medias       Media[]
+
+  @@map("evenements")
+}
+
+// ============================================
+// PARTENAIRES
+// ============================================
+
+model TypePartenaire {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  description String?
+  icone       String?
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  partenaires Partenaire[]
+
+  @@map("types_partenaire")
+}
+
+model Partenaire {
+  id                   String         @id @default(cuid())
+  nom                  String
+  sigle                String?
+  slug                 String         @unique
+  logo                 String?
+  description          String         @db.Text
+  typeId               String
+  type                 TypePartenaire @relation(fields: [typeId], references: [id])
+  pays                 String?
+  adresse              String?
+  ville                String?
+  telephone            String?
+  email                String?
+  siteWeb              String?
+  facebook             String?
+  linkedin             String?
+  twitter              String?
+  dateDebutPartenariat DateTime?
+  statut               String         @default("actif") // actif, inactif
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // Relations
+  projets        PartenaireProjet[]
+  programmes     PartenaireProgramme[]
+  documents      Document[]
+  evenements     Evenement[]
+  medias         Media[]
+  actualites     Actualite[]
+  reseauxSociaux ReseauSocial[]
+  opportunites   Opportunite[]
+
+  @@map("partenaires")
+}
+
+model PartenaireProjet {
+  id           String    @id @default(cuid())
+  partenaireId String
+  projetId     String
+  role         String? // financeur, executeur, technique, etc.
+  dateDebut    DateTime?
+  dateFin      DateTime?
+
+  partenaire Partenaire @relation(fields: [partenaireId], references: [id], onDelete: Cascade)
+  projet     Projet     @relation(fields: [projetId], references: [id], onDelete: Cascade)
+
+  @@unique([partenaireId, projetId])
+  @@map("partenaire_projet")
+}
+
+model PartenaireProgramme {
+  id           String    @id @default(cuid())
+  partenaireId String
+  programmeId  String
+  role         String?
+  dateDebut    DateTime?
+  dateFin      DateTime?
+
+  partenaire Partenaire @relation(fields: [partenaireId], references: [id], onDelete: Cascade)
+  programme  Programme  @relation(fields: [programmeId], references: [id], onDelete: Cascade)
+
+  @@unique([partenaireId, programmeId])
+  @@map("partenaire_programme")
+}
+
+// ============================================
+// OPPORTUNITÉS
+// ============================================
+
+model TypeOpportunite {
+  id           String        @id @default(cuid())
+  nom          String        @unique
+  description  String?
+  icone        String?
+  ordre        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  opportunites Opportunite[]
+
+  @@map("types_opportunite")
+}
+
+model Opportunite {
+  id              String          @id @default(cuid())
+  titre           String
+  slug            String          @unique
+  resume          String?         @db.Text
+  description     String          @db.Text
+  typeId          String
+  type            TypeOpportunite @relation(fields: [typeId], references: [id])
+  organisme       String
+  secteur         String?
+  datePublication DateTime        @default(now())
+  dateLimite      DateTime?
+  statut          String          @default("ouvert") // ouvert, ferme, expire
+  conditions      String?         @db.Text
+  lienExterne     String?
+  documentId      String?
+  document        Document?       @relation(fields: [documentId], references: [id])
+  partenaireId    String?
+  partenaire      Partenaire?     @relation(fields: [partenaireId], references: [id])
+  medias          Media[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@map("opportunites")
+}
+
+// ============================================
+// ÉQUIPE & ORGANISATION
+// ============================================
+
+model Membre {
+  id        String   @id @default(cuid())
+  nom       String
+  prenom    String
+  fonction  String
+  bio       String?  @db.Text
+  photo     String?
+  email     String?
+  telephone String?
+  ordre     Int      @default(0)
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("membres")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  description String?  @db.Text
+  responsable String?
+  email       String?
+  telephone   String?
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+// ============================================
+// FAQ
+// ============================================
+
+model CategorieFaq {
+  id          String   @id @default(cuid())
+  nom         String   @unique
+  description String?
+  icone       String?
+  ordre       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  faqs Faq[]
+
+  @@map("categories_faq")
+}
+
+model Faq {
+  id          String       @id @default(cuid())
+  question    String
+  reponse     String       @db.Text
+  categorieId String
+  categorie   CategorieFaq @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+  ordre       Int          @default(0)
+  publie      Boolean      @default(true)
+  vues        Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("faqs")
+}
+
+// ============================================
+// INDICATEURS (OBSERVATOIRE TERRITORIAL)
+// ============================================
+
+model Indicateur {
+  id            String       @id @default(cuid())
+  nom           String
+  slug          String       @unique
+  description   String?      @db.Text
+  valeur        Float
+  unite         String // %, FCFA, nombre, etc.
+  annee         Int
+  source        String?
+  methodeCalcul String?
+  dateMiseAJour DateTime     @default(now())
+  secteurId     String?
+  secteur       Secteur?     @relation(fields: [secteurId], references: [id])
+  communeId     String?
+  commune       Commune?     @relation(fields: [communeId], references: [id])
+  departementId String?
+  departement   Departement? @relation(fields: [departementId], references: [id])
+  projetId      String?
+  projet        Projet?      @relation(fields: [projetId], references: [id])
+  programmeId   String?
+  programme     Programme?   @relation(fields: [programmeId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("indicateurs")
+}
+
+// ============================================
+// PAGES INSTITUTIONNELLES
+// ============================================
+
+model ChiffreCle {
+  id          String   @id @default(cuid())
+  valeur      String
+  label       String
+  description String?
+  icone       String?
+  ordre       Int      @default(0)
+  actif       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("chiffres_cles")
+}
+
+model Temoignage {
+  id           String   @id @default(cuid())
+  nom          String
+  fonction     String?
+  organisation String?
+  contenu      String   @db.Text
+  photo        String?
+  ordre        Int      @default(0)
+  actif        Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("temoignages")
+}
+
+model Banniere {
+  id          String    @id @default(cuid())
+  titre       String
+  sousTitre   String?
+  image       String
+  lien        String?
+  boutonTexte String?
+  ordre       Int       @default(0)
+  actif       Boolean   @default(true)
+  dateDebut   DateTime?
+  dateFin     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("bannieres")
+}
+
+model Menu {
+  id        String   @id @default(cuid())
+  nom       String   @unique
+  items     String   @db.Text // JSON des éléments du menu
+  ordre     Int      @default(0)
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("menus")
+}
+
+model ReseauSocial {
+  id           String      @id @default(cuid())
+  plateforme   String // facebook, linkedin, twitter, youtube, instagram
+  url          String
+  icone        String?
+  ordre        Int         @default(0)
+  actif        Boolean     @default(true)
+  partenaireId String?
+  partenaire   Partenaire? @relation(fields: [partenaireId], references: [id], onDelete: Cascade)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("reseaux_sociaux")
+}
+
+// ============================================
+// PARAMÈTRES DU SITE
+// ============================================
+
+model ParametreSite {
+  id                String   @id @default(cuid())
+  nomSite           String   @default("ARD Ziguinchor")
+  description       String?  @db.Text
+  email             String?
+  telephone         String?
+  adresse           String?
+  ville             String?
+  boitePostale      String?
+  latitude          Float?
+  longitude         Float?
+  logo              String?
+  favicon           String?
+  couleurPrimaire   String?  @default("#0A5CCF")
+  couleurSecondaire String?  @default("#F4B400")
+  linkedin          String?
+  facebook          String?
+  twitter           String?
+  youtube           String?
+  instagram         String?
+  googleAnalytics   String?
+  matomo            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("parametres_site")
+}
