@@ -411,9 +411,34 @@ export interface User {
   email: string;
   nom: string;
   prenom: string;
+  poste?: string;
+  telephone?: string;
   role: 'SUPER_ADMIN' | 'ADMIN' | 'EDITEUR' | 'REDACTEUR' | 'CONTRIBUTEUR';
   actif: boolean;
+  dernierLogin?: string;
 }
+
+export interface AuditLog {
+  id: string;
+  userId?: string;
+  userEmail: string;
+  action: string;
+  entite: string;
+  entiteId?: string;
+  details?: string;
+  ip?: string;
+  createdAt: string;
+}
+
+export const AUDIT_ACTIONS = [
+  'CONNEXION',
+  'ECHEC_CONNEXION',
+  'CONSULTATION',
+  'CREATION',
+  'MODIFICATION',
+  'SUPPRESSION',
+] as const;
+
 
 export interface AuthResponse {
   access_token: string;

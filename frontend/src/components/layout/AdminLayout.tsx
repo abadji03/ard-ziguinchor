@@ -8,7 +8,7 @@ import {
   LayoutDashboard, Newspaper, FolderOpen, FileText,
   Image as ImageIcon, Users, Handshake, Briefcase,
   HelpCircle, Settings, LogOut, ChevronRight, BarChart3,
-  Calendar, BookOpen, MapPin,
+  Calendar, BookOpen, MapPin, UserCog, History,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,6 +29,14 @@ const NAV_ITEMS = [
   { href: '/admin/faq',          label: 'FAQ',              icon: HelpCircle      },
   { href: '/admin/parametres',   label: 'Paramètres',       icon: Settings        },
 ];
+
+// Sections réservées aux ADMIN / SUPER_ADMIN (gérées aussi côté backend)
+const ADMIN_NAV_ITEMS = [
+  { href: '/admin/utilisateurs', label: 'Utilisateurs',     icon: UserCog },
+  { href: '/admin/journaux',     label: 'Journaux',         icon: History },
+];
+
+const isAdminRole = (role?: string) => role === 'ADMIN' || role === 'SUPER_ADMIN';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading, user, logout } = useAuth();
@@ -101,6 +109,27 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               {label}
             </Link>
           ))}
+
+          {isAdminRole(user?.role) && (
+            <>
+              <div className="border-t border-gray-100 my-2 mx-1" />
+              {ADMIN_NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors mb-0.5',
+                    pathname === href || pathname.startsWith(href + '/')
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  )}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {label}
+                </Link>
+              ))}
+            </>
+          )}
         </nav>
 
         {/* Footer sidebar */}

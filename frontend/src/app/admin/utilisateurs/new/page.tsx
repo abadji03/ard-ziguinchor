@@ -18,6 +18,7 @@ const schema = z.object({
   nom:       z.string().min(2, 'Nom requis'),
   email:     z.string().email('Email invalide'),
   password:  z.string().min(8, 'Mot de passe min 8 caractères'),
+  poste:     z.string().optional(),
   telephone: z.string().optional(),
   role:      z.enum(['SUPER_ADMIN','ADMIN','EDITEUR','REDACTEUR','CONTRIBUTEUR']),
 });
@@ -41,7 +42,7 @@ export default function NewUtilisateurPage() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data: FormData) => api.post('/auth/register', data),
+    mutationFn: (data: FormData) => api.post('/auth/users', data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin-users'] });
       router.push('/admin/utilisateurs');
@@ -75,6 +76,7 @@ export default function NewUtilisateurPage() {
             </div>
             <Input label="Email" type="email" {...register('email')} error={errors.email?.message} required autoComplete="off" />
             <Input label="Mot de passe" type="password" {...register('password')} error={errors.password?.message} required autoComplete="new-password" />
+            <Input label="Poste / Fonction dans l'institution" {...register('poste')} placeholder="ex: Chargé de communication" />
             <Input label="Téléphone" type="tel" {...register('telephone')} />
             <Select label="Rôle" options={ROLE_OPTIONS} {...register('role')} />
           </div>
