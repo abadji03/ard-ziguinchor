@@ -85,6 +85,6 @@ Les fichiers locaux `backend/.env` et `frontend/.env.local` continuent de foncti
 - [ ] `JWT_SECRET` différent et plus fort qu'en local
 - [ ] `CORS_ORIGIN` = URL Vercel exacte (sans `/` final)
 - [ ] Migrations appliquées (`start:prod:migrate` ou `npm run migrate:deploy` manuellement)
-- [ ] Seed : `npx prisma db seed` depuis le backend si base vierge (attention : écrase/duplique)
+- [ ] Seed : `npm run db:seed` depuis le backend si base vierge (upserts, sans duplication) — ou déployer avec `start:prod:seed` qui applique les migrations + le seed avant de démarrer l'API
 - [ ] Cloudinary : mêmes credentials, les uploads resteront fonctionnels
 - [ ] Tester : connexion admin, création d'article avec upload d'image, affichage public
