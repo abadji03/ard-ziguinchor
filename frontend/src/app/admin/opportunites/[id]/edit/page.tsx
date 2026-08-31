@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { DocumentUpload } from '@/components/ui/DocumentUpload';
 import { LoadingState } from '@/components/ui/Spinner';
 import { adminOpportunites, adminDocuments } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { referencesService } from '@/services/references.service';
 import { useQueryData } from '@/hooks/useQueryData';
 import api from '@/lib/api';
@@ -53,7 +54,7 @@ export default function EditOpportunitePage({ params }: { params: Promise<{ id: 
     queryFn: async () => { const res = await api.get(`/opportunites/${id}`); return res.data; },
   });
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'ouvert' },
   });
@@ -131,8 +132,31 @@ export default function EditOpportunitePage({ params }: { params: Promise<{ id: 
             <Input label="Titre" {...register('titre')} error={errors.titre?.message} required />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea label="Description" rows={6} {...register('description')} error={errors.description?.message} required />
-            <Textarea label="Conditions" rows={3} {...register('conditions')} placeholder="Conditions de participation…" />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="conditions"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Conditions"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
           </div>
         </Card>
 

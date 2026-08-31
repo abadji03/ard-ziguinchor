@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { adminMembres } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 
 const schema = z.object({
   nom:       z.string().min(2, 'Nom requis'),
@@ -30,7 +31,7 @@ export default function NewMembrePage() {
   const router = useRouter();
   const qc     = useQueryClient();
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { ordre: 0 },
   });
@@ -69,7 +70,18 @@ export default function NewMembrePage() {
               <Input label="Nom" {...register('nom')} error={errors.nom?.message} required />
             </div>
             <Input label="Fonction / Poste" {...register('fonction')} error={errors.fonction?.message} required />
-            <Textarea label="Biographie" rows={4} {...register('bio')} placeholder="Biographie courte…" />
+            <Controller
+              control={control}
+              name="bio"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Biographie"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
             <ImageUpload
               label="Photo"
               value={watch('photo') || ''}

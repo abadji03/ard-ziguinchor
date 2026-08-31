@@ -2,7 +2,7 @@
 
 import { use, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -14,6 +14,7 @@ import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { LoadingState } from '@/components/ui/Spinner';
 import { adminActualites } from '@/services/admin.service';
 import api from '@/lib/api';
@@ -47,7 +48,7 @@ export default function EditActualitePage({ params }: { params: Promise<{ id: st
     queryFn: async () => { const res = await api.get(`/actualites/${id}`); return res.data; },
   });
 
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -109,7 +110,19 @@ export default function EditActualitePage({ params }: { params: Promise<{ id: st
             <Input label="Titre" {...register('titre')} error={errors.titre?.message} required />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea label="Contenu" rows={10} {...register('contenu')} error={errors.contenu?.message} required />
+            <Controller
+              control={control}
+              name="contenu"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Contenu"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.contenu?.message}
+                  required
+                />
+              )}
+            />
           </div>
         </Card>
         <Card>

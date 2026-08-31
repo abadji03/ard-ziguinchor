@@ -11,6 +11,7 @@ import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import { formatDate } from '@/lib/utils';
+import { legacyContentToHtml } from '@/lib/legacyContent';
 import api from '@/lib/api';
 import type { Evenement } from '@/types';
 
@@ -101,9 +102,7 @@ export default function EvenementDetailPage() {
                     <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">
                       Description
                     </h2>
-                    <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-                      {evt.description}
-                    </p>
+                  <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: legacyContentToHtml(evt.description) }} />
                   </div>
                 )}
               </Card>

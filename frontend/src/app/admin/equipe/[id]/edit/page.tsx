@@ -2,7 +2,7 @@
 
 import { use, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { LoadingState } from '@/components/ui/Spinner';
 import { adminMembres } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import api from '@/lib/api';
 import type { Membre } from '@/types';
 
@@ -40,7 +41,7 @@ export default function EditMembrePage({ params }: { params: Promise<{ id: strin
     queryFn: async () => { const res = await api.get(`/membres/${id}`); return res.data; },
   });
 
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, setValue, watch, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -95,7 +96,18 @@ export default function EditMembrePage({ params }: { params: Promise<{ id: strin
               <Input label="Nom" {...register('nom')} error={errors.nom?.message} required />
             </div>
             <Input label="Fonction / Poste" {...register('fonction')} error={errors.fonction?.message} required />
-            <Textarea label="Biographie" rows={4} {...register('bio')} placeholder="Biographie courte…" />
+            <Controller
+              control={control}
+              name="bio"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Biographie"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
             <ImageUpload
               label="Photo"
               value={watch('photo') || ''}

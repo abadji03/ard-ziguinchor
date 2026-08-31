@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { DocumentUpload } from '@/components/ui/DocumentUpload';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { adminProjets, adminDocuments } from '@/services/admin.service';
 import { slugify } from '@/lib/utils';
 import { useQueryData } from '@/hooks/useQueryData';
@@ -56,7 +57,7 @@ export default function NewProjetPage() {
   const { data: departements } = useQueryData(['departements'], () => referencesService.getDepartements());
   const { data: secteurs }     = useQueryData(['secteurs'],     () => referencesService.getSecteurs());
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'planifie', niveauAvancement: 0 },
   });
@@ -132,15 +133,32 @@ export default function NewProjetPage() {
             />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea
-              label="Description"
-              rows={6}
-              {...register('description')}
-              error={errors.description?.message}
-              required
-              placeholder="Description complète du projet…"
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                  placeholder="Description complète du projet…"
+                />
+              )}
             />
-            <Textarea label="Objectifs" rows={3} {...register('objectifs')} />
+            <Controller
+              control={control}
+              name="objectifs"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Objectifs"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
           </div>
         </Card>
 

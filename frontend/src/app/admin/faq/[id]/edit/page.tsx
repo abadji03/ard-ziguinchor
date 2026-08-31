@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { adminFaq } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import api from '@/lib/api';
 
 const schema = z.object({
@@ -38,7 +39,7 @@ export default function EditFaqPage() {
     enabled: Boolean(id),
   });
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { ordre: 0 },
   });
@@ -94,13 +95,18 @@ export default function EditFaqPage() {
               required
               placeholder="Quelle est la mission de l'ARD Ziguinchor ?"
             />
-            <Textarea
-              label="Réponse"
-              rows={6}
-              {...register('reponse')}
-              error={errors.reponse?.message}
-              required
-              placeholder="Réponse complète (HTML accepté)…"
+            <Controller
+              control={control}
+              name="reponse"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Réponse"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.reponse?.message}
+                  required
+                />
+              )}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input

@@ -7,7 +7,7 @@ import { ArrowLeft, Plus, Pencil, Trash2, Save, MapPin, Building2 } from 'lucide
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
-import { Textarea } from '@/components/ui/Textarea';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import { ImageUpload } from '@/components/ui/ImageUpload';
@@ -92,7 +92,11 @@ function DepartementSection() {
                   onChange={(url) => set('image', url)}
                   aspectRatio="wide"
                 />
-                <Textarea label="Description" rows={6} value={form.description ?? ''} onChange={(e) => set('description', e.target.value)} />
+                <RichTextEditor
+                  label="Description"
+                  value={form.description ?? ''}
+                  onChange={(v) => set('description', v)}
+                />
                 <div className="flex gap-2 justify-end">
                   <Button variant="outline" type="button" size="sm" onClick={() => setEditingId(null)}>Annuler</Button>
                   <Button type="submit" size="sm" loading={mutation.isPending}>Enregistrer</Button>
@@ -196,7 +200,11 @@ function ArrondissementSection() {
                     required
                   />
                 </div>
-                <Textarea label="Description" rows={6} value={form.description ?? ''} onChange={(e) => set('description', e.target.value)} />
+                <RichTextEditor
+                  label="Description"
+                  value={form.description ?? ''}
+                  onChange={(v) => set('description', v)}
+                />
                 <div className="flex gap-2 justify-end">
                   <Button variant="outline" type="button" size="sm" onClick={() => setEditingId(null)}>Annuler</Button>
                   <Button type="submit" size="sm" loading={mutation.isPending}>Enregistrer</Button>
@@ -379,7 +387,11 @@ function CommuneSection() {
                     onChange={(url) => set('image', url)}
                     aspectRatio="wide"
                   />
-                  <Textarea label="Description" rows={6} value={form.description ?? ''} onChange={(e) => set('description', e.target.value)} />
+                  <RichTextEditor
+                    label="Description"
+                    value={form.description ?? ''}
+                    onChange={(v) => set('description', v)}
+                  />
                   <div className="flex gap-2 justify-end">
                     <Button variant="outline" type="button" size="sm" onClick={resetForm}>Annuler</Button>
                     <Button type="submit" size="sm" loading={updateMutation.isPending}>Enregistrer</Button>

@@ -10,6 +10,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { LoadingState } from '@/components/ui/Spinner';
 import { referencesService } from '@/services/references.service';
 import { cn } from '@/lib/utils';
+import { legacyContentToHtml } from '@/lib/legacyContent';
 
 const DEPT_COLORS: Record<string, string> = {
   Ziguinchor: 'bg-blue-100 text-blue-700',
@@ -122,31 +123,8 @@ export default function ArrondissementDetailPage({ params }: { params: Promise<{
               <ImageIcon className="h-5 w-5 text-primary" />
               À propos de l'arrondissement
             </h2>
-            <div className="prose prose-sm max-w-none text-gray-600">
-              {arrondissement.description.split('\n').map((line, i) => {
-                if (line.startsWith('## ')) {
-                  return (
-                    <h3 key={i} className="text-base font-bold text-gray-900 mt-6 mb-3 first:mt-0">
-                      {line.replace('## ', '')}
-                    </h3>
-                  );
-                }
-                if (line.startsWith('- ')) {
-                  return (
-                    <li key={i} className="ml-4 text-sm leading-relaxed">
-                      {line.replace('- ', '')}
-                    </li>
-                  );
-                }
-                if (line.trim() === '') {
-                  return <div key={i} className="h-2" />;
-                }
-                return (
-                  <p key={i} className="text-sm leading-relaxed mb-2">
-                    {line}
-                  </p>
-                );
-              })}
+            <div className="prose-content text-sm">
+              <div dangerouslySetInnerHTML={{ __html: legacyContentToHtml(arrondissement.description) }} />
             </div>
           </div>
         )}

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { DocumentUpload } from '@/components/ui/DocumentUpload';
 import { adminOpportunites, adminDocuments } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { slugify } from '@/lib/utils';
 import { useQueryData } from '@/hooks/useQueryData';
 import { referencesService } from '@/services/references.service';
@@ -47,7 +48,7 @@ export default function NewOpportunitePage() {
 
   const typeOptions = (typesOpportunites ?? []).map(t => ({ value: t.id, label: t.nom }));
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'ouvert' },
   });
@@ -112,14 +113,31 @@ export default function NewOpportunitePage() {
             />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea
-              label="Description"
-              rows={6}
-              {...register('description')}
-              error={errors.description?.message}
-              required
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                />
+              )}
             />
-            <Textarea label="Conditions" rows={3} {...register('conditions')} placeholder="Conditions de participation…" />
+            <Controller
+              control={control}
+              name="conditions"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Conditions"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
           </div>
         </Card>
 

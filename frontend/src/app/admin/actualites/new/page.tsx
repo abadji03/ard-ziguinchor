@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { adminActualites } from '@/services/admin.service';
 import { slugify } from '@/lib/utils';
 
@@ -39,7 +40,7 @@ export default function NewActualitePage() {
   const router = useRouter();
   const qc = useQueryClient();
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'brouillon' },
   });
@@ -98,13 +99,19 @@ export default function NewActualitePage() {
               {...register('resume')}
               placeholder="Résumé court visible dans les listes…"
             />
-            <Textarea
-              label="Contenu"
-              rows={10}
-              {...register('contenu')}
-              error={errors.contenu?.message}
-              required
-              placeholder="Contenu de l'article (HTML accepté)…"
+            <Controller
+              control={control}
+              name="contenu"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Contenu"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.contenu?.message}
+                  required
+                  placeholder="Contenu de l'article…"
+                />
+              )}
             />
           </div>
         </Card>

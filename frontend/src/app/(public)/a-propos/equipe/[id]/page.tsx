@@ -10,6 +10,7 @@ import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/Button';
 import api from '@/lib/api';
+import { legacyContentToHtml } from '@/lib/legacyContent';
 import type { Membre } from '@/types';
 
 export default function MembreDetailPage() {
@@ -96,9 +97,7 @@ export default function MembreDetailPage() {
                       <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-2">
                         Profil
                       </h2>
-                      <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-                        {membre.bio}
-                      </p>
+                      <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: legacyContentToHtml(membre.bio) }} />
                     </div>
                   )}
 

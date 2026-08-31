@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { DocumentUpload } from '@/components/ui/DocumentUpload';
 import { adminProgrammes, adminDocuments } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { slugify } from '@/lib/utils';
 
 const schema = z.object({
@@ -40,7 +41,7 @@ export default function NewProgrammePage() {
 
   const [pendingDoc, setPendingDoc] = useState<{ url: string; taille: number } | null>(null);
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'actif' },
   });
@@ -112,8 +113,31 @@ export default function NewProgrammePage() {
             </div>
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea label="Description" rows={6} {...register('description')} error={errors.description?.message} required />
-            <Textarea label="Objectifs" rows={3} {...register('objectifs')} />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="objectifs"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Objectifs"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
           </div>
         </Card>
 

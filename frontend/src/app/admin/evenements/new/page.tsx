@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { adminEvenements } from '@/services/admin.service';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { slugify } from '@/lib/utils';
 
 const schema = z.object({
@@ -37,7 +38,7 @@ export default function NewEvenementPage() {
   const router = useRouter();
   const qc     = useQueryClient();
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { statut: 'a_venir' },
   });
@@ -86,7 +87,19 @@ export default function NewEvenementPage() {
             />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea label="Description" rows={5} {...register('description')} error={errors.description?.message} required />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                />
+              )}
+            />
           </div>
         </Card>
 

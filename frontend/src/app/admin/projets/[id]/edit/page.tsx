@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { DocumentUpload } from '@/components/ui/DocumentUpload';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { LoadingState } from '@/components/ui/Spinner';
 import { adminProjets, adminDocuments } from '@/services/admin.service';
 import api from '@/lib/api';
@@ -57,7 +58,7 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
     queryFn: async () => { const res = await api.get(`/projets/${id}`); return res.data; },
   });
 
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -140,8 +141,31 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
             <Input label="Titre" {...register('titre')} error={errors.titre?.message} required />
             <Input label="Slug" {...register('slug')} error={errors.slug?.message} required />
             <Textarea label="Résumé" rows={2} {...register('resume')} />
-            <Textarea label="Description" rows={6} {...register('description')} error={errors.description?.message} required />
-            <Textarea label="Objectifs" rows={3} {...register('objectifs')} />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Description"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  error={errors.description?.message}
+                  required
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="objectifs"
+              render={({ field }) => (
+                <RichTextEditor
+                  label="Objectifs"
+                  value={field.value ?? ''}
+                  onChange={field.onChange}
+                  minHeight="150px"
+                />
+              )}
+            />
           </div>
         </Card>
         <Card>
