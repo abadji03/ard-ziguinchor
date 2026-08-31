@@ -17,6 +17,7 @@ async function main() {
       email: 'admin@ard-ziguinchor.com',
       nom: 'Admin',
       prenom: 'Super Admin',
+      poste: 'Directeur de l\'agence',
       password: await bcrypt.hash('admin123', 10),
       role: 'SUPER_ADMIN',
       actif: true,

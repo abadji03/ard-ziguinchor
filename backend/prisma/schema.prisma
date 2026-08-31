@@ -26,6 +26,7 @@ model User {
   password     String
   nom          String
   prenom       String
+  poste        String?
   telephone    String?
   role         Role      @default(REDACTEUR)
   actif        Boolean   @default(true)
@@ -37,9 +38,34 @@ model User {
   actualites Actualite[]
   documents  Document[]
   projets    Projet[]
+  auditLogs  AuditLog[]
 
   @@map("users")
 }
+
+// ============================================
+// JOURNAL DES ACTIONS (audit)
+// ============================================
+
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?
+  userEmail String
+  action    String
+  entite    String
+  entiteId  String?
+  details   String?
+  ip        String?
+  createdAt DateTime  @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([userEmail])
+  @@index([action])
+  @@map("audit_logs")
+}
+
 
 // ============================================
 // ENTITÉS GÉOGRAPHIQUES

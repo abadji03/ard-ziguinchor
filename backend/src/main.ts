@@ -12,7 +12,13 @@ async function bootstrap() {
   // Sécurité
   app.use(helmet());
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
+    // Plusieurs origines possibles, séparées par des virgules :
+    // CORS_ORIGIN=https://mon-site.vercel.app,https://mon-domaine.com
+    // (en dev, fallback sur http://localhost:3001)
+    origin: (process.env.CORS_ORIGIN || 'http://localhost:3001')
+      .split(',')
+      .map((o) => o.trim())
+      .filter(Boolean),
     methods: 'GET,POST,PUT,PATCH,DELETE',
     credentials: true,
     // Expose Content-Disposition pour que le frontend puisse lire le nom

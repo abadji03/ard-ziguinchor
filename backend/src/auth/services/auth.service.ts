@@ -69,7 +69,7 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
-    const { email, password, nom, prenom, telephone } = registerDto;
+    const { email, password, nom, prenom, telephone, poste } = registerDto;
 
     // Vérifier si l'email existe déjà
     const existing = await this.prisma.user.findUnique({
@@ -89,6 +89,7 @@ export class AuthService {
         nom,
         prenom,
         telephone,
+        poste,
         role: Role.REDACTEUR,
       },
       select: {
@@ -125,5 +126,17 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  /** Met à jour la date de dernier login (best-effort, après connexion). */
+  async touchLastLogin(id: string): Promise<void> {
+    try {
+      await this.prisma.user.update({
+        where: { id },
+        data: { dernierLogin: new Date() },
+      });
+    } catch {
+      // Non bloquant
+    }
   }
 }

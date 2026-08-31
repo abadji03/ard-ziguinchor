@@ -24,12 +24,16 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { EmailModule } from './email/email.module';
 import { ReferencesModule } from './references/references.module';
 import { ContactModule } from './contact/contact.module';
+import { UsersModule } from './users/users.module';
+import { AuditModule } from './audit/audit.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,
+    UsersModule,
+    AuditModule,
     ActualitesModule,
     ProjetsModule,
     ProgrammesModule,
