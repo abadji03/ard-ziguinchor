@@ -26,6 +26,11 @@ export class UsersService {
     const { page = 1, limit = 20, search, role } = query;
     const where: Record<string, unknown> = {};
 
+    // Le SUPER_ADMIN n'apparaît jamais dans les listes d'utilisateurs
+    if (role === Role.SUPER_ADMIN) {
+      return paginate([], 0, page, limit);
+    }
+    where.role = { notIn: [Role.SUPER_ADMIN] };
     if (role) where.role = role;
     if (search) {
       where.OR = [
