@@ -1,8 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Calendar, Clock, Eye } from 'lucide-react';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { formatDate, truncate } from '@/lib/utils';
 import type { Actualite } from '@/types';
 
@@ -12,27 +10,30 @@ interface ActualiteCardProps {
 
 export function ActualiteCard({ actualite }: ActualiteCardProps) {
   return (
-    <Card hover className="flex flex-col overflow-hidden h-full">
-      {/* Image */}
-      <div className="relative h-44 bg-gray-100 shrink-0">
+    <article className="flex flex-col bg-white rounded-2xl border border-slate-200/90 overflow-hidden hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all duration-200 group h-full">
+      {/* Image principale */}
+      <div className="relative h-48 bg-slate-100 shrink-0 overflow-hidden">
         {actualite.imagePrincipale ? (
           <Image
             src={actualite.imagePrincipale}
             alt={actualite.titre}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex items-center justify-center h-full bg-gradient-to-br from-secondary/10 to-secondary/5">
-            <span className="text-4xl opacity-30">📰</span>
+          <div className="flex items-center justify-center h-full bg-linear-to-br from-slate-100 to-emerald-50 text-emerald-800">
+            <span className="text-4xl opacity-40">📰</span>
           </div>
         )}
+
         {actualite.categorie && (
           <div className="absolute top-3 left-3">
             <span
-              className="text-xs font-medium px-2.5 py-1 rounded-full text-white"
-              style={{ backgroundColor: actualite.categorie.couleur || '#F4B400' }}
+              className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-xs backdrop-blur-xs"
+              style={{
+                backgroundColor: actualite.categorie.couleur || '#0b5c42',
+              }}
             >
               {actualite.categorie.nom}
             </span>
@@ -40,44 +41,59 @@ export function ActualiteCard({ actualite }: ActualiteCardProps) {
         )}
       </div>
 
-      <div className="p-5 flex flex-col gap-3 flex-1">
-        <Link href={`/actualites/${actualite.slug}`} className="group">
-          <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
-            {actualite.titre}
-          </h3>
-        </Link>
+      <div className="p-5 sm:p-6 flex flex-col gap-3 flex-1 justify-between">
+        <div>
+          <Link href={`/actualites/${actualite.slug}`} className="block">
+            <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug">
+              {actualite.titre}
+            </h3>
+          </Link>
 
-        {actualite.resume && (
-          <p className="text-sm text-gray-500 line-clamp-2">{truncate(actualite.resume, 110)}</p>
-        )}
+          {actualite.resume && (
+            <p className="text-xs sm:text-sm text-slate-500 line-clamp-2 mt-2 leading-relaxed">
+              {truncate(actualite.resume, 120)}
+            </p>
+          )}
 
-        {actualite.tags?.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {actualite.tags.slice(0, 3).map((tag) => (
-              <Badge key={tag} className="text-xs">{tag}</Badge>
-            ))}
+          {actualite.tags && actualite.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              {actualite.tags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-600"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 mt-2">
+          <div className="flex items-center gap-3">
+            {actualite.datePublication && (
+              <span className="flex items-center gap-1 text-slate-600 font-medium">
+                <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                {formatDate(actualite.datePublication)}
+              </span>
+            )}
+            {actualite.tempsLecture && (
+              <span className="flex items-center gap-1 text-slate-500">
+                <Clock className="h-3.5 w-3.5" />
+                {actualite.tempsLecture} min
+              </span>
+            )}
           </div>
-        )}
 
-        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center gap-4 text-xs text-gray-400">
-          {actualite.datePublication && (
-            <span className="flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5" />
-              {formatDate(actualite.datePublication)}
-            </span>
-          )}
-          {actualite.tempsLecture && (
-            <span className="flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5" />
-              {actualite.tempsLecture} min
-            </span>
-          )}
-          <span className="flex items-center gap-1 ml-auto">
-            <Eye className="h-3.5 w-3.5" />
-            {actualite.vue}
-          </span>
+          <Link
+            href={`/actualites/${actualite.slug}`}
+            className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:text-emerald-800 group-hover:translate-x-0.5 transition-all"
+          >
+            <span>Lire</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
         </div>
       </div>
-    </Card>
+    </article>
   );
 }

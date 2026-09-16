@@ -1,0 +1,6 @@
+{
+  "name": "ARD Ziguinchor",
+  "description": "Portail officiel de l'Agence Régionale de Développement (ARD) de Ziguinchor — projets, actualités, opportunités et observatoire territorial.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

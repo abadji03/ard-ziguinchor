@@ -2,26 +2,14 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Search, Calendar, Building2, ArrowRight } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
-import { SectionTitle } from '@/components/ui/SectionTitle';
-import { Input } from '@/components/ui/Input';
-import { Card } from '@/components/ui/Card';
-import { Badge } from '@/components/ui/Badge';
 import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Pagination } from '@/components/ui/Pagination';
-import { formatDate, truncate } from '@/lib/utils';
+import { ProgrammeCard } from '@/components/features/programmes/ProgrammeCard';
 import { programmesService } from '@/services/programmes.service';
 import { usePagination } from '@/hooks/usePagination';
-
-const STATUT_COLORS: Record<string, string> = {
-  actif:    'bg-green-100 text-green-700',
-  termine:  'bg-gray-100 text-gray-600',
-  suspendu: 'bg-red-100 text-red-700',
-};
 
 export default function ProgrammesPage() {
   const [search, setSearch] = useState('');
@@ -29,95 +17,99 @@ export default function ProgrammesPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['programmes', { page, limit, search }],
-    queryFn: () => programmesService.getAll({ page, limit, search: search || undefined }),
+    queryFn: () =>
+      programmesService.getAll({ page, limit, search: search || undefined }),
     staleTime: 5 * 60 * 1000,
   });
 
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Breadcrumb items={[{ label: 'Programmes' }]} />
-          <SectionTitle
-            title="Programmes"
-            subtitle="Les programmes de développement portés par l'ARD Ziguinchor"
-            className="mt-4 mb-0 [&_h2]:text-white [&_p]:text-blue-100"
-          />
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb items={[{ label: 'Programmes de Développement' }]} />
+          </div>
+
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              Cadres Stratégiques & Bailleurs
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Programmes Structurants
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+              Les grands programmes pluriannuels financés par l'État du Sénégal et les Partenaires
+              Techniques et Financiers (PTF) pour la transformation durable de la Casamance.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-        <div className="mb-6">
-          <Input
-            placeholder="Rechercher un programme…"
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); resetPage(); }}
-            icon={<Search className="h-4 w-4" />}
-            className="max-w-md"
-          />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* Recherche */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs mb-8">
+          <div className="relative max-w-xl">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                resetPage();
+              }}
+              placeholder="Rechercher un programme par nom, acronyme, bailleur…"
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all"
+            />
+            {search && (
+              <button
+                onClick={() => {
+                  setSearch('');
+                  resetPage();
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                aria-label="Effacer la recherche"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
 
+        {/* Résultats */}
         {isLoading ? (
-          <LoadingState message="Chargement des programmes…" />
+          <div className="py-16">
+            <LoadingState message="Chargement des programmes…" />
+          </div>
         ) : !data?.data?.length ? (
-          <EmptyState title="Aucun programme" description="Aucun programme ne correspond à votre recherche." />
+          <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
+            <EmptyState
+              title="Aucun programme trouvé"
+              description="Aucun programme ne correspond à votre recherche pour le moment."
+            />
+          </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-xs sm:text-sm font-semibold text-slate-500">
+                <span className="font-bold text-slate-900">{data.total}</span> programme
+                {data.total > 1 ? 's' : ''}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {data.data.map((prog) => (
-                <Card key={prog.id} hover className="flex flex-col overflow-hidden h-full">
-                  <div className="relative h-44 bg-gray-50 shrink-0">
-                    {prog.image ? (
-                      <Image src={prog.image} alt={prog.nom} fill className="object-cover" />
-                    ) : (
-                      <div className="flex items-center justify-center h-full bg-gradient-to-br from-primary/10 to-secondary/10">
-                        <span className="text-4xl opacity-30">📋</span>
-                      </div>
-                    )}
-                    <span className={`absolute top-3 left-3 text-xs font-medium px-2.5 py-1 rounded-full ${STATUT_COLORS[prog.statut] ?? 'bg-gray-100 text-gray-600'}`}>
-                      {prog.statut.charAt(0).toUpperCase() + prog.statut.slice(1)}
-                    </span>
-                  </div>
-
-                  <div className="p-5 flex flex-col gap-3 flex-1">
-                    {prog.acronyme && (
-                      <Badge variant="info" className="self-start">{prog.acronyme}</Badge>
-                    )}
-                    <Link href={`/programmes/${prog.slug}`} className="group">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
-                        {prog.nom}
-                      </h3>
-                    </Link>
-                    {prog.resume && (
-                      <p className="text-sm text-gray-500 line-clamp-2">{truncate(prog.resume, 110)}</p>
-                    )}
-
-                    <div className="mt-auto pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
-                      {prog.dateDebut && (
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3.5 w-3.5" />
-                          {formatDate(prog.dateDebut)}
-                        </span>
-                      )}
-                      {prog.organismePilote && (
-                        <span className="flex items-center gap-1">
-                          <Building2 className="h-3.5 w-3.5" />
-                          {prog.organismePilote}
-                        </span>
-                      )}
-                    </div>
-
-                    <Link
-                      href={`/programmes/${prog.slug}`}
-                      className="flex items-center gap-1 text-xs text-primary font-medium hover:underline mt-1"
-                    >
-                      Voir le programme <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
-                </Card>
+                <ProgrammeCard key={prog.id} programme={prog} />
               ))}
             </div>
-            <Pagination page={data.page} totalPages={data.totalPages} onPageChange={goToPage} />
+
+            <div className="pt-4 flex justify-center">
+              <Pagination
+                page={data.page}
+                totalPages={data.totalPages}
+                onPageChange={goToPage}
+              />
+            </div>
           </>
         )}
       </div>
