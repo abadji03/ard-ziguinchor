@@ -67,7 +67,7 @@ export function ActualitesTicker() {
         {/* Étiquette gauche */}
         <div className="flex items-center gap-2 px-4 py-2.5 bg-secondary text-gray-900 font-semibold text-xs shrink-0 whitespace-nowrap">
           <Radio className="h-3.5 w-3.5 animate-pulse" aria-hidden="true" />
-          <span className="uppercase tracking-wide">En direct</span>
+          <span className="uppercase tracking-wide">Actus</span>
         </div>
 
         {/* Piste défilante */}
