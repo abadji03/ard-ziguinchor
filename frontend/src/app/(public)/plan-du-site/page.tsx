@@ -94,38 +94,56 @@ const PLAN = [
 
 export default function PlanDuSitePage() {
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Breadcrumb items={[{ label: 'Plan du site' }]} />
-          <SectionTitle
-            title="Plan du site"
-            subtitle="Vue d'ensemble de toutes les pages du portail ARD Ziguinchor"
-            className="mt-4 mb-0 [&_h2]:text-white [&_p]:text-blue-100"
-          />
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb items={[{ label: 'Plan du site' }]} />
+          </div>
+
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              Arborescence & Navigation
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Plan du Site
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+              Vue d&apos;ensemble de toutes les rubriques, portails thématiques et ressources documentaires de l&apos;ARD Ziguinchor.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {PLAN.map((group) => (
-            <div key={group.section} className="bg-white rounded-xl border border-gray-100 p-5">
-              <h2 className="font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100 text-sm uppercase tracking-wide text-primary">
-                {group.section}
-              </h2>
-              <ul className="space-y-2">
-                {group.links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div
+              key={group.section}
+              className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs hover:border-emerald-600/40 transition-colors flex flex-col justify-between"
+            >
+              <div>
+                <h2 className="font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 text-sm uppercase tracking-wider text-emerald-700 flex items-center justify-between">
+                  <span>{group.section}</span>
+                  <span className="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-full font-bold">
+                    {group.links.length}
+                  </span>
+                </h2>
+                <ul className="space-y-2.5">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-emerald-700 transition-colors group"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-emerald-600 transition-colors shrink-0" />
+                        <span>{link.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>

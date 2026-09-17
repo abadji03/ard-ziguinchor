@@ -3,34 +3,45 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
-import { Building2, Users, MapPin, ChevronRight, Layers } from 'lucide-react';
+import { Building2, Users, MapPin, ChevronRight, Layers, ArrowRight, Compass, Sparkles, Ruler } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { LoadingState } from '@/components/ui/Spinner';
 import { referencesService } from '@/services/references.service';
 import { cn } from '@/lib/utils';
 
-const DEPT_COLORS: Record<string, { border: string; bg: string; badge: string }> = {
-  Ziguinchor: { border: 'border-blue-400', bg: 'bg-blue-50', badge: 'bg-blue-100 text-blue-700' },
-  Bignona: { border: 'border-green-400', bg: 'bg-green-50', badge: 'bg-green-100 text-green-700' },
-  Oussouye: { border: 'border-orange-400', bg: 'bg-orange-50', badge: 'bg-orange-100 text-orange-700' },
+const DEPT_CONFIG: Record<string, { badge: string; border: string; accent: string }> = {
+  Ziguinchor: {
+    badge: 'bg-blue-100 text-blue-800 border-blue-200',
+    border: 'hover:border-blue-300',
+    accent: 'text-blue-700',
+  },
+  Bignona: {
+    badge: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+    border: 'hover:border-emerald-300',
+    accent: 'text-emerald-700',
+  },
+  Oussouye: {
+    badge: 'bg-amber-100 text-amber-800 border-amber-200',
+    border: 'hover:border-amber-300',
+    accent: 'text-amber-700',
+  },
 };
 
 const DEPT_DESCRIPTIONS: Record<string, { description: string; atouts: string[] }> = {
   Ziguinchor: {
     description:
-      "Département chef-lieu de la région, Ziguinchor est le poumon économique de la Casamance. La ville de Ziguinchor est un carrefour commercial et culturel important, avec un port fluvial actif sur le fleuve Casamance.",
-    atouts: ['Port fluvial', 'Université Assane Seck', 'Centre commercial régional', 'Aéroport international'],
+      "Chef-lieu et poumon économique de la région, le département de Ziguinchor est un carrefour stratégique doté d'infrastructures portuaires fluviales, universitaires et commerciales d'envergure sous-régionale.",
+    atouts: ['Port fluvial sur la Casamance', 'Université Assane Seck (UASZ)', 'Carrefour commercial régional', 'Aéroport international'],
   },
   Bignona: {
     description:
-      "Le plus grand département de la région, Bignona est caractérisé par ses vastes forêts, ses rizières et sa façade maritime. Il abrite des zones touristiques renommées comme Kafountine.",
-    atouts: ['Kafountine & tourisme balnéaire', 'Production rizicole', 'Commerce transfrontalier', 'Pêche artisanale'],
+      "Plus vaste département de la région, Bignona se distingue par son potentiel agro-sylvo-pastoral exceptionnel, ses filières anacarde et mangue, ainsi que sa façade littorale touristique renommée.",
+    atouts: ['Littoral touristique de Kafountine', 'Bassin rizicole et arboricole', 'Économie transfrontalière', 'Filière anacarde et maraîchage'],
   },
   Oussouye: {
     description:
-      "Département le moins peuplé mais riche en biodiversité, Oussouye est le fief de la culture diola. Il est connu pour ses bolongs, mangroves et son écotourisme.",
-    atouts: ['Réserve de Pointe Saint-Georges', 'Culture Diola préservée', 'Îles et bolongs', 'Écotourisme'],
+      "Cœur historique et culturel du Kassa, le département d'Oussouye conjugue traditions séculaires, écotourisme communautaire d'excellence, plages balnéaires du Cap Skirring et préservation des mangroves.",
+    atouts: ['Station balnéaire du Cap Skirring', 'Écotourisme villageois intégré', 'Patrimoine culturel du Kassa', 'Sanctuaire des bolongs et lamantins'],
   },
 };
 
@@ -50,166 +61,238 @@ export default function DepartementsPage() {
     queryFn: () => referencesService.getCommunes(),
   });
 
-  const totalCommunes = communes.length;
-  const totalArrondissements = arrondissements.length;
+  const totalCommunes = communes.length || 30;
+  const totalArrondissements = arrondissements.length || 8;
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero */}
-      <div className="relative bg-primary-dark overflow-hidden">
-        <div className="absolute inset-0 hero-pattern opacity-90" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/60 via-transparent to-primary-dark" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <Breadcrumb
-            items={[
-              { label: 'La Région', href: '/la-region' },
-              { label: 'Départements' },
-            ]}
-          />
-          <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <SectionTitle
-              title="Les Départements"
-              subtitle={`La région de Ziguinchor est divisée en 3 départements, ${totalArrondissements} arrondissements et ${totalCommunes} communes`}
-              className="mb-0 [&_h2]:text-white [&_p]:text-blue-100"
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb
+              items={[
+                { label: 'La Région', href: '/la-region' },
+                { label: 'Départements' },
+              ]}
             />
           </div>
-        </div>
-      </div>
 
-      {/* Stats rapides */}
-      <div className="relative -mt-8 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-3 gap-3 sm:gap-4">
-            <div className="vitrine-card hover-lift text-center px-3 py-5">
-              <div className="text-3xl font-black text-primary">3</div>
-              <div className="text-xs sm:text-sm text-gray-500 mt-1">Départements</div>
-            </div>
-            <div className="vitrine-card hover-lift text-center px-3 py-5">
-              <div className="text-3xl font-black text-primary">{totalArrondissements}</div>
-              <div className="text-xs sm:text-sm text-gray-500 mt-1">Arrondissements</div>
-            </div>
-            <div className="vitrine-card hover-lift text-center px-3 py-5">
-              <div className="text-3xl font-black text-primary">{totalCommunes}</div>
-              <div className="text-xs sm:text-sm text-gray-500 mt-1">Communes</div>
-            </div>
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              Découpage Administratif
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Les Départements de la Région
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+              La région de Ziguinchor s'articule autour de 3 départements complémentaires,
+              regroupant {totalArrondissements} arrondissements et {totalCommunes} communes au service
+              des populations.
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-8">
-        {isLoading ? (
-          <LoadingState message="Chargement des départements…" />
-        ) : (
-          departements.map((dep) => {
-            const colors = DEPT_COLORS[dep.nom] ?? { border: 'border-gray-400', bg: 'bg-gray-50', badge: 'bg-gray-100 text-gray-700' };
-            const info = DEPT_DESCRIPTIONS[dep.nom] ?? { description: '', atouts: [] };
-            const depArrondissements = arrondissements.filter((a) => a.departement?.id === dep.id);
-            const depCommunes = communes.filter((c) => c.departement?.id === dep.id);
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-10">
+        {/* KPI Essentiels Régionaux */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center mb-3">
+              <Building2 className="h-5 w-5" />
+            </div>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">3</p>
+            <p className="text-xs font-semibold text-slate-500 mt-1">Départements territoriaux</p>
+          </div>
 
-            return (
-              <Link
-                key={dep.id}
-                href={`/la-region/departements/${dep.id}`}
-                className={cn('vitrine-card hover-lift rounded-2xl border-l-4 overflow-hidden block', colors.border, colors.bg)}
-              >
-                {dep.image && (
-                  <div className="relative h-56 w-full bg-gray-100">
-                    <Image
-                      src={dep.image}
-                      alt={`Département de ${dep.nom}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <div className="p-6 md:p-8">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-white/70 border border-slate-100 shadow-sm flex items-center justify-center">
-                        <Building2 className="h-6 w-6 text-primary" />
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 border border-blue-100 flex items-center justify-center mb-3">
+              <Layers className="h-5 w-5" />
+            </div>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">{totalArrondissements}</p>
+            <p className="text-xs font-semibold text-slate-500 mt-1">Arrondissements administratifs</p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center mb-3">
+              <Compass className="h-5 w-5" />
+            </div>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">{totalCommunes}</p>
+            <p className="text-xs font-semibold text-slate-500 mt-1">Communes de plein exercice</p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 border border-purple-100 flex items-center justify-center mb-3">
+              <Users className="h-5 w-5" />
+            </div>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">612 343 hab.</p>
+            <p className="text-xs font-semibold text-slate-500 mt-1">Population globale (ANSD 2023)</p>
+          </div>
+        </div>
+
+        {/* Liste des Départements */}
+        <div className="space-y-8">
+          {isLoading ? (
+            <LoadingState message="Chargement des départements…" />
+          ) : (
+            departements.map((dep) => {
+              const cfg = DEPT_CONFIG[dep.nom] ?? {
+                badge: 'bg-slate-100 text-slate-800 border-slate-200',
+                border: 'hover:border-slate-300',
+                accent: 'text-slate-700',
+              };
+              const info = DEPT_DESCRIPTIONS[dep.nom] ?? { description: '', atouts: [] };
+              const depArrondissements = arrondissements.filter((a) => a.departement?.id === dep.id);
+              const depCommunes = communes.filter((c) => c.departement?.id === dep.id);
+
+              return (
+                <div
+                  key={dep.id}
+                  className={cn(
+                    'bg-white rounded-2xl border border-slate-200/90 hover:shadow-md transition-all overflow-hidden',
+                    cfg.border
+                  )}
+                >
+                  {dep.image && (
+                    <div className="relative h-56 sm:h-64 w-full bg-slate-100">
+                      <Image
+                        src={dep.image}
+                        alt={`Département de ${dep.nom}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 80vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent flex items-end p-6">
+                        <span className="text-white font-bold text-lg">
+                          Département de {dep.nom}
+                        </span>
                       </div>
+                    </div>
+                  )}
+
+                  <div className="p-6 sm:p-8 space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
                       <div>
-                        <h2 className="text-xl font-bold text-gray-900">Département de {dep.nom}</h2>
-                        <div className="flex items-center gap-2 mt-1">
-                          <MapPin className="h-3.5 w-3.5 text-gray-400" />
-                          <span className="text-sm text-gray-500">Chef-lieu : {dep.nom}</span>
+                        <div className="flex items-center gap-2">
+                          <h2 className="text-2xl font-black text-slate-900">
+                            Département de {dep.nom}
+                          </h2>
+                          <span className={cn('text-xs font-bold px-2.5 py-0.5 rounded-full border', cfg.badge)}>
+                            Code {dep.code}
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                          <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                          Chef-lieu administratif : <span className="font-semibold text-slate-700">{dep.nom}</span>
+                        </p>
+                      </div>
+
+                      <Link
+                        href={`/la-region/departements/${dep.id}`}
+                        className="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors shrink-0 shadow-xs"
+                      >
+                        Consulter la fiche complète
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+
+                    {/* KPIs du département */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+                        <p className="text-[10px] uppercase font-bold text-slate-400">Superficie</p>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          {dep.superficie?.toLocaleString('fr-FR') ?? '—'} <span className="text-xs font-normal text-slate-500">km²</span>
+                        </p>
+                      </div>
+                      <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+                        <p className="text-[10px] uppercase font-bold text-slate-400">Population</p>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          {dep.population?.toLocaleString('fr-FR') ?? '—'} <span className="text-xs font-normal text-slate-500">hab.</span>
+                        </p>
+                      </div>
+                      <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+                        <p className="text-[10px] uppercase font-bold text-slate-400">Arrondissements</p>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          {depArrondissements.length}
+                        </p>
+                      </div>
+                      <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-100">
+                        <p className="text-[10px] uppercase font-bold text-slate-400">Communes</p>
+                        <p className="text-base font-black text-slate-900 mt-0.5">
+                          {depCommunes.length}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {info.description}
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                      <div>
+                        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <Layers className="h-4 w-4 text-emerald-600" />
+                          Arrondissements rattachés
+                        </h3>
+                        <div className="space-y-2">
+                          {depArrondissements.map((arr) => {
+                            const arrCommunes = depCommunes.filter((c) => c.arrondissement?.id === arr.id);
+                            return (
+                              <Link
+                                key={arr.id}
+                                href={`/la-region/arrondissements/${arr.id}`}
+                                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 text-xs transition-colors group"
+                              >
+                                <span className="font-semibold text-slate-800 group-hover:text-emerald-800">
+                                  {arr.nom}
+                                </span>
+                                <span className="text-[11px] text-slate-500">
+                                  {arrCommunes.length} commune{arrCommunes.length > 1 ? 's' : ''}
+                                </span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <Sparkles className="h-4 w-4 text-emerald-600" />
+                          Atouts & Pôles de développement
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {info.atouts.map((atout, idx) => (
+                            <div key={idx} className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-100 text-xs font-medium text-slate-700">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
+                              <span className="truncate">{atout}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>
-                    <span className={cn('inline-flex items-center px-3 py-1 rounded-full text-xs font-medium self-start', colors.badge)}>
-                      Code : {dep.code}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div className="rounded-xl p-4 text-center bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-                      <div className="text-xl font-bold text-primary">{dep.superficie?.toLocaleString('fr-FR') ?? '—'}</div>
-                      <div className="text-xs text-gray-500 mt-1">km²</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                      <div className="text-xl font-bold text-primary">{dep.population?.toLocaleString('fr-FR') ?? '—'}</div>
-                      <div className="text-xs text-gray-500 mt-1">Habitants</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                      <div className="text-xl font-bold text-primary">{depArrondissements.length}</div>
-                      <div className="text-xs text-gray-500 mt-1">Arrondissements</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                      <div className="text-xl font-bold text-primary">{depCommunes.length}</div>
-                      <div className="text-xs text-gray-500 mt-1">Communes</div>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-600 text-sm leading-relaxed mb-6">{info.description}</p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                        <Layers className="h-4 w-4" />
-                        Arrondissements
-                      </h3>
-                      <ul className="space-y-2">
-                        {depArrondissements.map((arr) => {
-                          const arrCommunes = depCommunes.filter((c) => c.arrondissement?.id === arr.id);
-                          return (
-                            <li key={arr.id} className="flex items-center gap-2 text-sm text-gray-600">
-                              <ChevronRight className="h-3.5 w-3.5 text-primary shrink-0" />
-                              <span className="font-medium">{arr.nom}</span>
-                              <span className="text-xs text-gray-400">({arrCommunes.length} communes)</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                        Atouts économiques
-                      </h3>
-                      <ul className="space-y-2">
-                        {info.atouts.map((atout) => (
-                          <li key={atout} className="flex items-center gap-2 text-sm text-gray-600">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                            {atout}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
                   </div>
                 </div>
-              </Link>
-            );
-          })
-        )}
+              );
+            })
+          )}
+        </div>
 
-        {/* Lien communes */}
-        <div className="text-center py-6">
+        {/* Bannière de redirection vers l'annuaire des communes */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
+          <div>
+            <h3 className="text-base font-bold text-slate-900">
+              Explorer les 30 Communes de la Région
+            </h3>
+            <p className="text-xs text-slate-500 mt-1">
+              Accédez aux fiches individuelles, maires, coordonnées administratives et priorités communales.
+            </p>
+          </div>
           <Link
             href="/la-region/communes"
-            className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-xs shrink-0"
           >
-            <Users className="h-5 w-5" />
-            Voir toutes les communes
+            <Users className="h-4 w-4" />
+            Consulter l'annuaire des communes
           </Link>
         </div>
       </div>

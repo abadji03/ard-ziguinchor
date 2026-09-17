@@ -79,7 +79,7 @@ function ChiffreForm({ chiffre, onSave, onCancel }: ChiffreRowProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-blue-50/60 border border-primary/20 rounded-xl p-4 space-y-3">
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-emerald-50/40 border border-emerald-200/80 rounded-2xl p-4 space-y-3">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Input
           label="Label"
@@ -113,15 +113,15 @@ function ChiffreForm({ chiffre, onSave, onCancel }: ChiffreRowProps) {
         placeholder="Précision complémentaire…"
       />
       <div className="flex items-center gap-3">
-        <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
-          <input type="checkbox" {...register('actif')} className="rounded border-gray-300 text-primary" />
+        <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer select-none font-medium">
+          <input type="checkbox" {...register('actif')} className="rounded-md border-slate-300 text-emerald-600 focus:ring-emerald-500" />
           Visible sur le site
         </label>
         <div className="flex gap-2 ml-auto">
-          <button type="button" onClick={onCancel} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+          <button type="button" onClick={onCancel} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer">
             <X className="h-3.5 w-3.5" /> Annuler
           </button>
-          <button type="submit" disabled={saving} className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50">
+          <button type="submit" disabled={saving} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm bg-emerald-700 text-white rounded-xl hover:bg-emerald-800 font-semibold transition-colors disabled:opacity-50 shadow-2xs cursor-pointer">
             <Save className="h-3.5 w-3.5" />
             {saving ? 'Enregistrement…' : 'Enregistrer'}
           </button>
@@ -175,16 +175,16 @@ function ChiffresSection() {
 
   return (
     <Card>
-      <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-          <BarChart3 className="h-4 w-4 text-primary" /> Chiffres clés
+      <div className="p-5 border-b border-slate-200/80 flex items-center justify-between">
+        <h2 className="font-bold text-slate-900 flex items-center gap-2">
+          <BarChart3 className="h-4 w-4 text-emerald-700" /> Chiffres clés
         </h2>
-        <p className="text-xs text-gray-400 mr-auto ml-3">Affiché sur la page d&apos;accueil</p>
+        <p className="text-xs text-slate-400 mr-auto ml-3">Affiché sur la page d&apos;accueil</p>
         {!adding && (
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm bg-emerald-700 text-white rounded-xl hover:bg-emerald-800 font-semibold transition-colors shadow-2xs cursor-pointer"
           >
             <Plus className="h-3.5 w-3.5" /> Ajouter
           </button>
@@ -201,9 +201,9 @@ function ChiffresSection() {
 
         {/* Liste des chiffres clés */}
         {isLoading ? (
-          <p className="text-sm text-gray-400 text-center py-4">Chargement…</p>
+          <p className="text-sm text-slate-400 text-center py-4">Chargement…</p>
         ) : items.length === 0 && !adding ? (
-          <div className="text-center py-6 text-gray-400">
+          <div className="text-center py-6 text-slate-400">
             <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-30" />
             <p className="text-sm">Aucun chiffre clé défini.</p>
             <p className="text-xs mt-1">
@@ -212,7 +212,7 @@ function ChiffresSection() {
             <button
               type="button"
               onClick={() => setAdding(true)}
-              className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 text-sm text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm text-emerald-700 border border-emerald-300 rounded-xl hover:bg-emerald-50 font-semibold transition-colors cursor-pointer"
             >
               <Plus className="h-3.5 w-3.5" /> Créer le premier chiffre
             </button>
@@ -230,10 +230,10 @@ function ChiffresSection() {
               ) : (
                 <div
                   key={chiffre.id}
-                  className={`flex items-center gap-4 px-4 py-3 rounded-xl border transition-colors ${
+                  className={`flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-colors ${
                     chiffre.actif
-                      ? 'bg-white border-gray-100 hover:border-gray-200'
-                      : 'bg-gray-50 border-gray-100 opacity-60'
+                      ? 'bg-white border-slate-200/80 hover:border-emerald-300 shadow-2xs'
+                      : 'bg-slate-50 border-slate-200/60 opacity-60'
                   }`}
                 >
                   {/* Icône */}
@@ -244,37 +244,37 @@ function ChiffresSection() {
                   {/* Valeur + label */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-xl font-bold text-primary">{chiffre.valeur}</span>
-                      <span className="text-sm font-medium text-gray-700">{chiffre.label}</span>
+                      <span className="text-xl font-extrabold text-emerald-700 tracking-tight">{chiffre.valeur}</span>
+                      <span className="text-sm font-semibold text-slate-800">{chiffre.label}</span>
                       {!chiffre.actif && (
-                        <span className="text-xs bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded">masqué</span>
+                        <span className="text-xs bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded font-medium">masqué</span>
                       )}
                     </div>
                     {chiffre.description && (
-                      <p className="text-xs text-gray-400 truncate">{chiffre.description}</p>
+                      <p className="text-xs text-slate-400 truncate mt-0.5">{chiffre.description}</p>
                     )}
                   </div>
 
                   {/* Ordre */}
-                  <span className="text-xs text-gray-300 shrink-0">#{chiffre.ordre}</span>
+                  <span className="text-xs font-mono text-slate-400 shrink-0">#{chiffre.ordre}</span>
 
                   {/* Actions */}
                   <div className="flex items-center gap-1 shrink-0">
                     <button
                       type="button"
                       onClick={() => setEditingId(chiffre.id)}
-                      className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                      className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
                       title="Modifier"
                     >
-                      <Pencil className="h-3.5 w-3.5" />
+                      <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(chiffre.id, chiffre.label)}
-                      className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
                       title="Supprimer"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -325,29 +325,29 @@ export default function AdminParametresPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Paramètres du site</h1>
-        <p className="text-sm text-gray-500 mt-1">Informations générales, coordonnées et chiffres clés</p>
+        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Paramètres du site</h1>
+        <p className="text-sm text-slate-500 mt-1">Informations générales, coordonnées et chiffres clés</p>
       </div>
 
       {mutation.isSuccess && (
-        <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg p-3" role="alert">
-          <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
-          <p className="text-sm text-green-700 font-medium">Paramètres sauvegardés avec succès.</p>
+        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200/80 rounded-2xl p-4 shadow-2xs" role="alert">
+          <CheckCircle className="h-5 w-5 text-emerald-600 shrink-0" />
+          <p className="text-sm text-emerald-800 font-semibold">Paramètres sauvegardés avec succès.</p>
         </div>
       )}
       {mutation.isError && (
-        <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg p-3" role="alert">
-          <AlertCircle className="h-5 w-5 text-red-600 shrink-0" />
-          <p className="text-sm text-red-700">Une erreur s&apos;est produite lors de la sauvegarde.</p>
+        <div className="flex items-center gap-3 bg-rose-50 border border-rose-200/80 rounded-2xl p-4 shadow-2xs" role="alert">
+          <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
+          <p className="text-sm text-rose-800 font-semibold">Une erreur s&apos;est produite lors de la sauvegarde.</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit((d) => mutation.mutate(d))} className="space-y-6">
         {/* Infos générales */}
         <Card>
-          <div className="p-5 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-              <Globe className="h-4 w-4 text-primary" /> Informations générales
+          <div className="p-5 border-b border-slate-200/80">
+            <h2 className="font-bold text-slate-900 flex items-center gap-2">
+              <Globe className="h-4 w-4 text-emerald-700" /> Informations générales
             </h2>
           </div>
           <div className="p-5 space-y-4">
@@ -358,9 +358,9 @@ export default function AdminParametresPage() {
 
         {/* Coordonnées */}
         <Card>
-          <div className="p-5 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" /> Coordonnées
+          <div className="p-5 border-b border-slate-200/80">
+            <h2 className="font-bold text-slate-900 flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-emerald-700" /> Coordonnées
             </h2>
           </div>
           <div className="p-5 space-y-4">
@@ -377,8 +377,8 @@ export default function AdminParametresPage() {
 
         {/* Réseaux sociaux */}
         <Card>
-          <div className="p-5 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Réseaux sociaux</h2>
+          <div className="p-5 border-b border-slate-200/80">
+            <h2 className="font-bold text-slate-900">Réseaux sociaux</h2>
           </div>
           <div className="p-5 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

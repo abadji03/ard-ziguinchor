@@ -7,7 +7,6 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { SearchFilter } from '@/components/admin/SearchFilter';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { ActionButtons } from '@/components/admin/ActionButtons';
-import { Badge } from '@/components/ui/Badge';
 import { projetsService } from '@/services/projets.service';
 import { adminProjets } from '@/services/admin.service';
 import { usePagination } from '@/hooks/usePagination';
@@ -56,10 +55,10 @@ export default function AdminProjetsPage() {
       label: 'Avancement',
       render: (row) => (
         <div className="flex items-center gap-2 min-w-[100px]">
-          <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full" style={{ width: `${row.niveauAvancement}%` }} />
+          <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
+            <div className="h-full bg-emerald-600 rounded-full" style={{ width: `${row.niveauAvancement}%` }} />
           </div>
-          <span className="text-xs text-gray-500 shrink-0">{row.niveauAvancement}%</span>
+          <span className="text-xs font-bold text-slate-700 shrink-0">{row.niveauAvancement}%</span>
         </div>
       ),
     },

@@ -1,171 +1,265 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Quote, ArrowLeft } from 'lucide-react';
+import { Quote, ArrowLeft, Building2, Target, CheckCircle2, Phone, Mail, Compass, Award, FileText } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 
 export const metadata: Metadata = {
-  title: 'Mot du Directeur',
+  title: 'Mot du Directeur Général',
   description:
     "Message du Directeur Général de l'ARD Ziguinchor — vision, engagements et perspectives de l'Agence Régionale de Développement.",
   openGraph: {
-    title: "Mot du Directeur | ARD Ziguinchor",
-    description: "Message du Directeur Général de l'ARD Ziguinchor — vision et engagements de l'Agence.",
+    title: "Mot du Directeur Général | ARD Ziguinchor",
+    description:
+      "Message du Directeur Général de l'ARD Ziguinchor — vision et engagements de l'Agence.",
     type: 'profile',
   },
 };
 
 export default function MotDuDirecteurPage() {
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero */}
-      <div className="relative bg-primary-dark overflow-hidden">
-        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <Breadcrumb
-            items={[
-              { label: "L'ARD", href: '/a-propos' },
-              { label: 'Mot du Directeur' },
-            ]}
-          />
-          <h1 className="mt-6 text-3xl md:text-4xl font-extrabold text-white">
-            Mot du Directeur Général
-          </h1>
-          <p className="mt-3 text-blue-100 max-w-xl">
-            Vision, engagements et perspectives de l'ARD Ziguinchor
-          </p>
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb
+              items={[
+                { label: "L'ARD", href: '/a-propos' },
+                { label: 'Mot du Directeur Général' },
+              ]}
+            />
+          </div>
+
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              Direction Générale & Leadership
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Mot du Directeur Général
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+              Vision stratégique, engagements partenariaux et perspectives de développement durable
+              pour la région de Ziguinchor.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          <aside className="md:col-span-1">
-            <div className="sticky top-24">
-              <div className="rounded-2xl overflow-hidden bg-gray-100 aspect-[3/4] mb-4 flex items-center justify-center">
-                <div className="text-center p-6 text-gray-300">
-                  <div className="w-24 h-24 rounded-full bg-gray-200 mx-auto mb-4 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-                    </svg>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Colonne latérale : Profil officiel & Carte d'identité */}
+          <aside className="lg:col-span-4 space-y-6">
+            <div className="sticky top-24 space-y-6">
+              {/* Carte Portrait */}
+              <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs text-center">
+                <div className="relative mx-auto w-36 h-36 rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-100 to-slate-100 border-2 border-emerald-500/20 shadow-inner mb-4 flex items-center justify-center">
+                  <Building2 className="h-16 w-16 text-emerald-800/40" />
+                  <div className="absolute inset-x-0 bottom-0 bg-slate-900/80 text-white py-1 text-[10px] uppercase font-bold tracking-wider">
+                    ARD Ziguinchor
                   </div>
-                  <p className="text-sm text-gray-400 italic">Photo à venir</p>
+                </div>
+
+                <h2 className="font-bold text-slate-900 text-lg sm:text-xl">
+                  M. le Directeur Général
+                </h2>
+                <p className="text-xs font-bold text-emerald-700 uppercase tracking-wide mt-1">
+                  Agence Régionale de Développement
+                </p>
+                <p className="text-xs text-slate-500 mt-1 flex items-center justify-center gap-1">
+                  <span>Ziguinchor, République du Sénégal</span>
+                </p>
+
+                <div className="mt-5 pt-5 border-t border-slate-100 grid grid-cols-2 gap-2 text-left">
+                  <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">Mandat</p>
+                    <p className="text-xs font-semibold text-slate-800 mt-0.5">Coordination & Appui</p>
+                  </div>
+                  <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase">Échelle</p>
+                    <p className="text-xs font-semibold text-slate-800 mt-0.5">Régionale (3 Départements)</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex flex-col gap-2">
+                  <Link
+                    href="/contact"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors shadow-xs"
+                  >
+                    <Mail className="h-3.5 w-3.5" />
+                    Écrire à la Direction
+                  </Link>
+                  <Link
+                    href="/a-propos"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl transition-colors"
+                  >
+                    <Building2 className="h-3.5 w-3.5" />
+                    Découvrir l&apos;institution
+                  </Link>
                 </div>
               </div>
-              <div className="text-center">
-                <h2 className="font-bold text-gray-900 text-lg">M. le Directeur Général</h2>
-                <p className="text-sm text-primary font-medium mt-1">Agence Régionale de Développement</p>
-                <p className="text-xs text-gray-500 mt-0.5">Ziguinchor, Sénégal</p>
-              </div>
 
-              <div className="mt-6 bg-primary/5 border border-primary/10 rounded-xl p-4">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Liens utiles</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href="/a-propos" className="text-sm text-primary hover:underline flex items-center gap-1.5">
-                      <ArrowLeft className="h-3.5 w-3.5" /> Présentation de l'ARD
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/a-propos#equipe" className="text-sm text-primary hover:underline flex items-center gap-1.5">
-                      <ArrowLeft className="h-3.5 w-3.5" /> Notre équipe
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact" className="text-sm text-primary hover:underline flex items-center gap-1.5">
-                      <ArrowLeft className="h-3.5 w-3.5" /> Nous contacter
-                    </Link>
-                  </li>
+              {/* Piliers stratégiques */}
+              <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs">
+                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <Compass className="h-4 w-4 text-emerald-600" />
+                  Piliers de l'Action Régionale
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    { titre: 'Planification stratégique', desc: 'Cohérence territoriale SRAT, PRD et PCD' },
+                    { titre: 'Mobilisation des ressources', desc: 'Partenariats avec l’État, PTF et diaspora' },
+                    { titre: 'Résilience écologique', desc: 'Valorisation durable des patrimoines naturels' },
+                    { titre: 'Insertion & Emploi', desc: 'Opportunités économiques pour les jeunes et femmes' },
+                  ].map((pilier, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-xs">
+                      <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">
+                        {idx + 1}
+                      </div>
+                      <div>
+                        <span className="font-bold text-slate-800 block">{pilier.titre}</span>
+                        <span className="text-slate-500">{pilier.desc}</span>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
           </aside>
 
-          <article className="md:col-span-2 space-y-8">
-            <blockquote className="relative bg-primary/5 border-l-4 border-primary rounded-r-2xl px-6 py-5">
-              <Quote className="absolute top-4 right-4 h-8 w-8 text-primary/10" aria-hidden="true" />
-              <p className="text-lg text-gray-800 font-medium italic leading-relaxed">
-                &laquo;&nbsp;Le développement durable de notre région passe par la mobilisation
-                collective de toutes ses forces vives, la valorisation de ses richesses naturelles
-                et humaines, et un partenariat fort avec l'État et la coopération
-                internationale.&nbsp;&raquo;
-              </p>
-            </blockquote>
-
-            <div className="space-y-5 text-gray-700 leading-relaxed">
-              <p>
-                C'est avec un profond sentiment de responsabilité et d'engagement que je
-                prends la parole en tant que Directeur Général de l'Agence Régionale de
-                Développement de Ziguinchor. Notre région, aux richesses naturelles et
-                culturelles exceptionnelles, mérite une institution à la hauteur de ses ambitions
-                et de ses potentiels.
-              </p>
-
-              <p>
-                Depuis sa création, l'ARD Ziguinchor s'est positionnée comme l'outil
-                stratégique de planification et de coordination du développement territorial. Notre
-                mission est claire : faciliter la mise en œuvre des politiques publiques de
-                développement, appuyer les collectivités territoriales dans l'exercice de leurs
-                compétences et mobiliser les ressources pour financer les projets structurants de
-                notre région.
-              </p>
-
-              <h3 className="font-bold text-gray-900 text-base mt-6">Notre vision</h3>
-              <p>
-                Nous voulons faire de Ziguinchor une région émergente, compétitive et solidaire,
-                où chaque habitant bénéficie des retombées du développement. Cela passe par une
-                agriculture modernisée et résiliente, un tourisme durable valorisant notre
-                patrimoine exceptionnel, des infrastructures de qualité et une jeunesse qualifiée
-                et épanouie.
-              </p>
-
-              <h3 className="font-bold text-gray-900 text-base mt-6">Nos priorités d'action</h3>
-              <ul className="space-y-3">
-                {[
-                  'Renforcer la planification territoriale et la coordination des interventions de développement',
-                  'Appuyer la mobilisation de ressources auprès des partenaires techniques et financiers',
-                  "Accompagner la mise en œuvre du Plan de Développement Régional (PDR)",
-                  "Promouvoir l'économie locale et soutenir l'entrepreneuriat des jeunes et des femmes",
-                  "Favoriser la coopération décentralisée et les échanges d'expériences",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <span className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <h3 className="font-bold text-gray-900 text-base mt-6">Un appel au partenariat</h3>
-              <p>
-                Je lance un appel vibrant à tous nos partenaires — bailleurs de fonds
-                internationaux, ONG, secteur privé, diaspora — pour qu'ils rejoignent notre
-                dynamique. La région de Ziguinchor offre des opportunités immenses. Ensemble, nous
-                pouvons les saisir au profit de nos populations.
-              </p>
-
-              <p>
-                À nos citoyens, je dis que l'ARD est votre institution. Elle est là pour vous
-                servir, pour porter vos aspirations et pour construire avec vous le Ziguinchor de
-                demain. N'hésitez pas à nous contacter, à nous soumettre vos idées, à
-                participer aux concertations que nous organisons régulièrement.
-              </p>
-
-              <p>
-                Ensemble, bâtissons le Ziguinchor de nos rêves.
-              </p>
+          {/* Colonne principale : Discours & Vision */}
+          <article className="lg:col-span-8 space-y-8">
+            {/* Citation solennelle */}
+            <div className="relative bg-emerald-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm overflow-hidden">
+              <Quote className="absolute -bottom-4 -right-4 h-32 w-32 text-emerald-800/30 pointer-events-none" />
+              <div className="relative z-10">
+                <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-500/20 mb-3">
+                  Message Clé
+                </span>
+                <blockquote className="text-lg sm:text-xl font-medium italic leading-relaxed text-emerald-50">
+                  &laquo;&nbsp;Le développement durable de notre région passe par la mobilisation
+                  collective de toutes ses forces vives, la valorisation de ses richesses naturelles
+                  et humaines, et un partenariat fort avec l&apos;État et la coopération
+                  internationale.&nbsp;&raquo;
+                </blockquote>
+                <p className="mt-4 text-xs font-semibold text-emerald-300">
+                  — Direction Générale, Agence Régionale de Développement de Ziguinchor
+                </p>
+              </div>
             </div>
 
-            <div className="border-t border-gray-100 pt-6">
-              <p className="font-bold text-gray-900">Le Directeur Général</p>
-              <p className="text-sm text-primary mt-0.5">Agence Régionale de Développement de Ziguinchor</p>
+            {/* Corps du message */}
+            <div className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200/90 shadow-xs space-y-6 text-slate-700 text-sm sm:text-base leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-900 font-medium leading-relaxed">
+                C&apos;est avec un profond sentiment de responsabilité et d&apos;engagement que je
+                m&apos;adresse à vous au nom de l&apos;Agence Régionale de Développement (ARD) de Ziguinchor.
+                Notre région, berceau de dynamismes culturels et richesses naturelles exceptionnelles,
+                mérite une impulsion collective à la hauteur de son potentiel.
+              </p>
+
+              <div className="p-4 sm:p-5 bg-slate-50 rounded-xl border border-slate-200/70 my-6">
+                <h3 className="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
+                  <Award className="h-5 w-5 text-emerald-600" />
+                  Notre Mandat Républicain
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  L&apos;ARD est le bras technique des collectivités territoriales de la région de Ziguinchor.
+                  Créée pour harmoniser les interventions de développement, elle coordonne les schémas
+                  d&apos;aménagement, appuie la maîtrise d&apos;ouvrage communale et facilite la convergence
+                  des investissements publics et privés.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Une Vision Territoriale Partagée</h3>
+                <p>
+                  Nous voulons faire de Ziguinchor une région émergente, compétitive, résiliente et solidaire,
+                  où chaque habitant bénéficie directement des retombées du progrès. Cela repose sur une
+                  agriculture modernisée, la valorisation des filières aquacoles et horticoles, un écotourisme
+                  responsable et un réseau d&apos;infrastructures désenclavant durablement nos terroirs.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Nos 5 Engagements Prioritaires</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                  {[
+                    'Planification territoriale rigoureuse (SRAT, PRD, PCD)',
+                    'Mobilisation accrue des financements auprès des PTF',
+                    'Suivi-évaluation via l’Observatoire territorial',
+                    'Accompagnement de l’entrepreneuriat des jeunes et femmes',
+                    'Coopération décentralisée et partenariats transfrontaliers',
+                  ].map((engagement, i) => (
+                    <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm font-semibold text-slate-800">{engagement}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Un Appel à la Synergie Partenariale</h3>
+                <p>
+                  Aux partenaires techniques et financiers, aux investisseurs, aux universitaires et à la
+                  diaspora casamançaise, nous tendons la main. La région de Ziguinchor réunit des atouts
+                  comparatifs majeurs. Avec l&apos;ARD comme interlocuteur technique rigoureux et transparent,
+                  vos initiatives trouveront un cadre de réalisation sécurisé et efficace.
+                </p>
+                <p className="mt-4">
+                  À nos concitoyens et élus locaux, sachez que l&apos;ARD demeure votre maison commune.
+                  Ensemble, avec courage, méthode et détermination, construisons le futur prospère de la Casamance.
+                </p>
+              </div>
+
+              {/* Bloc de signature */}
+              <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <p className="font-extrabold text-slate-900 text-lg">La Direction Générale</p>
+                  <p className="text-xs font-semibold text-emerald-700">
+                    Agence Régionale de Développement (ARD) de Ziguinchor
+                  </p>
+                  <p className="text-xs text-slate-400 mt-0.5">Bâtir un territoire d'avenir</p>
+                </div>
+                <div className="text-right">
+                  <span className="inline-block px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 font-mono text-xs">
+                    Ziguinchor, Sénégal
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Link href="/contact" className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
-                Nous contacter
+            {/* Liens de navigation complémentaires */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Link
+                href="/a-propos"
+                className="p-4 bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-600/60 transition-colors shadow-xs group"
+              >
+                <Building2 className="h-5 w-5 text-emerald-700 mb-2" />
+                <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700">
+                  L&apos;Agence ARD
+                </h4>
+                <p className="text-xs text-slate-500 mt-1">Missions, statuts et organes de gouvernance</p>
               </Link>
-              <Link href="/a-propos" className="inline-flex items-center gap-2 border border-primary text-primary px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary/5 transition-colors">
-                En savoir plus sur l'ARD
+              <Link
+                href="/projets"
+                className="p-4 bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-600/60 transition-colors shadow-xs group"
+              >
+                <Target className="h-5 w-5 text-emerald-700 mb-2" />
+                <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700">
+                  Nos Projets
+                </h4>
+                <p className="text-xs text-slate-500 mt-1">Portefeuille des projets territoriaux en cours</p>
+              </Link>
+              <Link
+                href="/documentation"
+                className="p-4 bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-600/60 transition-colors shadow-xs group"
+              >
+                <FileText className="h-5 w-5 text-emerald-700 mb-2" />
+                <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700">
+                  Publications
+                </h4>
+                <p className="text-xs text-slate-500 mt-1">Plans de développement, études et rapports</p>
               </Link>
             </div>
           </article>
@@ -174,3 +268,4 @@ export default function MotDuDirecteurPage() {
     </div>
   );
 }
+

@@ -7,7 +7,6 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { SearchFilter } from '@/components/admin/SearchFilter';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { ActionButtons } from '@/components/admin/ActionButtons';
-import { LoadingState } from '@/components/ui/Spinner';
 import api from '@/lib/api';
 import { buildQueryString } from '@/lib/utils';
 import { usePagination } from '@/hooks/usePagination';
@@ -38,8 +37,8 @@ export default function AdminObservatoirePage() {
       label: 'Indicateur',
       render: (row) => (
         <div>
-          <p className="font-medium text-gray-900 truncate max-w-xs">{row.nom}</p>
-          {row.secteur && <p className="text-xs text-primary mt-0.5">{row.secteur.nom}</p>}
+          <p className="font-semibold text-slate-900 truncate max-w-xs">{row.nom}</p>
+          {row.secteur && <p className="text-xs text-emerald-700 font-medium mt-0.5">{row.secteur.nom}</p>}
         </div>
       ),
     },
@@ -101,13 +100,13 @@ export default function AdminObservatoirePage() {
           { label: 'Mise à jour annuelle', icon: TrendingUp, value: new Date().getFullYear() },
           { label: 'Couverture', icon: BarChart3, value: '3 départements' },
         ].map((item, i) => (
-          <div key={i} className="bg-white rounded-xl p-5 border border-gray-100 flex items-center gap-4">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <item.icon className="h-5 w-5 text-primary" />
+          <div key={i} className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex items-center gap-4">
+            <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center shrink-0 shadow-2xs">
+              <item.icon className="h-5 w-5 text-emerald-700" />
             </div>
             <div>
-              <p className="text-xl font-bold text-gray-900">{item.value}</p>
-              <p className="text-xs text-gray-500">{item.label}</p>
+              <p className="text-2xl font-extrabold text-slate-900 tracking-tight">{item.value}</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mt-0.5">{item.label}</p>
             </div>
           </div>
         ))}

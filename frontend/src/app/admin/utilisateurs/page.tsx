@@ -7,18 +7,16 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { SearchFilter } from '@/components/admin/SearchFilter';
 import { DataTable, type Column } from '@/components/admin/DataTable';
 import { ActionButtons } from '@/components/admin/ActionButtons';
-import { Badge } from '@/components/ui/Badge';
 import api from '@/lib/api';
-import { formatDate } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import type { User, PaginatedResponse } from '@/types';
 
 const ROLE_COLORS: Record<string, string> = {
-  SUPER_ADMIN:  'bg-purple-100 text-purple-700',
-  ADMIN:        'bg-red-100 text-red-700',
-  EDITEUR:      'bg-blue-100 text-blue-700',
-  REDACTEUR:    'bg-green-100 text-green-700',
-  CONTRIBUTEUR: 'bg-gray-100 text-gray-600',
+  SUPER_ADMIN:  'bg-purple-50 text-purple-800 border border-purple-200/60 font-semibold',
+  ADMIN:        'bg-rose-50 text-rose-800 border border-rose-200/60 font-semibold',
+  EDITEUR:      'bg-blue-50 text-blue-800 border border-blue-200/60 font-semibold',
+  REDACTEUR:    'bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-semibold',
+  CONTRIBUTEUR: 'bg-slate-100 text-slate-700 border border-slate-200/60 font-semibold',
 };
 
 const ROLE_OPTIONS = [
@@ -57,12 +55,12 @@ export default function AdminUtilisateursPage() {
       label: 'Utilisateur',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-            <span className="text-xs font-bold text-primary">{row.prenom.charAt(0)}{row.nom.charAt(0)}</span>
+          <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200/60 flex items-center justify-center shrink-0">
+            <span className="text-xs font-bold text-emerald-700">{row.prenom.charAt(0)}{row.nom.charAt(0)}</span>
           </div>
           <div>
-            <p className="font-medium text-gray-900">{row.prenom} {row.nom}</p>
-            <p className="text-xs text-gray-400">{row.email}</p>
+            <p className="font-semibold text-slate-900">{row.prenom} {row.nom}</p>
+            <p className="text-xs text-slate-400">{row.email}</p>
           </div>
         </div>
       ),
@@ -71,7 +69,7 @@ export default function AdminUtilisateursPage() {
       key: 'role',
       label: 'Rôle',
       render: (row) => (
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ROLE_COLORS[row.role] ?? 'bg-gray-100 text-gray-600'}`}>
+        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${ROLE_COLORS[row.role] ?? 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
           {row.role}
         </span>
       ),
@@ -82,8 +80,8 @@ export default function AdminUtilisateursPage() {
       render: (row) => (
         <div className="flex items-center gap-1.5">
           {row.actif
-            ? <><ShieldCheck className="h-4 w-4 text-green-500" /><span className="text-xs text-green-600">Actif</span></>
-            : <><ShieldAlert className="h-4 w-4 text-red-400" /><span className="text-xs text-red-500">Inactif</span></>
+            ? <><ShieldCheck className="h-4 w-4 text-emerald-600" /><span className="text-xs text-emerald-700 font-semibold">Actif</span></>
+            : <><ShieldAlert className="h-4 w-4 text-rose-500" /><span className="text-xs text-rose-600 font-semibold">Inactif</span></>
           }
         </div>
       ),

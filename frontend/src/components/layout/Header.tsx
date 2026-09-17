@@ -194,7 +194,12 @@ export function Header() {
             >
               {NAV_LINKS.map((link) =>
                 'children' in link ? (
-                  <div key={link.href} className="relative">
+                  <div
+                    key={link.href}
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(link.href)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
                     <button
                       type="button"
                       onClick={() => setOpenDropdown(openDropdown === link.href ? null : link.href)}
@@ -216,22 +221,25 @@ export function Header() {
                       />
                     </button>
                     {openDropdown === link.href && (
-                      <div className="absolute top-full left-0 mt-2 w-60 bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className={cn(
-                              'flex items-center justify-between px-4 py-2.5 text-sm transition-colors',
-                              pathname === child.href
-                                ? 'text-primary bg-emerald-50/60 font-semibold'
-                                : 'text-slate-700 hover:bg-slate-50 hover:text-primary'
-                            )}
-                          >
-                            <span>{child.label}</span>
-                            <ChevronRight className="h-3 w-3 text-slate-300" />
-                          </Link>
-                        ))}
+                      <div className="absolute top-full left-0 pt-1.5 w-64 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                        <div className="bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-100 py-2">
+                          {link.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setOpenDropdown(null)}
+                              className={cn(
+                                'flex items-center justify-between px-4 py-2.5 text-sm transition-colors',
+                                pathname === child.href
+                                  ? 'text-primary bg-emerald-50/60 font-semibold'
+                                  : 'text-slate-700 hover:bg-slate-50 hover:text-primary'
+                              )}
+                            >
+                              <span>{child.label}</span>
+                              <ChevronRight className="h-3 w-3 text-slate-300" />
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -331,30 +339,25 @@ export function Header() {
       </header>
 
       {/* DRAWER LATÉRAL MODERNE (S'ouvre au clic sur les 3 tirets) */}
-      <div
-        id="mobile-navigation-drawer"
-        className={cn(
-          'fixed inset-0 z-50 transition-visibility duration-300',
-          mobileOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
-        )}
-      >
-        {/* Voile d'arrière-plan avec flou */}
+      {mobileOpen && (
         <div
-          className={cn(
-            'fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300',
-            mobileOpen ? 'opacity-100' : 'opacity-0'
-          )}
-          onClick={() => setMobileOpen(false)}
-          aria-hidden="true"
-        />
-
-        {/* Panneau tiroir depuis la droite */}
-        <div
-          className={cn(
-            'fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col transition-transform duration-300 ease-out border-l border-slate-200',
-            mobileOpen ? 'translate-x-0' : 'translate-x-full'
-          )}
+          id="mobile-navigation-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navigation"
+          className="fixed inset-0 z-50 overflow-hidden"
         >
+          {/* Voile d'arrière-plan avec flou */}
+          <div
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Panneau tiroir depuis la droite */}
+          <div
+            className="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-10 flex flex-col border-l border-slate-200 animate-in slide-in-from-right duration-300 ease-out"
+          >
           {/* En-tête du tiroir */}
           <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
             <div className="flex items-center gap-3">
@@ -568,6 +571,7 @@ export function Header() {
           </div>
         </div>
       </div>
+      )}
     </>
   );
 }

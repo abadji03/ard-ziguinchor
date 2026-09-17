@@ -49,9 +49,9 @@ export default function AdminActualitesPage() {
       label: 'Titre',
       render: (row) => (
         <div>
-          <p className="font-medium text-gray-900 truncate max-w-xs">{row.titre}</p>
+          <p className="font-semibold text-slate-900 truncate max-w-xs">{row.titre}</p>
           {row.categorie && (
-            <p className="text-xs text-gray-400 mt-0.5">{row.categorie.nom}</p>
+            <p className="text-xs text-slate-400 mt-0.5 font-medium">{row.categorie.nom}</p>
           )}
         </div>
       ),
@@ -59,26 +59,40 @@ export default function AdminActualitesPage() {
     {
       key: 'statut',
       label: 'Statut',
-      render: (row) => (
-        <Badge variant={STATUT_BADGE[row.statut] ?? 'default'}>{row.statut}</Badge>
-      ),
+      render: (row) => {
+        const colors: Record<string, string> = {
+          publie: 'bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-semibold',
+          brouillon: 'bg-slate-100 text-slate-700 border border-slate-200/60 font-semibold',
+          archive: 'bg-amber-50 text-amber-800 border border-amber-200/60 font-semibold',
+        };
+        const labels: Record<string, string> = {
+          publie: 'Publié',
+          brouillon: 'Brouillon',
+          archive: 'Archivé',
+        };
+        return (
+          <span className={`text-xs px-2.5 py-0.5 rounded-full ${colors[row.statut] || 'bg-slate-100 text-slate-700'}`}>
+            {labels[row.statut] || row.statut}
+          </span>
+        );
+      },
     },
     {
       key: 'datePublication',
       label: 'Publication',
       render: (row) => row.datePublication ? (
-        <span className="flex items-center gap-1 text-xs text-gray-500">
-          <Calendar className="h-3.5 w-3.5" />
+        <span className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+          <Calendar className="h-3.5 w-3.5 text-slate-400" />
           {formatDate(row.datePublication)}
         </span>
-      ) : <span className="text-xs text-gray-300">—</span>,
+      ) : <span className="text-xs text-slate-300">—</span>,
     },
     {
       key: 'vue',
       label: 'Vues',
       render: (row) => (
-        <span className="flex items-center gap-1 text-xs text-gray-500">
-          <Eye className="h-3.5 w-3.5" /> {row.vue}
+        <span className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+          <Eye className="h-3.5 w-3.5 text-slate-400" /> {row.vue}
         </span>
       ),
     },

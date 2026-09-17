@@ -14,8 +14,10 @@ import { usePagination } from '@/hooks/usePagination';
 import type { Document } from '@/types';
 
 const FORMAT_COLORS: Record<string, string> = {
-  pdf: 'bg-red-100 text-red-700', docx: 'bg-blue-100 text-blue-700',
-  xlsx: 'bg-green-100 text-green-700', pptx: 'bg-orange-100 text-orange-700',
+  pdf:  'bg-rose-50 text-rose-800 border border-rose-200/60 font-bold',
+  docx: 'bg-blue-50 text-blue-800 border border-blue-200/60 font-bold',
+  xlsx: 'bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-bold',
+  pptx: 'bg-amber-50 text-amber-800 border border-amber-200/60 font-bold',
 };
 
 export default function AdminDocumentsPage() {

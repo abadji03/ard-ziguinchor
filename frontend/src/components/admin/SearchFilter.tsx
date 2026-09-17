@@ -16,7 +16,7 @@ interface SearchFilterProps {
 
 export function SearchFilter({ search, onSearch, filters, placeholder = 'Rechercher…' }: SearchFilterProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3 mb-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+    <div className="flex flex-col sm:flex-row gap-3 mb-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
       <div className="flex-1">
         <Input
           value={search}
@@ -33,7 +33,7 @@ export function SearchFilter({ search, onSearch, filters, placeholder = 'Recherc
           options={f.options}
           onChange={(e) => f.onChange(e.target.value)}
           placeholder={f.label}
-          className="min-w-[160px]"
+          className="min-w-[170px]"
           aria-label={f.label}
         />
       ))}

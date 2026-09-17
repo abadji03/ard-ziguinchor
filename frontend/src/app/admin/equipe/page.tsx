@@ -37,14 +37,14 @@ export default function AdminEquipePage() {
       label: 'Membre',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-primary/10 shrink-0 overflow-hidden flex items-center justify-center">
+          <div className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-200/60 shrink-0 overflow-hidden flex items-center justify-center">
             {row.photo
               ? <Image src={row.photo} alt={`${row.prenom} ${row.nom}`} width={36} height={36} className="object-cover w-full h-full" />
-              : <span className="text-xs font-bold text-primary/50">{row.prenom.charAt(0)}{row.nom.charAt(0)}</span>}
+              : <span className="text-xs font-bold text-emerald-700">{row.prenom.charAt(0)}{row.nom.charAt(0)}</span>}
           </div>
           <div>
-            <p className="font-medium text-gray-900">{row.prenom} {row.nom}</p>
-            <p className="text-xs text-primary mt-0.5">{row.fonction}</p>
+            <p className="font-semibold text-slate-900">{row.prenom} {row.nom}</p>
+            <p className="text-xs text-emerald-700 font-medium mt-0.5">{row.fonction}</p>
           </div>
         </div>
       ),
@@ -55,12 +55,12 @@ export default function AdminEquipePage() {
       render: (row) => (
         <div className="space-y-0.5">
           {row.email && (
-            <a href={`mailto:${row.email}`} className="flex items-center gap-1 text-xs text-gray-500 hover:text-primary">
+            <a href={`mailto:${row.email}`} className="flex items-center gap-1 text-xs text-slate-500 hover:text-emerald-700 transition-colors">
               <Mail className="h-3 w-3" /> {row.email}
             </a>
           )}
           {row.telephone && (
-            <a href={`tel:${row.telephone}`} className="flex items-center gap-1 text-xs text-gray-500 hover:text-primary">
+            <a href={`tel:${row.telephone}`} className="flex items-center gap-1 text-xs text-slate-500 hover:text-emerald-700 transition-colors">
               <Phone className="h-3 w-3" /> {row.telephone}
             </a>
           )}
@@ -71,7 +71,7 @@ export default function AdminEquipePage() {
       key: 'actif',
       label: 'Actif',
       render: (row) => (
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${row.actif ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${row.actif ? 'bg-emerald-50 text-emerald-800 border border-emerald-200/60' : 'bg-slate-100 text-slate-600 border border-slate-200/60'}`}>
           {row.actif ? 'Actif' : 'Inactif'}
         </span>
       ),

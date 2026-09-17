@@ -4,25 +4,24 @@ import { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Calendar, Building2, Banknote, ArrowLeft, Download, ExternalLink, FolderGit2, MapPin, CheckCircle2, Rocket, Target, Clock } from 'lucide-react';
+import {
+  Calendar,
+  Building2,
+  Banknote,
+  ArrowLeft,
+  Download,
+  ExternalLink,
+  Target,
+  Sparkles,
+  CheckCircle2,
+  FileText,
+  Layers,
+  Users,
+} from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
-import { Badge } from '@/components/ui/Badge';
 import { LoadingState } from '@/components/ui/Spinner';
 import { formatDate } from '@/lib/utils';
 import { programmesService } from '@/services/programmes.service';
-
-const PROGRAMME_STATUT: Record<string, { label: string; color: string; bg: string }> = {
-  actif: { label: 'Actif', color: '#16A34A', bg: 'bg-green-100 text-green-700' },
-  termine: { label: 'Terminé', color: '#64748B', bg: 'bg-slate-100 text-slate-700' },
-  suspendu: { label: 'Suspendu', color: '#DC2626', bg: 'bg-red-100 text-red-700' },
-};
-
-const formatBudget = (n?: number) => {
-  if (!n) return '—';
-  if (n >= 1_000_000_000) return `${(n / 1_000_000_000).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} Md FCFA`;
-  if (n >= 1_000_000) return `${(n / 1_000_000).toLocaleString('fr-FR', { maximumFractionDigits: 1 })} M FCFA`;
-  return `${n.toLocaleString('fr-FR')} FCFA`;
-};
 
 export function ProgrammeDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -32,138 +31,268 @@ export function ProgrammeDetail({ params }: { params: Promise<{ slug: string }> 
     queryFn: () => programmesService.getBySlug(slug),
   });
 
-  if (isLoading) return <div className="py-20"><LoadingState /></div>;
-  if (error || !prog) return (
-    <div className="py-20 text-center">
-      <p className="text-gray-500">Programme introuvable.</p>
-      <Link href="/programmes" className="text-primary mt-2 inline-block hover:underline">← Retour</Link>
-    </div>
-  );
+  if (isLoading) {
+    return (
+      <div className="bg-slate-50 min-h-screen py-20">
+        <LoadingState message="Chargement du programme…" />
+      </div>
+    );
+  }
 
-  const statut = PROGRAMME_STATUT[prog.statut] ?? { label: prog.statut, color: '#64748B', bg: 'bg-slate-100 text-slate-700' };
+  if (error || !prog) {
+    return (
+      <div className="bg-slate-50 min-h-screen flex items-center justify-center p-6">
+        <div className="bg-white rounded-2xl p-8 border border-slate-200 text-center max-w-md shadow-xs">
+          <Layers className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+          <h2 className="text-lg font-bold text-slate-900 mb-2">Programme introuvable</h2>
+          <p className="text-slate-500 text-sm mb-6">
+            Le programme recherché n'existe pas ou a été archivé.
+          </p>
+          <Link
+            href="/programmes"
+            className="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Retour aux programmes
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Héros vitrine */}
-      <div className="relative bg-primary-dark overflow-hidden">
-        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          <Breadcrumb items={[{ label: 'Programmes', href: '/programmes' }, { label: prog.nom }]} />
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            {prog.acronyme && <Badge variant="info">{prog.acronyme}</Badge>}
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${statut.bg}`}>
-              {statut.label}
-            </span>
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb
+              items={[
+                { label: 'Accueil', href: '/' },
+                { label: 'Programmes de développement', href: '/programmes' },
+                { label: prog.nom },
+              ]}
+            />
           </div>
-          <h1 className="mt-3 text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl">{prog.nom}</h1>
-          {prog.resume && (
-            <p className="mt-4 max-w-2xl text-slate-200 text-base leading-relaxed">{prog.resume}</p>
-          )}
+
+          <div className="max-w-4xl">
+            <div className="flex flex-wrap items-center gap-2.5 mb-4">
+              {prog.acronyme && (
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
+                  {prog.acronyme}
+                </span>
+              )}
+              {prog.organismePilote && (
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  Pilote : {prog.organismePilote}
+                </span>
+              )}
+            </div>
+
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              {prog.nom}
+            </h1>
+
+            {prog.resume && (
+              <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed">
+                {prog.resume}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Bandeau de métriques clés */}
-      {prog.dateDebut || prog.budget !== undefined || prog.dateFin || prog.projets?.length ? (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-7 relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <div className="vitrine-card hover-lift p-4 text-center">
-              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 mb-1"><Clock size={13} /> Période</div>
-              <div className="text-sm font-bold text-slate-900 leading-tight">
-                {prog.dateDebut ? formatDate(prog.dateDebut) : '—'}{prog.dateFin ? ` → ${formatDate(prog.dateFin)}` : ''}
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* KPI Essentiels du Programme */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 -mt-16 sm:-mt-20 mb-10 relative z-10">
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Budget Alloué</span>
+              <Banknote className="h-4 w-4 text-emerald-600" />
             </div>
-            <div className="vitrine-card hover-lift p-4 text-center">
-              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 mb-1"><Banknote size={13} /> Budget</div>
-              <div className="text-sm font-bold text-emerald-700">{formatBudget(prog.budget)}</div>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight truncate">
+              {prog.budget ? `${prog.budget.toLocaleString('fr-FR')}` : 'Non précisé'}
+            </p>
+            <p className="text-xs text-slate-500 mt-2 font-medium">FCFA</p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Période</span>
+              <Calendar className="h-4 w-4 text-blue-600" />
             </div>
-            <div className="vitrine-card hover-lift p-4 text-center">
-              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 mb-1"><FolderGit2 size={13} /> Projets</div>
-              <div className="text-2xl font-black text-primary">{prog.projets?.length ?? 0}</div>
+            <p className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
+              {prog.dateDebut ? new Date(prog.dateDebut).getFullYear() : '—'}{' '}
+              {prog.dateFin ? `→ ${new Date(prog.dateFin).getFullYear()}` : ''}
+            </p>
+            <p className="text-xs text-slate-500 mt-2 font-medium">
+              {prog.dateDebut ? formatDate(prog.dateDebut) : ''}
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Organisme Pilote</span>
+              <Building2 className="h-4 w-4 text-purple-600" />
             </div>
-            <div className="vitrine-card hover-lift p-4 text-center">
-              <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 mb-1"><Building2 size={13} /> Pilote</div>
-              <div className="text-sm font-bold text-slate-900 leading-tight">{prog.organismePilote || 'ARD'}</div>
+            <p className="text-lg sm:text-xl font-black text-slate-900 leading-tight truncate">
+              {prog.organismePilote || 'ARD Ziguinchor'}
+            </p>
+            <p className="text-xs text-slate-500 mt-2 font-medium">Maîtrise d'ouvrage déléguée</p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Partenaires</span>
+              <Users className="h-4 w-4 text-amber-600" />
             </div>
+            <p className="text-3xl font-black text-slate-900 leading-tight">
+              {prog.partenaires?.length ?? 0}
+            </p>
+            <p className="text-xs text-slate-500 mt-2 font-medium">Institutions et bailleurs</p>
           </div>
         </div>
-      ) : null}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+          {/* Contenu Principal */}
+          <div className="lg:col-span-2 space-y-8">
             {prog.image && (
-              <div className="relative h-64 rounded-xl overflow-hidden">
-                <Image src={prog.image} alt={prog.nom} fill className="object-cover" />
+              <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-slate-200/90 shadow-xs">
+                <Image
+                  src={prog.image}
+                  alt={prog.nom}
+                  fill
+                  priority
+                  className="object-cover"
+                />
               </div>
             )}
-            <div className="vitrine-card rounded-xl p-6">
-              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Rocket size={18} className="text-primary" /> Description</h2>
-              <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: prog.description }} />
+
+            {/* Description */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-emerald-600" />
+                Présentation du programme
+              </h2>
+              <div
+                className="prose-content text-slate-700 leading-relaxed text-sm sm:text-base"
+                dangerouslySetInnerHTML={{ __html: prog.description }}
+              />
             </div>
+
+            {/* Objectifs */}
             {prog.objectifs && (
-              <div className="vitrine-card rounded-xl p-6">
-                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2"><Target size={18} className="text-primary" /> Objectifs</h2>
-                <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: prog.objectifs }} />
+              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                  <Target className="h-5 w-5 text-emerald-600" />
+                  Objectifs prioritaires & Axes d'intervention
+                </h2>
+                <div
+                  className="prose-content text-slate-700 leading-relaxed text-sm sm:text-base"
+                  dangerouslySetInnerHTML={{ __html: prog.objectifs }}
+                />
               </div>
             )}
           </div>
 
+          {/* Sidebar */}
           <aside className="space-y-6">
-            <div className="vitrine-card rounded-xl p-6 space-y-4">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><CheckCircle2 size={16} className="text-primary" /> Informations</h3>
+            <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs space-y-4">
+              <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">
+                Informations Clés
+              </h3>
+
               {prog.dateDebut && (
-                <div className="flex gap-3 text-sm">
-                  <Calendar className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 text-xs sm:text-sm">
+                  <Calendar className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-400">Période</p>
-                    <p className="font-medium">{formatDate(prog.dateDebut)}{prog.dateFin ? ` → ${formatDate(prog.dateFin)}` : ''}</p>
+                    <p className="text-slate-400 text-xs font-medium">Période d'exécution</p>
+                    <p className="font-bold text-slate-800">
+                      {formatDate(prog.dateDebut)}{prog.dateFin ? ` au ${formatDate(prog.dateFin)}` : ''}
+                    </p>
                   </div>
                 </div>
               )}
+
               {prog.organismePilote && (
-                <div className="flex gap-3 text-sm">
-                  <Building2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3 text-xs sm:text-sm">
+                  <Building2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-400">Organisme pilote</p>
-                    <p className="font-medium">{prog.organismePilote}</p>
+                    <p className="text-slate-400 text-xs font-medium">Coordination générale</p>
+                    <p className="font-bold text-slate-800">{prog.organismePilote}</p>
                   </div>
                 </div>
               )}
-              {prog.budget !== undefined && (
-                <div className="flex gap-3 text-sm">
-                  <Banknote className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+
+              {prog.budget && (
+                <div className="flex items-start gap-3 text-xs sm:text-sm">
+                  <Banknote className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
                   <div>
-                    <p className="text-xs text-gray-400">Budget</p>
-                    <p className="font-medium">{formatBudget(prog.budget)}</p>
+                    <p className="text-slate-400 text-xs font-medium">Enveloppe budgétaire</p>
+                    <p className="font-bold text-slate-800">
+                      {prog.budget.toLocaleString('fr-FR')} FCFA
+                    </p>
                   </div>
                 </div>
               )}
             </div>
 
+            {/* Partenaires */}
+            {prog.partenaires && prog.partenaires.length > 0 && (
+              <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-emerald-600" />
+                  Partenaires du Programme
+                </h3>
+                <ul className="divide-y divide-slate-100">
+                  {prog.partenaires.map((pp: { partenaire: { slug: string; nom: string }; role?: string }, i: number) => (
+                    <li key={i} className="py-2.5 flex items-center justify-between text-xs sm:text-sm">
+                      <Link
+                        href={`/partenaires/${pp.partenaire.slug}`}
+                        className="font-bold text-slate-800 hover:text-emerald-700 transition-colors"
+                      >
+                        {pp.partenaire.nom}
+                      </Link>
+                      {pp.role && (
+                        <span className="text-[11px] font-semibold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">
+                          {pp.role}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Documents */}
             {prog.documents && prog.documents.length > 0 && (
-              <div className="vitrine-card rounded-xl p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Documents</h3>
-                <ul className="space-y-3">
+              <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-xs">
+                <h3 className="text-base font-bold text-slate-900 mb-3 flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-emerald-600" />
+                  Documents & Livrables
+                </h3>
+                <ul className="space-y-2.5">
                   {prog.documents.map((doc) => (
-                    <li key={doc.id}>
-                      <p className="text-sm font-medium text-gray-800 mb-2 truncate">{doc.titre || 'Document'}</p>
+                    <li key={doc.id} className="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
+                      <p className="text-xs font-bold text-slate-800 mb-2 truncate">
+                        {doc.titre || 'Fiche programme'}
+                      </p>
                       <div className="flex gap-2">
                         <a
                           href={doc.fichier}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 border border-primary text-primary rounded-lg font-medium text-sm hover:bg-primary hover:text-white transition-colors"
+                          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 border border-slate-300 text-slate-700 rounded-lg font-bold text-xs hover:bg-white transition-colors"
                         >
-                          <ExternalLink className="h-4 w-4" /> Voir
+                          <ExternalLink className="h-3 w-3" /> Voir
                         </a>
                         <a
                           href={doc.fichier}
                           download
                           rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-primary text-white rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors"
+                          className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-bold text-xs transition-colors shadow-2xs"
                         >
-                          <Download className="h-4 w-4" /> Télécharger
+                          <Download className="h-3 w-3" /> Télécharger
                         </a>
                       </div>
                     </li>
@@ -172,56 +301,16 @@ export function ProgrammeDetail({ params }: { params: Promise<{ slug: string }> 
               </div>
             )}
 
-            <Link href="/programmes" className="flex items-center gap-2 text-sm text-primary hover:underline">
+            <Link
+              href="/programmes"
+              className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:underline p-1"
+            >
               <ArrowLeft className="h-4 w-4" /> Retour aux programmes
             </Link>
           </aside>
         </div>
-
-        {/* Projets rattachés au programme (données fournies par l'API) */}
-        {prog.projets && prog.projets.length > 0 && (
-          <div className="mt-14">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <FolderGit2 className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">Portefeuille</span>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">Projets rattachés à ce programme</h2>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {prog.projets.map((projet) => (
-                <Link
-                  key={projet.id}
-                  href={`/projets/${projet.slug}`}
-                  className="vitrine-card hover-lift p-5 group"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                      <MapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="font-bold text-sm text-slate-900 group-hover:text-primary transition-colors line-clamp-2">
-                        {projet.titre}
-                      </h3>
-                      {projet.departement && (
-                        <p className="text-xs text-slate-500 mt-1">
-                          {projet.departement.nom}{projet.commune ? ` — ${projet.commune.nom}` : ''}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:translate-x-0.5 transition-transform">
-                    <span>Voir le projet</span>
-                    <ExternalLink size={12} />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
 }
+

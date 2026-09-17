@@ -1,10 +1,9 @@
-﻿'use client';
+'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Circle, Tooltip, useMap } from 'react-leaflet';
+import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Map, Satellite, Wallet, Users, MapPin } from 'lucide-react';
 
 // Fix icônes Leaflet avec Next.js
 delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
@@ -14,31 +13,20 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-const createColorIcon = (color: string, selected = false) =>
+const createColorIcon = (color: string) =>
   L.divIcon({
     className: '',
-    html: `
-      <div class="map-pin ${selected ? 'is-active' : ''}" style="--pin:${color}">
-        <span class="map-pin__pulse"></span>
-        <span class="map-pin__core"></span>
-        <span class="map-pin__ring"></span>
-      </div>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -18],
+    html: `<div style="width:14px;height:14px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.4)"></div>`,
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+    popupAnchor: [0, -10],
   });
 
 const STATUT_COLORS: Record<string, string> = {
-  encours: '#F59E0B',
-  realise: '#16A34A',
-  planifie: '#F4B400',
+  encours: '#059669',
+  realise: '#2563EB',
+  planifie: '#D97706',
   suspendu: '#DC2626',
-};
-const STATUT_LABELS: Record<string, string> = {
-  encours: 'En cours',
-  realise: 'Réalisé',
-  planifie: 'Planifié',
-  suspendu: 'Suspendu',
 };
 
 export interface ProjetGeo {
@@ -53,110 +41,106 @@ export interface ProjetGeo {
   commune?: string;
 }
 
-const ZIGUINCHOR_CENTER: [number, number] = [12.5657, -16.2736];
-
-const formatBudget = (n?: number) => {
-  if (!n) return '—';
-  if (n >= 1_000_000_000) return `${(n/1000000000).toLocaleString('fr-FR',{maximumFractionDigits:1})} Md FCFA`;
-  if (n >= 1_000_000) return `${(n/1000000).toLocaleString('fr-FR',{maximumFractionDigits:1})} M FCFA`;
-  return `${n.toLocaleString('fr-FR')} FCFA`;
-};
-
-function FlyTo({ position }: { position: [number, number] | null }) {
-  const map = useMap();
-  useEffect(() => {
-    if (position) map.flyTo(position, 11, { duration: 0.9, easeLinearity: 0.25 });
-  }, [position, map]);
-  return null;
-}
-
 interface CarteRegionProps {
   projets: ProjetGeo[];
   height?: string;
-  selectedId?: string | null;
-  onSelect?: (id: string) => void;
 }
 
-export function CarteRegion({ projets, height = '500px', selectedId, onSelect }: CarteRegionProps) {
+const ZIGUINCHOR_CENTER: [number, number] = [12.5657, -16.2736];
+
+export function CarteRegion({ projets, height = '500px' }: CarteRegionProps) {
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<'route' | 'satellite'>('route');
-  const [active, setActive] = useState<string | null>(null);
-  const markerRefs = useRef<Record<string, L.Marker | null>>({});
 
-  const currentId = selectedId ?? active;
-  const activeProj = projets.find((p) => p.id === currentId) ?? null;
-
-  useEffect(() => { setMounted(true); }, []);
   useEffect(() => {
-    if (currentId && markerRefs.current[currentId]) {
-      const p = projets.find((x) => x.id === currentId);
-      if (p) (markerRefs.current[currentId] as L.Marker).openPopup();
-    }
-  }, [currentId, projets]);
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return (
-      <div style={{ height }} className="flex items-center justify-center bg-slate-900 rounded-2xl">
-        <div className="text-center text-slate-300">
-          <div className="w-9 h-9 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm">Chargement de la carte interactive…</p>
+      <div
+        style={{ height }}
+        className="flex items-center justify-center bg-slate-100 rounded-2xl border border-slate-200"
+      >
+        <div className="text-center text-slate-400">
+          <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+          <p className="text-sm font-semibold text-slate-600">Chargement de la carte interactive…</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xl shadow-slate-900/10" style={{ height }}>
-      <MapContainer center={ZIGUINCHOR_CENTER} zoom={9} style={{ height: '100%', width: '100%' }} className="z-0">
+    <div className="rounded-xl overflow-hidden border border-slate-200" style={{ height }}>
+      <MapContainer
+        center={ZIGUINCHOR_CENTER}
+        zoom={9}
+        style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom={false}
+      >
         <TileLayer
-          url={mode === 'route'
-            ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
-          attribution={mode === 'route' ? '&copy; OpenStreetMap &copy; CARTO' : 'Tiles &copy; Esri'}
-          maxZoom={20}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <FlyTo position={activeProj ? [activeProj.latitude, activeProj.longitude] : null} />
 
-        {/* Zone d'influence autour du centre */}
-        <Circle center={ZIGUINCHOR_CENTER} radius={45000} pathOptions={{ color: '#10B981', fillColor: '#10B981', fillOpacity: 0.05, weight: 1, dashArray: '6 6' }} />
+        {/* Point central ARD */}
+        <Marker position={ZIGUINCHOR_CENTER}>
+          <Popup>
+            <div className="p-1 min-w-[200px]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full inline-block mb-1">
+                Siège Régional
+              </span>
+              <div className="font-bold text-sm text-slate-900">ARD Ziguinchor</div>
+              <div className="text-xs text-slate-500 mt-0.5">Agence Régionale de Développement</div>
+            </div>
+          </Popup>
+        </Marker>
 
-        {projets.map((projet, i) => {
-          const color = STATUT_COLORS[projet.statut] || '#6B7280';
-          const isActive = projet.id === currentId;
+        {/* Projets géolocalisés */}
+        {projets.map((projet) => {
+          const color = STATUT_COLORS[projet.statut] || '#64748B';
           return (
             <Marker
               key={projet.id}
               position={[projet.latitude, projet.longitude]}
-              icon={createColorIcon(color, isActive)}
-              ref={(r) => { markerRefs.current[projet.id] = r; }}
-              eventHandlers={{ click: () => { setActive(projet.id); onSelect?.(projet.id); } }}
-              zIndexOffset={isActive ? 1000 : 300}
+              icon={createColorIcon(color)}
             >
-              <Tooltip>
-                <div className="text-xs font-semibold">{projet.titre}</div>
-              </Tooltip>
               <Popup>
-                <div className="carte-pop" style={{ minWidth: 240, fontFamily: 'var(--font-sans)' }}>
-                  <div className="carte-pop__head inline-flex items-center gap-2">
-                    <span className="carte-pop__num" style={{ background: color }}>{i + 1}</span>
-                    <span className="text-xs" style={{ fontWeight: 800, color }}>{STATUT_LABELS[projet.statut] ?? projet.statut}</span>
+                <div className="min-w-[220px] p-1 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                      {projet.secteur || 'Projet'}
+                    </span>
+                    <span
+                      className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
+                      style={{ background: color + '20', color }}
+                    >
+                      {projet.statut}
+                    </span>
                   </div>
-                  <div className="carte-pop__body">
-                    <div className="text-[13px] font-bold text-slate-900 leading-snug">{projet.titre}</div>
-                    <div className="mt-2 space-y-1.5">
-                      {projet.secteur && (
-                        <div className="flex items-center gap-1.5 text-xs text-slate-500"><MapPin size={12} /> {projet.secteur}</div>
-                      )}
-                      {projet.commune && (
-                        <div className="flex items-center gap-1.5 text-xs text-slate-500"><MapPin size={12} /> {projet.commune}</div>
-                      )}
-                      {projet.budget !== undefined && (
-                        <div className="flex items-center gap-1.5 text-xs font-medium text-emerald-700"><Wallet size={12} /> {formatBudget(projet.budget)}</div>
-                      )}
-                      {projet.beneficiaires !== undefined && (
-                        <div className="flex items-center gap-1.5 text-xs text-slate-500"><Users size={12} /> {projet.beneficiaires.toLocaleString('fr-FR')} bénéficiaires</div>
-                      )}
-                    </div>
+
+                  <div className="font-bold text-sm text-slate-900 leading-snug">{projet.titre}</div>
+
+                  <div className="text-xs text-slate-600 space-y-0.5 pt-1 border-t border-slate-100">
+                    {projet.commune && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Commune :</span>
+                        <span className="font-medium text-slate-800">{projet.commune}</span>
+                      </div>
+                    )}
+                    {projet.beneficiaires && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Bénéficiaires :</span>
+                        <span className="font-medium text-slate-800">{projet.beneficiaires.toLocaleString('fr-FR')}</span>
+                      </div>
+                    )}
+                    {projet.budget && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Budget :</span>
+                        <span className="font-bold text-slate-900 font-mono">
+                          {(projet.budget / 1000000).toLocaleString('fr-FR')} M FCFA
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Popup>
@@ -164,38 +148,6 @@ export function CarteRegion({ projets, height = '500px', selectedId, onSelect }:
           );
         })}
       </MapContainer>
-
-      {/* Sélecteur de vue */}
-      <div className="absolute top-3 left-3 z-[1000] flex items-center gap-1 bg-white/90 backdrop-blur rounded-xl p-1 shadow-lg shadow-slate-900/10">
-        {([['route','Carte'],['satellite','Satellite']] as const).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            onClick={() => setMode(key)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${mode === key ? 'bg-emerald-600 text-white shadow' : 'text-slate-600 hover:bg-slate-100'}`}
-          >
-            {key === 'route' ? <Map size={13} /> : <Satellite size={13} />}
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* Compteur */}
-      <div className="absolute top-3 right-3 z-[1000] bg-slate-900/80 backdrop-blur text-white rounded-xl px-3.5 py-2 shadow-lg">
-        <div className="text-lg font-black leading-none">{projets.length}</div>
-        <div className="text-[10px] font-medium opacity-80">projets</div>
-      </div>
-
-      {/* Légende */}
-      <div className="absolute bottom-3 left-3 z-[1000] bg-white/90 backdrop-blur rounded-xl shadow-lg px-3 py-2.5 text-xs">
-        <div className="font-bold text-slate-500 mb-1.5 text-[11px] uppercase tracking-wide">Légende</div>
-        {Object.entries(STATUT_LABELS).map(([k, label]) => (
-          <div key={k} className="flex items-center gap-2 py-0.5">
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: STATUT_COLORS[k], boxShadow: `0 0 0 3px ${STATUT_COLORS[k]}33` }} />
-            <span className="text-slate-600 capitalize">{label}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

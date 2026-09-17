@@ -13,12 +13,12 @@ import type { AuditLog } from '@/types';
 import { AUDIT_ACTIONS } from '@/types';
 
 const ACTION_META: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  CONNEXION:        { label: 'Connexion',        color: 'bg-green-100 text-green-700',   icon: <LogIn className="h-3.5 w-3.5" /> },
-  ECHEC_CONNEXION:  { label: 'Échec connexion',  color: 'bg-red-100 text-red-700',       icon: <XCircle className="h-3.5 w-3.5" /> },
-  CONSULTATION:     { label: 'Consultation',     color: 'bg-blue-100 text-blue-700',     icon: <Eye className="h-3.5 w-3.5" /> },
-  CREATION:         { label: 'Création',         color: 'bg-emerald-100 text-emerald-700', icon: <Plus className="h-3.5 w-3.5" /> },
-  MODIFICATION:     { label: 'Modification',     color: 'bg-amber-100 text-amber-700',   icon: <Pencil className="h-3.5 w-3.5" /> },
-  SUPPRESSION:      { label: 'Suppression',      color: 'bg-red-100 text-red-700',       icon: <Trash2 className="h-3.5 w-3.5" /> },
+  CONNEXION:        { label: 'Connexion',        color: 'bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-semibold',   icon: <LogIn className="h-3.5 w-3.5" /> },
+  ECHEC_CONNEXION:  { label: 'Échec connexion',  color: 'bg-rose-50 text-rose-800 border border-rose-200/60 font-semibold',       icon: <XCircle className="h-3.5 w-3.5" /> },
+  CONSULTATION:     { label: 'Consultation',     color: 'bg-blue-50 text-blue-800 border border-blue-200/60 font-semibold',     icon: <Eye className="h-3.5 w-3.5" /> },
+  CREATION:         { label: 'Création',         color: 'bg-teal-50 text-teal-800 border border-teal-200/60 font-semibold', icon: <Plus className="h-3.5 w-3.5" /> },
+  MODIFICATION:     { label: 'Modification',     color: 'bg-amber-50 text-amber-800 border border-amber-200/60 font-semibold',   icon: <Pencil className="h-3.5 w-3.5" /> },
+  SUPPRESSION:      { label: 'Suppression',      color: 'bg-rose-50 text-rose-800 border border-rose-200/60 font-semibold',       icon: <Trash2 className="h-3.5 w-3.5" /> },
 };
 
 const ACTION_OPTIONS = AUDIT_ACTIONS.map((a) => ({ value: a, label: ACTION_META[a]?.label ?? a }));

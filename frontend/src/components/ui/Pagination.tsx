@@ -24,13 +24,13 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
   }
 
   return (
-    <nav aria-label="Pagination" className="flex items-center justify-center gap-1 mt-8">
+    <nav aria-label="Pagination" className="flex items-center justify-center gap-1.5 mt-8">
       <button
         key="prev"
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
         aria-label="Page précédente"
-        className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-2xs"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -38,16 +38,16 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
       {pages.map((p, i) => (
         <Fragment key={`item-${i}`}>
           {p === '…' ? (
-            <span className="px-3 py-2 text-sm text-gray-400">…</span>
+            <span className="px-3 py-2 text-sm text-slate-400">…</span>
           ) : (
             <button
               onClick={() => onPageChange(p as number)}
               aria-current={p === page ? 'page' : undefined}
               className={cn(
-                'min-w-[36px] h-9 px-3 rounded-lg text-sm font-medium border transition-colors',
+                'min-w-[38px] h-9 px-3 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-2xs',
                 p === page
-                  ? 'bg-primary text-white border-primary'
-                  : 'border-gray-200 hover:bg-gray-50 text-gray-700'
+                  ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                  : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:border-slate-300'
               )}
             >
               {p}
@@ -61,7 +61,7 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
         aria-label="Page suivante"
-        className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-2xs"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

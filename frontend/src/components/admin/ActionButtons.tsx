@@ -22,16 +22,25 @@ export function ActionButtons({ viewHref, editHref, onDelete, deleteLabel = 'cet
   };
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5 justify-end">
       {viewHref && (
-        <Link href={viewHref} target="_blank" aria-label="Voir"
-          className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
+        <Link
+          href={viewHref}
+          target="_blank"
+          aria-label="Voir"
+          title="Consulter publiquement"
+          className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors border border-transparent hover:border-emerald-200/50"
+        >
           <Eye className="h-4 w-4" />
         </Link>
       )}
       {editHref && (
-        <Link href={editHref} aria-label="Modifier"
-          className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+        <Link
+          href={editHref}
+          aria-label="Modifier"
+          title="Modifier"
+          className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors border border-transparent hover:border-blue-200/50"
+        >
           <Pencil className="h-4 w-4" />
         </Link>
       )}
@@ -41,19 +50,19 @@ export function ActionButtons({ viewHref, editHref, onDelete, deleteLabel = 'cet
           disabled={deleting}
           aria-label={confirming ? 'Confirmer la suppression' : 'Supprimer'}
           title={confirming ? `Confirmer la suppression de ${deleteLabel}` : 'Supprimer'}
-          className={`p-1.5 rounded-lg transition-colors text-xs ${
+          className={`p-1.5 rounded-xl transition-all cursor-pointer ${
             confirming
-              ? 'bg-red-600 text-white px-2 py-1 font-medium'
-              : 'text-gray-400 hover:text-red-600 hover:bg-red-50'
+              ? 'bg-rose-600 text-white px-2.5 py-1 font-bold text-xs shadow-xs hover:bg-rose-700'
+              : 'text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200/50'
           }`}
         >
-          {confirming ? (deleting ? '…' : 'Confirmer') : <Trash2 className="h-4 w-4" />}
+          {confirming ? (deleting ? '…' : 'Confirmer ?') : <Trash2 className="h-4 w-4" />}
         </button>
       )}
       {confirming && (
         <button
           onClick={() => setConfirming(false)}
-          className="p-1 text-xs text-gray-400 hover:text-gray-600"
+          className="px-2 py-1 text-xs font-semibold text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
           aria-label="Annuler"
         >
           ✕

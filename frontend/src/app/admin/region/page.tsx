@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { ArrowLeft, Plus, Pencil, Trash2, Save, MapPin, Building2 } from 'lucide-react';
+import { ArrowLeft, Plus, Pencil, Trash2, MapPin, Building2 } from 'lucide-react';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -61,24 +61,24 @@ function DepartementSection() {
 
   return (
     <Card>
-      <div className="p-5 border-b border-gray-100">
-        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-          <MapPin className="h-4 w-4 text-primary" /> Départements
+      <div className="p-5 border-b border-slate-200/80">
+        <h2 className="font-bold text-slate-900 flex items-center gap-2">
+          <MapPin className="h-4 w-4 text-emerald-700" /> Départements
         </h2>
-        <p className="text-xs text-gray-400 mt-1">Modification des départements existants.</p>
+        <p className="text-xs text-slate-400 mt-1">Modification des départements existants.</p>
       </div>
       <div className="p-5 space-y-3">
         {isLoading ? (
           <LoadingState />
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-4">Aucun département.</p>
+          <p className="text-sm text-slate-400 text-center py-4">Aucun département.</p>
         ) : (
           items.map((item) =>
             editingId === item.id ? (
               <form
                 key={item.id}
                 onSubmit={(e) => { e.preventDefault(); mutation.mutate(form); }}
-                className="bg-blue-50/60 border border-primary/20 rounded-xl p-4 space-y-3"
+                className="bg-emerald-50/40 border border-emerald-200/80 rounded-2xl p-4 space-y-3"
               >
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <Input label="Nom" value={form.nom ?? ''} onChange={(e) => set('nom', e.target.value)} required />
@@ -103,12 +103,12 @@ function DepartementSection() {
                 </div>
               </form>
             ) : (
-              <div key={item.id} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-gray-200 bg-white">
+              <div key={item.id} className="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-slate-200/80 hover:border-emerald-300 bg-white shadow-2xs transition-colors">
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900">{item.nom}
-                    <span className="ml-2 text-xs text-gray-400">#{item.code}</span>
+                  <p className="font-semibold text-slate-900">{item.nom}
+                    <span className="ml-2 text-xs text-slate-400 font-mono">#{item.code}</span>
                   </p>
-                  <p className="text-xs text-gray-400 truncate">
+                  <p className="text-xs text-slate-500 truncate mt-0.5">
                     {item.superficie ? `${item.superficie.toLocaleString('fr-FR')} km²` : '— superf. —'}
                     {item.population ? ` · ${item.population.toLocaleString('fr-FR')} hab.` : ''}
                   </p>
@@ -116,10 +116,10 @@ function DepartementSection() {
                 <button
                   type="button"
                   onClick={() => startEdit(item)}
-                  className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
                   title="Modifier"
                 >
-                  <Pencil className="h-3.5 w-3.5" />
+                  <Pencil className="h-4 w-4" />
                 </button>
               </div>
             )
@@ -170,24 +170,24 @@ function ArrondissementSection() {
 
   return (
     <Card>
-      <div className="p-5 border-b border-gray-100">
-        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-          <Building2 className="h-4 w-4 text-primary" /> Arrondissements
+      <div className="p-5 border-b border-slate-200/80">
+        <h2 className="font-bold text-slate-900 flex items-center gap-2">
+          <Building2 className="h-4 w-4 text-emerald-700" /> Arrondissements
         </h2>
-        <p className="text-xs text-gray-400 mt-1">Modification des arrondissements existants.</p>
+        <p className="text-xs text-slate-400 mt-1">Modification des arrondissements existants.</p>
       </div>
       <div className="p-5 space-y-3">
         {isLoading ? (
           <LoadingState />
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-4">Aucun arrondissement.</p>
+          <p className="text-sm text-slate-400 text-center py-4">Aucun arrondissement.</p>
         ) : (
           items.map((item) =>
             editingId === item.id ? (
               <form
                 key={item.id}
                 onSubmit={(e) => { e.preventDefault(); mutation.mutate(form); }}
-                className="bg-blue-50/60 border border-primary/20 rounded-xl p-4 space-y-3"
+                className="bg-emerald-50/40 border border-emerald-200/80 rounded-2xl p-4 space-y-3"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <Input label="Nom" value={form.nom ?? ''} onChange={(e) => set('nom', e.target.value)} required />
@@ -211,20 +211,20 @@ function ArrondissementSection() {
                 </div>
               </form>
             ) : (
-              <div key={item.id} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-gray-200 bg-white">
+              <div key={item.id} className="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-slate-200/80 hover:border-emerald-300 bg-white shadow-2xs transition-colors">
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900">{item.nom}
-                    <span className="ml-2 text-xs text-gray-400">#{item.code}</span>
+                  <p className="font-semibold text-slate-900">{item.nom}
+                    <span className="ml-2 text-xs text-slate-400 font-mono">#{item.code}</span>
                   </p>
-                  <p className="text-xs text-gray-400 truncate">{item.departement?.nom ?? '—'}</p>
+                  <p className="text-xs text-slate-500 truncate mt-0.5">{item.departement?.nom ?? '—'}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => startEdit(item)}
-                  className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
                   title="Modifier"
                 >
-                  <Pencil className="h-3.5 w-3.5" />
+                  <Pencil className="h-4 w-4" />
                 </button>
               </div>
             )
@@ -310,21 +310,21 @@ function CommuneSection() {
 
   return (
     <Card>
-      <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-          <MapPin className="h-4 w-4 text-primary" /> Communes
+      <div className="p-5 border-b border-slate-200/80 flex items-center justify-between">
+        <h2 className="font-bold text-slate-900 flex items-center gap-2">
+          <MapPin className="h-4 w-4 text-emerald-700" /> Communes
         </h2>
-        <p className="text-xs text-gray-400">Création et modification autorisées.</p>
+        <p className="text-xs text-slate-400">Création et modification autorisées.</p>
       </div>
 
       <div className="p-5 space-y-4">
         {/* Formulaire de création */}
         <form
           onSubmit={(e) => { e.preventDefault(); createMutation.mutate({ ...form, code: form.code || makeCode(form.nom || 'commune') }); }}
-          className="bg-green-50/60 border border-green-200 rounded-xl p-4 space-y-3"
+          className="bg-emerald-50/40 border border-emerald-200/80 rounded-2xl p-4 space-y-3"
         >
-          <p className="text-sm font-medium text-gray-700 flex items-center gap-1">
-            <Plus className="h-4 w-4 text-primary" /> Nouvelle commune
+          <p className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+            <Plus className="h-4 w-4 text-emerald-700" /> Nouvelle commune
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Input label="Nom" value={form.nom} onChange={(e) => set('nom', e.target.value)} required placeholder="Nom de la commune" />
@@ -345,7 +345,7 @@ function CommuneSection() {
         {isLoading ? (
           <LoadingState />
         ) : items.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-4">Aucune commune.</p>
+          <p className="text-sm text-slate-400 text-center py-4">Aucune commune.</p>
         ) : (
           <div className="space-y-2">
             {items.map((item) =>
@@ -353,7 +353,7 @@ function CommuneSection() {
                 <form
                   key={item.id}
                   onSubmit={(e) => { e.preventDefault(); updateMutation.mutate({ id: item.id, d: form }); }}
-                  className="bg-blue-50/60 border border-primary/20 rounded-xl p-4 space-y-3"
+                  className="bg-emerald-50/40 border border-emerald-200/80 rounded-2xl p-4 space-y-3"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <Input label="Nom" value={form.nom ?? ''} onChange={(e) => set('nom', e.target.value)} required />
@@ -398,12 +398,12 @@ function CommuneSection() {
                   </div>
                 </form>
               ) : (
-                <div key={item.id} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 hover:border-gray-200 bg-white">
+                <div key={item.id} className="flex items-center gap-3 px-4 py-3.5 rounded-xl border border-slate-200/80 hover:border-emerald-300 bg-white shadow-2xs transition-colors">
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900">{item.nom}
-                      <span className="ml-2 text-xs text-gray-400">#{item.code}</span>
+                    <p className="font-semibold text-slate-900">{item.nom}
+                      <span className="ml-2 text-xs text-slate-400 font-mono">#{item.code}</span>
                     </p>
-                    <p className="text-xs text-gray-400 truncate">
+                    <p className="text-xs text-slate-500 truncate mt-0.5">
                       {item.departement?.nom ?? '—'}
                       {item.arrondissement ? ` · ${item.arrondissement.nom}` : ''}
                       {item.population ? ` · ${item.population.toLocaleString('fr-FR')} hab.` : ''}
@@ -412,18 +412,18 @@ function CommuneSection() {
                   <button
                     type="button"
                     onClick={() => startEdit(item)}
-                    className="p-1.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg"
+                    className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
                     title="Modifier"
                   >
-                    <Pencil className="h-3.5 w-3.5" />
+                    <Pencil className="h-4 w-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => { if (confirm(`Supprimer la commune "${item.nom}" ?`)) deleteMutation.mutate(item.id); }}
-                    className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
                     title="Supprimer"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
               )

@@ -11,20 +11,30 @@ export const metadata: Metadata = {
 
 export default function AccessibilitePage() {
   return (
-    <div className="bg-background min-h-screen">
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Breadcrumb items={[{ label: 'Accessibilité' }]} />
-          <SectionTitle
-            title="Accessibilité"
-            subtitle="Déclaration d'accessibilité numérique"
-            className="mt-4 mb-0 [&_h2]:text-white [&_p]:text-blue-100"
-          />
+    <div className="bg-slate-50 min-h-screen">
+      {/* En-tête Institutionnel */}
+      <div className="bg-slate-900 text-white border-b border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+          <div className="text-slate-400 mb-4">
+            <Breadcrumb items={[{ label: 'Accessibilité' }]} />
+          </div>
+
+          <div className="max-w-3xl">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              Standards & Inclusion Numérique
+            </span>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
+              Accessibilité Numérique
+            </h1>
+            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
+              Déclaration de conformité et mesures déployées pour garantir un accès équitable aux services publics en ligne.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-        <div className="bg-white rounded-xl border border-gray-100 p-6 md:p-10 prose prose-gray max-w-none space-y-8 text-gray-700">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-10 shadow-xs space-y-8 text-slate-700">
 
           <section>
             <h2 className="text-lg font-bold text-gray-900 mb-3">État de conformité</h2>
@@ -103,7 +113,7 @@ export default function AccessibilitePage() {
             <div className="mt-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-2 bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-emerald-800 transition-colors shadow-2xs"
               >
                 Nous contacter
               </Link>

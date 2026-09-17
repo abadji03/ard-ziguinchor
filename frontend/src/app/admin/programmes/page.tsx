@@ -13,9 +13,9 @@ import { formatDate } from '@/lib/utils';
 import type { Programme } from '@/types';
 
 const STATUT_COLORS: Record<string, string> = {
-  actif:    'bg-green-100 text-green-700',
-  termine:  'bg-gray-100 text-gray-600',
-  suspendu: 'bg-red-100 text-red-700',
+  actif:    'bg-emerald-50 text-emerald-800 border border-emerald-200/60',
+  termine:  'bg-slate-100 text-slate-700 border border-slate-200/60',
+  suspendu: 'bg-rose-50 text-rose-800 border border-rose-200/60',
 };
 
 export default function AdminProgrammesPage() {
@@ -40,7 +40,7 @@ export default function AdminProgrammesPage() {
       render: (row) => (
         <div>
           <p className="font-medium text-gray-900 truncate max-w-xs">{row.nom}</p>
-          {row.acronyme && <p className="text-xs text-primary mt-0.5">{row.acronyme}</p>}
+          {row.acronyme && <p className="text-xs font-bold text-emerald-700 mt-0.5">{row.acronyme}</p>}
         </div>
       ),
     },

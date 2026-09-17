@@ -103,6 +103,7 @@ export interface Projet {
   id: string;
   titre: string;
   slug: string;
+  code?: string;
   resume?: string;
   description: string;
   objectifs?: string;

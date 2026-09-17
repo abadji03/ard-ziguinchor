@@ -34,14 +34,14 @@ export default function AdminPartenairesPage() {
       label: 'Partenaire',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg border border-gray-100 bg-gray-50 flex items-center justify-center shrink-0 overflow-hidden">
+          <div className="w-9 h-9 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
             {row.logo
               ? <Image src={row.logo} alt={row.nom} width={36} height={36} className="object-contain p-1" />
-              : <span className="text-xs font-bold text-primary/40">{row.nom.charAt(0)}</span>}
+              : <span className="text-xs font-bold text-emerald-700">{row.nom.charAt(0)}</span>}
           </div>
           <div>
-            <p className="font-medium text-gray-900">{row.nom}</p>
-            {row.sigle && <p className="text-xs text-gray-400">{row.sigle}</p>}
+            <p className="font-semibold text-slate-900">{row.nom}</p>
+            {row.sigle && <p className="text-xs text-slate-400 font-medium">{row.sigle}</p>}
           </div>
         </div>
       ),
@@ -50,19 +50,19 @@ export default function AdminPartenairesPage() {
       key: 'type',
       label: 'Type',
       render: (row) => (
-        <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{row.type.nom}</span>
+        <span className="text-xs bg-blue-50 text-blue-800 border border-blue-200/60 px-2.5 py-0.5 rounded-full font-medium">{row.type.nom}</span>
       ),
     },
     {
       key: 'pays',
       label: 'Pays',
-      render: (row) => <span className="text-sm text-gray-600">{row.pays ?? '—'}</span>,
+      render: (row) => <span className="text-sm text-slate-600">{row.pays ?? '—'}</span>,
     },
     {
       key: 'statut',
       label: 'Statut',
       render: (row) => (
-        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${row.statut === 'actif' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${row.statut === 'actif' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200/60' : 'bg-slate-100 text-slate-600 border border-slate-200/60'}`}>
           {row.statut}
         </span>
       ),
@@ -71,8 +71,8 @@ export default function AdminPartenairesPage() {
       key: 'siteWeb',
       label: 'Site',
       render: (row) => row.siteWeb
-        ? <a href={row.siteWeb} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline"><Globe className="h-4 w-4" /></a>
-        : <span className="text-gray-300">—</span>,
+        ? <a href={row.siteWeb} target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:text-emerald-800 inline-block p-1 hover:bg-emerald-50 rounded-lg"><Globe className="h-4 w-4" /></a>
+        : <span className="text-slate-300">—</span>,
     },
     {
       key: 'actions',

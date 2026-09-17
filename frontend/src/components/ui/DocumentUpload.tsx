@@ -38,8 +38,8 @@ interface DocumentUploadProps {
 export function DocumentUpload({
   label = 'Document joint',
   documentUrl,
-  documentId,
-  onDocumentCreated,
+  documentId: _documentId,
+  onDocumentCreated: _onDocumentCreated,
   onUploaded,
   error,
   className,

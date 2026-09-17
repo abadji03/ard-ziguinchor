@@ -42,9 +42,9 @@ export function slugify(text: string): string {
     .replace(/(^-|-$)+/g, '');
 }
 
-export function buildQueryString(params: Record<string, unknown>): string {
+export function buildQueryString(params: Record<string, unknown> | object): string {
   const query = new URLSearchParams();
-  Object.entries(params).forEach(([key, value]) => {
+  Object.entries(params as Record<string, unknown>).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
       // Le backend attend `q` pour la recherche textuelle (toutes les entités) ;
       // le frontend utilise historiquement `search` → on mappe automatiquement.

@@ -38,8 +38,8 @@ export default function AdminOpportunitesPage() {
       label: 'Opportunité',
       render: (row) => (
         <div>
-          <p className="font-medium text-gray-900 truncate max-w-xs">{row.titre}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{row.type.nom} • {row.organisme}</p>
+          <p className="font-semibold text-slate-900 truncate max-w-xs">{row.titre}</p>
+          <p className="text-xs text-slate-400 mt-0.5 font-medium">{row.type.nom} • {row.organisme}</p>
         </div>
       ),
     },
@@ -48,17 +48,23 @@ export default function AdminOpportunitesPage() {
       label: 'Statut',
       render: (row) => {
         const s = STATUT_OPPORTUNITE[row.statut];
-        return s ? <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${s.color}`}>{s.label}</span> : null;
+        const colorClasses: Record<string, string> = {
+          OUVERT: 'bg-emerald-50 text-emerald-800 border border-emerald-200/60 font-semibold',
+          FERME: 'bg-slate-100 text-slate-700 border border-slate-200/60 font-semibold',
+          A_VENIR: 'bg-blue-50 text-blue-800 border border-blue-200/60 font-semibold',
+        };
+        const badgeClass = colorClasses[row.statut] || 'bg-slate-100 text-slate-700 border border-slate-200/60 font-semibold';
+        return s ? <span className={`text-xs px-2.5 py-0.5 rounded-full ${badgeClass}`}>{s.label}</span> : null;
       },
     },
     {
       key: 'dateLimite',
       label: 'Date limite',
       render: (row) => {
-        if (!row.dateLimite) return <span className="text-gray-300 text-xs">—</span>;
+        if (!row.dateLimite) return <span className="text-slate-300 text-xs">—</span>;
         const expired = new Date(row.dateLimite) < new Date();
         return (
-          <span className={`flex items-center gap-1 text-xs ${expired ? 'text-red-500' : 'text-gray-500'}`}>
+          <span className={`inline-flex items-center gap-1.5 text-xs font-medium ${expired ? 'text-rose-600 font-semibold' : 'text-slate-600'}`}>
             <Clock className="h-3.5 w-3.5" />
             {formatDate(row.dateLimite)}
           </span>
@@ -68,7 +74,7 @@ export default function AdminOpportunitesPage() {
     {
       key: 'datePublication',
       label: 'Publié le',
-      render: (row) => <span className="text-xs text-gray-500">{formatDate(row.datePublication)}</span>,
+      render: (row) => <span className="text-xs text-slate-500 font-medium">{formatDate(row.datePublication)}</span>,
     },
     {
       key: 'actions',

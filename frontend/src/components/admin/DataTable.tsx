@@ -33,27 +33,31 @@ export function DataTable<T extends { id: string }>({
   return (
     <div>
       {total !== undefined && (
-        <p className="text-xs text-gray-500 mb-3">{total} élément{total > 1 ? 's' : ''}</p>
+        <div className="flex items-center justify-between mb-3 px-1">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <span className="font-bold text-slate-800">{total}</span> élément{total > 1 ? 's' : ''} au total
+          </p>
+        </div>
       )}
-      <div className="overflow-x-auto rounded-xl border border-gray-100">
-        <table className="min-w-full divide-y divide-gray-100 bg-white text-sm">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+        <table className="min-w-full divide-y divide-slate-100 text-sm">
+          <thead className="bg-slate-50/80 border-b border-slate-200/70">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wide ${col.className ?? ''}`}
+                  className={`px-5 py-3.5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider ${col.className ?? ''}`}
                 >
                   {col.label}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-slate-100 bg-white">
             {data.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={row.id} className="hover:bg-slate-50/80 transition-colors group">
                 {columns.map((col) => (
-                  <td key={col.key} className={`px-4 py-3 text-gray-700 ${col.className ?? ''}`}>
+                  <td key={col.key} className={`px-5 py-3.5 text-slate-700 font-normal ${col.className ?? ''}`}>
                     {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key] ?? '—')}
                   </td>
                 ))}
