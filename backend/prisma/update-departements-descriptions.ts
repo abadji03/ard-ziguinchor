@@ -21,7 +21,7 @@ Le département de Ziguinchor a été créé en 1960, au moment de l'indépendan
 
 ## Situation géographique
 
-Le département est situé sur les rives du fleuve Casamance, à environ 450 km au sud de Dakar. Il est limité au nord par le département de Bignona, à l'est par la région de Sédhiou, et au sud par la Guinée-Bissau. Le territoire est caractérisé par des plaines rizicoles, des mangroves et des bolongs typiques de la Casamance.
+Le département est situé sur les rives du fleuve Casamance, à environ 450 km au sud de Dakar. Il est limité au nord par la République de Gambie et le département de Bignona, à l'est par la région de Sédhiou, au sud par le département de Bignona et la République de Guinée-Bissau, et à l'ouest par le département d'Oussouye. Le territoire est caractérisé par des plaines rizicoles, des mangroves et des bolongs typiques de la Casamance.
 
 ## Découpage administratif
 
@@ -132,7 +132,7 @@ Le département d'Oussouye a été créé en 2008 par scission du département d
 
 ## Situation géographique
 
-Le département est situé au sud-ouest de la région de Ziguinchor, à environ 50 km de la ville de Ziguinchor. Il est limité au nord par le département de Bignona, à l'est par la Guinée-Bissau, et au sud par l'océan Atlantique. Le territoire est caractérisé par ses mangroves, ses bolongs, ses forêts et son littoral.
+Le département est situé au sud-ouest de la région de Ziguinchor, à environ 50 km de la ville de Ziguinchor. Il est limité au nord par le département de Ziguinchor, à l'est par le département de Bignona, au sud-est par la République de Guinée-Bissau, et à l'ouest par l'océan Atlantique. Le territoire est caractérisé par ses mangroves, ses bolongs, ses forêts et son littoral.
 
 ## Découpage administratif
 

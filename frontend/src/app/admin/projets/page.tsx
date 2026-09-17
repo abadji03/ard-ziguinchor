@@ -66,8 +66,11 @@ export default function AdminProjetsPage() {
       key: 'departement',
       label: 'Lieu',
       render: (row) => row.departement ? (
-        <span className="flex items-center gap-1 text-xs text-gray-500">
-          <MapPin className="h-3.5 w-3.5" /> {row.departement.nom}
+        <span className="flex flex-col text-xs text-gray-500">
+          <span className="flex items-center gap-1">
+            <MapPin className="h-3.5 w-3.5" /> {row.departement.nom}
+          </span>
+          {row.commune?.nom && <span className="pl-5 text-gray-400">{row.commune.nom}</span>}
         </span>
       ) : <span className="text-xs text-gray-300">—</span>,
     },

@@ -2,14 +2,18 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Download, FileText, Building2, MapPinned, ArrowLeft, Layers, CheckCircle2 } from 'lucide-react';
+import { Download, FileText, Building2, MapPinned, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatDate, formatFileSize } from '@/lib/utils';
+import { DocumentCard } from '@/components/ui/DocumentCard';
 import { documentsService } from '@/services/documents.service';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+
+const isPdf = (fichier: string, format?: string) =>
+  format?.toLowerCase() === 'pdf' || /\.pdf(?:$|[?#])/i.test(fichier);
 
 const FORMAT_COLORS: Record<string, string> = {
   pdf: 'bg-rose-100 text-rose-700 border-rose-200',
@@ -228,6 +232,9 @@ export default function PlanificationTerritorialePage() {
 
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {communeGroup.documents.map((doc) => (
+                                  isPdf(doc.fichier, doc.format) ? (
+                                    <DocumentCard key={doc.id} doc={doc} onDownload={handleDownload} />
+                                  ) : (
                                   <div
                                     key={doc.id}
                                     className="bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 p-4 flex flex-col justify-between transition-all hover:shadow-xs group"
@@ -264,6 +271,7 @@ export default function PlanificationTerritorialePage() {
                                       </button>
                                     </div>
                                   </div>
+                                  )
                                 ))}
                               </div>
                             </div>
@@ -281,8 +289,11 @@ export default function PlanificationTerritorialePage() {
                             <Building2 className="h-5 w-5 text-emerald-600" />
                             Département : {communeGroup.commune?.nom ?? currentDepartement.departement?.nom}
                           </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {communeGroup.documents.map((doc) => (
+                              isPdf(doc.fichier, doc.format) ? (
+                                <DocumentCard key={doc.id} doc={doc} onDownload={handleDownload} />
+                              ) : (
                               <div
                                 key={doc.id}
                                 className="flex items-center justify-between gap-3 bg-slate-50 hover:bg-white rounded-xl border border-slate-200/80 p-4 transition-all hover:shadow-xs"
@@ -308,6 +319,7 @@ export default function PlanificationTerritorialePage() {
                                   Télécharger
                                 </button>
                               </div>
+                              )
                             ))}
                           </div>
                         </div>

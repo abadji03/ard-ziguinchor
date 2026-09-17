@@ -14,11 +14,14 @@ import { Card } from '@/components/ui/Card';
 import { ImageUpload } from '@/components/ui/ImageUpload';
 import { adminMembres } from '@/services/admin.service';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
+import { Select } from '@/components/ui/Select';
+import { DIRECTIONS_ARD } from '@/lib/directions';
 
 const schema = z.object({
   nom:       z.string().min(2, 'Nom requis'),
   prenom:    z.string().min(2, 'Prénom requis'),
   fonction:  z.string().min(2, 'Fonction requise'),
+  direction: z.string().optional(),
   bio:       z.string().optional(),
   photo:     z.string().optional(),
   email:     z.string().email('Email invalide').optional().or(z.literal('')),
@@ -70,6 +73,12 @@ export default function NewMembrePage() {
               <Input label="Nom" {...register('nom')} error={errors.nom?.message} required />
             </div>
             <Input label="Fonction / Poste" {...register('fonction')} error={errors.fonction?.message} required />
+            <Select
+              label="Direction rattachée"
+              options={DIRECTIONS_ARD.map((d) => ({ value: d.value, label: d.label }))}
+              {...register('direction')}
+              placeholder="Non renseignée"
+            />
             <Controller
               control={control}
               name="bio"

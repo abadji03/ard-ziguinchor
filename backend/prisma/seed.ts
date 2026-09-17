@@ -27,9 +27,10 @@ async function main() {
 
   // Créer les départements
   const departements = [
-    { nom: 'Ziguinchor', code: 'ZG', superficie: 1153, population: 274563 },
-    { nom: 'Bignona', code: 'BN', superficie: 5295, population: 284897 },
-    { nom: 'Oussouye', code: 'OY', superficie: 891, population: 52883 },
+    // Estimations 2023 : ANSD, Situation économique et sociale de Ziguinchor 2022-2023.
+    { nom: 'Ziguinchor', code: 'ZG', superficie: 1153, population: 275501 },
+    { nom: 'Bignona', code: 'BN', superficie: 5295, population: 287499 },
+    { nom: 'Oussouye', code: 'OY', superficie: 891, population: 54567 },
   ];
 
   const departementIds: Record<string, string> = {};
@@ -94,9 +95,9 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: null,
       superficie: 156.8,
-      population: 205294,
+      population: 214874,
       description:
-        "Ziguinchor est le chef-lieu de la région de Ziguinchor et du département du même nom. Située sur la rive sud de la Casamance, c'est la capitale historique de la Basse-Casamance. La ville est un important centre économique et administratif.\n\n## Situation géographique\nZiguinchor est située à environ 60 km de l'océan Atlantique, sur la rive droite du fleuve Casamance.\n\n## Population\nLa ville compte environ 205 294 habitants, majoritairement issus des ethnies diola, mandingue et peule.\n\n## Économie\nL'économie repose principalement sur le commerce, la pêche, l'agriculture (arachide, coton, riz) et le tourisme.",
+        "Ziguinchor est le chef-lieu de la région de Ziguinchor et du département du même nom. Située sur la rive gauche (nord) du fleuve Casamance, c'est la capitale historique de la Basse-Casamance. La ville est un important centre économique et administratif.\n\n## Situation géographique\nZiguinchor est située à environ 60 km de l'océan Atlantique, sur la rive gauche (nord) du fleuve Casamance, à environ 450 km au sud de Dakar.\n\n## Population\nLa ville compte environ 205 294 habitants (estimation ANSD 2023), majoritairement issus des ethnies diola, mandingue et peule.\n\n## Économie\nL'économie repose principalement sur le commerce, la pêche, l'agriculture (arachide, coton, riz) et le tourisme.",
     },
     {
       nom: 'Adéane',
@@ -104,9 +105,9 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: 'ZG-NIAGUIS',
       superficie: 182.4,
-      population: 28500,
+      population: 19728,
       description:
-        "Adéane est une commune du département de Ziguinchor, située dans l'arrondissement de Niaguis. La commune est essentiellement agricole, avec une forte production de riz, de fruits et de légumes.\n\n## Situation\nAdéane est située à environ 25 km au nord de Ziguinchor, le long de la route nationale 4.\n\n## Économie\nL'agriculture est la principale activité économique, avec la culture du riz, des agrumes et des fruits tropicaux.",
+        "Adéane est une commune du département de Ziguinchor, située dans l'arrondissement de Niaguis. La commune est essentiellement agricole, avec une forte production de riz, de fruits et de légumes.\n\n## Situation\nAdéane est située à environ 60 km à l'est de Ziguinchor, le long de la route nationale 6 (RN6) reliant Ziguinchor à Kolda, sur la rive gauche du fleuve Casamance.\n\n## Économie\nL'agriculture est la principale activité économique, avec la culture du riz, des agrumes et des fruits tropicaux.",
     },
     {
       nom: 'Boutoupa-Camaracounda',
@@ -114,9 +115,9 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: 'ZG-NIAGUIS',
       superficie: 154.7,
-      population: 14300,
+      population: 8682,
       description:
-        "Boutoupa-Camaracounda est une commune du département de Ziguinchor, située dans l'arrondissement de Niaguis. La commune est connue pour ses vastes rizières et son patrimoine culturel diola.\n\n## Situation\nLa commune est située à environ 40 km au nord de Ziguinchor.\n\n## Économie\nLa riziculture est l'activité économique dominante, complétée par l'élevage et l'exploitation forestière.",
+        "Boutoupa-Camaracounda est une commune du département de Ziguinchor, située dans l'arrondissement de Niaguis. La commune est connue pour ses vastes rizières et son patrimoine culturel diola.\n\n## Situation\nLa commune est située à environ 45 km à l'est de Ziguinchor, sur la route nationale 6 (RN6).\n\n## Économie\nLa riziculture est l'activité économique dominante, complétée par l'élevage et l'exploitation forestière.",
     },
     {
       nom: 'Enampore',
@@ -124,7 +125,7 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: 'ZG-NIASSIA',
       superficie: 78.3,
-      population: 5600,
+      population: 4877,
       description:
         "Enampore est une commune du département de Ziguinchor, située dans l'arrondissement de Niassia. Célèbre pour son fromager (arbre emblématique), Enampore est un site touristique important de la Casamance.\n\n## Patrimoine\nLe fromager d'Enampore est un arbre majestueux, lieu de rassemblement des populations.\n\n## Tourisme\nLa commune attire de nombreux visiteurs grâce à son patrimoine culturel et naturel exceptionnel.",
     },
@@ -134,9 +135,9 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: 'ZG-NIAGUIS',
       superficie: 98.5,
-      population: 11200,
+      population: 21671,
       description:
-        "Niaguis est une commune du département de Ziguinchor, chef-lieu de l'arrondissement du même nom. La commune est située sur la rive gauche du fleuve Casamance.\n\n## Situation\nLa commune est traversée par la route nationale 6 qui relie Ziguinchor à Oussouye.\n\n## Activités\nLa pêche et l'agriculture sont les principales activités économiques.",
+        "Niaguis est une commune du département de Ziguinchor, chef-lieu de l'arrondissement du même nom. La commune est située sur la rive gauche du fleuve Casamance.\n\n## Situation\nLa commune est traversée par la route nationale 6 (RN6) qui relie Ziguinchor à Kolda, à environ 18 km à l'est de la ville de Ziguinchor.\n\n## Activités\nLa pêche et l'agriculture sont les principales activités économiques.",
     },
     {
       nom: 'Niassia',
@@ -144,7 +145,7 @@ async function main() {
       departementCode: 'ZG',
       arrondissementCode: 'ZG-NIASSIA',
       superficie: 112.6,
-      population: 8900,
+      population: 5669,
       description:
         "Niassia est une commune du département de Ziguinchor, chef-lieu de l'arrondissement du même nom. La commune est située en zone rurale, dans une région de forêts et de rizières.\n\n## Situation\nNiassia est située dans la partie orientale du département de Ziguinchor.\n\n## Économie\nLa riziculture et la culture du mil dominent l'économie locale.",
     },
@@ -155,39 +156,39 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: null,
       superficie: 213.2,
-      population: 46778,
+      population: 28642,
       description:
-        "Bignona est le chef-lieu du département de Bignona. C'est la deuxième ville de la région de Ziguinchor. La ville est un important carrefour économique entre la Gambie et la Guinée-Bissau.\n\n## Situation\nBignona est située à environ 50 km au nord de Ziguinchor.\n\n## Économie\nLa ville est un centre commercial actif, avec un important marché hebdomadaire et des activités agricoles diversifiées.\n\n## Culture\nBignona est connue pour sa tradition culturelle diola et ses fêtes traditionnelles.",
+        "Bignona est le chef-lieu du département de Bignona. C'est la deuxième ville de la région de Ziguinchor. La ville est un important carrefour économique entre la Gambie et la Guinée-Bissau.\n\n## Situation\nBignona est située à environ 70 km au nord de Ziguinchor.\n\n## Économie\nLa ville est un centre commercial actif, avec un important marché hebdomadaire et des activités agricoles diversifiées.\n\n## Culture\nBignona est connue pour sa tradition culturelle diola et ses fêtes traditionnelles.",
     },
     {
       nom: 'Balinghore',
       code: 'BN-COM-BALINGHORE',
       departementCode: 'BN',
-      arrondissementCode: 'BN-SINDIAN',
+      arrondissementCode: 'BN-TENDOUCK',
       superficie: 145.3,
-      population: 12300,
+      population: 5513,
       description:
-        "Balinghore est une commune du département de Bignona, située dans l'arrondissement de Sindian. La commune est connue pour ses vergers d'agrumes.\n\n## Situation\nBalinghore est située dans la partie septentrionale du département de Bignona.\n\n## Économie\nLa culture des agrumes (oranges, mandarines, citrons) est l'activité principale.",
+        "Balinghore est une commune du département de Bignona, située dans l'arrondissement de Tendouck. La commune est connue pour ses vergers d'agrumes.\n\n## Situation\nBalinghore est située dans la partie septentrionale du département de Bignona.\n\n## Économie\nLa culture des agrumes (oranges, mandarines, citrons) est l'activité principale.",
     },
     {
       nom: 'Coubalan',
       code: 'BN-COM-COUBALAN',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENDOUCK',
+      arrondissementCode: 'BN-TENGHORY',
       superficie: 168.9,
-      population: 18400,
+      population: 12156,
       description:
-        "Coubalan est une commune du département de Bignona, située dans l'arrondissement de Tendouck. La commune est un important bassin agricole de la région.\n\n## Économie\nLa culture du riz, de l'arachide et du maïs constitue l'essentiel des activités économiques.",
+        "Coubalan est une commune du département de Bignona, située dans l'arrondissement de Tenghory. La commune est un important bassin agricole de la région.\n\n## Économie\nLa culture du riz, de l'arachide et du maïs constitue l'essentiel des activités économiques.",
     },
     {
       nom: 'Diégoune',
       code: 'BN-COM-DIEGOUNE',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENGHORY',
+      arrondissementCode: 'BN-TENDOUCK',
       superficie: 132.4,
-      population: 10600,
+      population: 7534,
       description:
-        "Diégoune est une commune du département de Bignona, située dans l'arrondissement de Tenghory. Commune rurale, elle est essentiellement tournée vers l'agriculture.\n\n## Situation\nDiégoune est située dans la zone de transition entre la mangrove et les plateaux continentaux.",
+        "Diégoune est une commune du département de Bignona, située dans l'arrondissement de Tendouck. Commune rurale, elle est essentiellement tournée vers l'agriculture.\n\n## Situation\nDiégoune est située dans la zone de transition entre la mangrove et les plateaux continentaux.",
     },
     {
       nom: 'Diouloulou',
@@ -195,7 +196,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-KATABA1',
       superficie: 187.6,
-      population: 22500,
+      population: 8109,
       description:
         "Diouloulou est une commune du département de Bignona, située dans l'arrondissement de Kataba 1. La commune est connue pour sa production de sel et sa proximité avec la Gambie.\n\n## Situation\nDiouloulou est située à environ 15 km de la frontière gambienne.\n\n## Économie\nLa production de sel, la pêche et le commerce transfrontalier sont les principales activités.",
     },
@@ -205,7 +206,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-SINDIAN',
       superficie: 125.8,
-      population: 9800,
+      population: 8859,
       description:
         "Djibidione est une commune du département de Bignona, située dans l'arrondissement de Sindian. La commune est un centre agricole important.\n\n## Économie\nLa culture du riz, des céréales et des fruits tropicaux domine l'économie locale.",
     },
@@ -213,11 +214,11 @@ async function main() {
       nom: 'Djinaky',
       code: 'BN-COM-DJINAKY',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENDOUCK',
+      arrondissementCode: 'BN-KATABA1',
       superficie: 142.3,
-      population: 8700,
+      population: 19580,
       description:
-        "Djinaky est une commune du département de Bignona, située dans l'arrondissement de Tendouck. Commune essentiellement rurale, elle vit principalement de l'agriculture traditionnelle.\n\n## Activités\nL'agriculture vivrière (riz, mil, arachide) est la principale activité économique.",
+        "Djinaky est une commune du département de Bignona, située dans l'arrondissement de Kataba 1. Commune essentiellement rurale, elle vit principalement de l'agriculture traditionnelle.\n\n## Activités\nL'agriculture vivrière (riz, mil, arachide) est la principale activité économique.",
     },
     {
       nom: 'Kafountine',
@@ -225,9 +226,9 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-KATABA1',
       superficie: 198.5,
-      population: 32600,
+      population: 41590,
       description:
-        "Kafountine est une commune du département de Bignona, située dans l'arrondissement de Kataba 1. C'est un important port de pêche et un site touristique prisé de la Basse-Casamance.\n\n## Situation\nKafountine est située sur la rive nord de la Casamance, près de l'embouchure du fleuve et de la frontière gambienne.\n\n## Économie\nLa pêche est l'activité économique dominante, complétée par le tourisme, le commerce et l'horticulture.\n\n## Tourisme\nLa commune est réputée pour ses plages, ses hôtels et sa vie nocturne animée.",
+        "Kafountine est une commune du département de Bignona, située dans l'arrondissement de Kataba 1. C'est un important port de pêche et un site touristique prisé de la Basse-Casamance.\n\n## Situation\nKafountine est située sur la côte atlantique, à proximité de la frontière gambienne, au nord-ouest de la Basse-Casamance.\n\n## Économie\nLa pêche est l'activité économique dominante, complétée par le tourisme, le commerce et l'horticulture.\n\n## Tourisme\nLa commune est réputée pour ses plages, ses hôtels et sa vie nocturne animée.",
     },
     {
       nom: 'Kartiack',
@@ -235,7 +236,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-TENDOUCK',
       superficie: 156.2,
-      population: 10300,
+      population: 7962,
       description:
         "Kartiack est une commune du département de Bignona, située dans l'arrondissement de Tendouck. La commune est connue pour sa production de riz et de fruits.\n\n## Situation\nKartiack est située dans une zone de bas-fonds propice à la riziculture.\n\n## Économie\nLa riziculture et l'arboriculture fruitière sont les principales activités.",
     },
@@ -245,7 +246,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-KATABA1',
       superficie: 226.4,
-      population: 22900,
+      population: 31996,
       description:
         "Kataba 1 est une commune du département de Bignona, chef-lieu de l'arrondissement du même nom. La commune est située dans l'intérieur des terres, à proximité de la zone côtière de l'arrondissement (Kafountine).\n\n## Situation\nKataba 1 se trouve dans la partie ouest du département de Bignona, entre les plaines de l'intérieur et la côte atlantique.\n\n## Économie\nL'agriculture (riz, mil, arachide), l'arboriculture et la pêche constituent les piliers de l'économie locale.",
     },
@@ -255,7 +256,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-TENDOUCK',
       superficie: 112.5,
-      population: 7800,
+      population: 8503,
       description:
         "Mangagoulack est une commune du département de Bignona, située dans l'arrondissement de Tendouck. Commune paisible de Basse-Casamance.\n\n## Situation\nMangagoulack est située dans une zone de mangrove et de rizières.",
     },
@@ -265,7 +266,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-TENGHORY',
       superficie: 96.7,
-      population: 6900,
+      population: 3128,
       description:
         'Mlomp (arrondissement de Tenghory) est une commune du département de Bignona. Village historique de Basse-Casamance.\n\n## Patrimoine\nMlomp est connue pour ses cases à impluvium et son patrimoine culturel diola.',
     },
@@ -273,31 +274,31 @@ async function main() {
       nom: 'Niamone',
       code: 'BN-COM-NIAMONE',
       departementCode: 'BN',
-      arrondissementCode: 'BN-SINDIAN',
+      arrondissementCode: 'BN-TENGHORY',
       superficie: 165.8,
-      population: 8900,
+      population: 8785,
       description:
-        "Niamone est une commune du département de Bignona, située dans l'arrondissement de Sindian. La commune est connue pour sa production de fruits tropicaux.\n\n## Économie\nLa culture des fruits tropicaux (mangues, ananas, bananes) et du riz est l'activité principale.",
+        "Niamone est une commune du département de Bignona, située dans l'arrondissement de Tenghory. La commune est connue pour sa production de fruits tropicaux.\n\n## Économie\nLa culture des fruits tropicaux (mangues, ananas, bananes) et du riz est l'activité principale.",
     },
     {
       nom: 'Oulampane',
       code: 'BN-COM-OULAMPANE',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENGHORY',
+      arrondissementCode: 'BN-SINDIAN',
       superficie: 138.6,
-      population: 8200,
+      population: 14909,
       description:
-        "Oulampane est une commune du département de Bignona, située dans l'arrondissement de Tenghory. Commune rurale, elle vit essentiellement de l'agriculture.\n\n## Situation\nOulampane est située dans la partie nord du département de Bignona.",
+        "Oulampane est une commune du département de Bignona, située dans l'arrondissement de Sindian. Commune rurale, elle vit essentiellement de l'agriculture.\n\n## Situation\nOulampane est située dans la partie nord du département de Bignona.",
     },
     {
       nom: 'Ouonck',
       code: 'BN-COM-OUONCK',
       departementCode: 'BN',
-      arrondissementCode: 'BN-SINDIAN',
+      arrondissementCode: 'BN-TENGHORY',
       superficie: 125.4,
-      population: 7400,
+      population: 10914,
       description:
-        "Ouonck est une commune du département de Bignona, située dans l'arrondissement de Sindian. La commune est connue pour son patrimoine culturel et ses activités agricoles.\n\n## Économie\nL'agriculture vivrière et l'arboriculture sont les principales activités.",
+        "Ouonck est une commune du département de Bignona, située dans l'arrondissement de Tenghory. La commune est connue pour son patrimoine culturel et ses activités agricoles.\n\n## Économie\nL'agriculture vivrière et l'arboriculture sont les principales activités.",
     },
     {
       nom: 'Sindian',
@@ -305,7 +306,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-SINDIAN',
       superficie: 148.4,
-      population: 27600,
+      population: 11676,
       description:
         "Sindian est une commune du département de Bignona, chef-lieu de l'arrondissement du même nom. La commune est un important centre agricole de la région.\n\n## Situation\nSindian est située dans la partie septentrionale du département de Bignona.\n\n## Économie\nL'agriculture, notamment la culture du riz et de l'arachide, est l'activité dominante.\n\n## Culture\nLa commune est réputée pour ses cérémonies traditionnelles diolas.",
     },
@@ -313,11 +314,11 @@ async function main() {
       nom: 'Suelle',
       code: 'BN-COM-SUELLE',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENDOUCK',
+      arrondissementCode: 'BN-SINDIAN',
       superficie: 118.9,
-      population: 6500,
+      population: 9174,
       description:
-        "Suelle est une commune du département de Bignona, située dans l'arrondissement de Tendouck. Petite commune rurale de Basse-Casamance.\n\n## Situation\nSuelle est située dans une zone de plateaux et de rizières.",
+        "Suelle est une commune du département de Bignona, située dans l'arrondissement de Sindian. Petite commune rurale de Basse-Casamance.\n\n## Situation\nSuelle est située dans une zone de plateaux et de rizières.",
     },
     {
       nom: 'Tenghory',
@@ -325,7 +326,7 @@ async function main() {
       departementCode: 'BN',
       arrondissementCode: 'BN-TENGHORY',
       superficie: 172.3,
-      population: 19800,
+      population: 39509,
       description:
         "Tenghory est une commune du département de Bignona, chef-lieu de l'arrondissement du même nom. C'est l'un des plus grands centres de production agricole du département.\n\n## Situation\nTenghory est située au centre du département de Bignona.\n\n## Économie\nLa production de riz, d'arachide et de coton constitue l'essentiel des activités économiques.",
     },
@@ -333,11 +334,11 @@ async function main() {
       nom: 'Thionck-Essyl',
       code: 'BN-COM-THIONCK',
       departementCode: 'BN',
-      arrondissementCode: 'BN-TENDOUCK',
+      arrondissementCode: null,
       superficie: 182.7,
-      population: 15800,
+      population: 8961,
       description:
-        "Thionck-Essyl est une commune du département de Bignona, située dans l'arrondissement de Tendouck. Le village est célèbre pour son patrimoine culturel unique et son fromager sacré.\n\n## Patrimoine\nThionck-Essyl est réputé pour ses cases à impluvium, ses bois sacrés et ses traditions diolas préservées.\n\n## Culture\nLe village est un haut lieu du tourisme culturel en Casamance.\n\n## Situation\nLa commune est située à 71 km au Nord-Ouest de la région de Ziguinchor.",
+        "Thionck-Essyl est une commune du département de Bignona, rattachée directement au département. Le village est célèbre pour son patrimoine culturel unique et son fromager sacré.\n\n## Patrimoine\nThionck-Essyl est réputé pour ses cases à impluvium, ses bois sacrés et ses traditions diolas préservées.\n\n## Culture\nLe village est un haut lieu du tourisme culturel en Casamance.\n\n## Situation\nLa commune est située à 71 km au Nord-Ouest de la région de Ziguinchor.",
     },
     // Département d'Oussouye
     {
@@ -346,7 +347,7 @@ async function main() {
       departementCode: 'OY',
       arrondissementCode: null,
       superficie: 145.6,
-      population: 16800,
+      population: 5705,
       description:
         "Oussouye est une commune de la Basse-Casamance et le chef-lieu du département d'Oussouye. C'est le cœur du pays diola, connu pour sa culture traditionnelle exceptionnelle.\n\n## Situation\nOussouye est située dans la partie sud-ouest de la région de Ziguinchor, à environ 40 km de la ville de Ziguinchor.\n\n## Culture\nOussouye est célèbre pour ses traditions royales, ses cérémonies d'initiation et ses bois sacrés.\n\n## Tourisme\nLa commune attire de nombreux touristes intéressés par la culture diola authentique.",
     },
@@ -356,7 +357,7 @@ async function main() {
       departementCode: 'OY',
       arrondissementCode: 'OY-CABROUSSE',
       superficie: 98.3,
-      population: 10500,
+      population: 25902,
       description:
         "Diembéring est un village du Sénégal situé en Basse-Casamance, à environ 10 km au nord de Cap Skirring et à 60 km de Ziguinchor. C'est le chef-lieu de la commune de Diembéring, dans l'arrondissement de Kabrousse.\n\n## Situation\nDiembéring est située entre l'océan Atlantique et la forêt de Basse-Casamance.\n\n## Économie\nLa pêche, l'agriculture et le tourisme sont les principales activités économiques.",
     },
@@ -364,11 +365,11 @@ async function main() {
       nom: 'Mlomp',
       code: 'OY-COM-MLOMP',
       departementCode: 'OY',
-      arrondissementCode: 'OY-CABROUSSE',
+      arrondissementCode: 'OY-LOUDIA',
       superficie: 72.5,
-      population: 5400,
+      population: 11426,
       description:
-        "Mlomp (arrondissement de Cabrousse) est une commune du département d'Oussouye. Village traditionnel diola, Mlomp est célèbre pour son architecture et ses cases à impluvium.\n\n## Patrimoine\nMlomp est l'un des derniers villages à avoir conservé l'architecture traditionnelle diola avec ses cases à impluvium.\n\n## Tourisme\nLe village est une destination prisée pour découvrir la culture diola authentique.",
+        "Mlomp (arrondissement de Loudia Ouoloff) est une commune du département d'Oussouye. Village traditionnel diola, Mlomp est célèbre pour son architecture et ses cases à impluvium.\n\n## Patrimoine\nMlomp est l'un des derniers villages à avoir conservé l'architecture traditionnelle diola avec ses cases à impluvium.\n\n## Tourisme\nLe village est une destination prisée pour découvrir la culture diola authentique.",
     },
     {
       nom: 'Oukout',
@@ -376,7 +377,7 @@ async function main() {
       departementCode: 'OY',
       arrondissementCode: 'OY-LOUDIA',
       superficie: 64.8,
-      population: 4200,
+      population: 8493,
       description:
         "Oukout est une commune du département d'Oussouye, située dans l'arrondissement de Loudia Ouoloff. Commune rurale de Basse-Casamance.\n\n## Situation\nOukout est située dans une zone de forêts et de rizières propices à l'agriculture.",
     },
@@ -384,11 +385,11 @@ async function main() {
       nom: 'Santhiaba Manjacque',
       code: 'OY-COM-SANTHIABA',
       departementCode: 'OY',
-      arrondissementCode: 'OY-LOUDIA',
+      arrondissementCode: 'OY-CABROUSSE',
       superficie: 85.2,
-      population: 6100,
+      population: 3041,
       description:
-        "Santhiaba Manjacque est une commune du département d'Oussouye, située dans l'arrondissement de Loudia Ouoloff. La commune tire son nom de l'ethnie manjacque présente dans la région.\n\n## Situation\nSanthiaba Manjacque est située dans la partie sud du département d'Oussouye.\n\n## Économie\nL'agriculture vivrière et la pêche sont les principales activités de la population.",
+        "Santhiaba Manjacque est une commune du département d'Oussouye, située dans l'arrondissement de Cabrousse. La commune tire son nom de l'ethnie manjacque présente dans la région.\n\n## Situation\nSanthiaba Manjacque est située dans la partie sud du département d'Oussouye, à proximité de la Guinée-Bissau.\n\n## Économie\nL'agriculture vivrière et la pêche sont les principales activités de la population.",
     },
   ];
 
@@ -414,6 +415,12 @@ async function main() {
       await prisma.commune.update({
         where: { id: existing.id },
         data: {
+          nom: com.nom,
+          code: com.code,
+          departementId: departementIds[com.departementCode],
+          arrondissementId: com.arrondissementCode
+            ? arrondissementIds[com.arrondissementCode]
+            : null,
           superficie: com.superficie ?? null,
           population: com.population ?? null,
           description: com.description ?? null,
@@ -658,6 +665,56 @@ async function main() {
       nom: 'Économie',
       slug: 'economie',
       description: 'Développement économique',
+    },
+    {
+      nom: 'Gouvernance',
+      slug: 'gouvernance',
+      description: 'Gouvernance locale, décentralisation et renforcement des capacités des collectivités',
+    },
+    {
+      nom: 'Tourisme',
+      slug: 'tourisme',
+      description: 'Tourisme, écotourisme et mise en valeur du patrimoine',
+    },
+    {
+      nom: 'Eau et Assainissement',
+      slug: 'eau-assainissement',
+      description: 'Accès à l’eau potable, hydraulique et assainissement',
+    },
+    {
+      nom: 'Transport et Mobilité',
+      slug: 'transport-mobilite',
+      description: 'Pistes, routes, transport et mobilité régionale',
+    },
+    {
+      nom: 'Élevage',
+      slug: 'elevage',
+      description: 'Élevage et filières pastorales',
+    },
+    {
+      nom: 'Pêche',
+      slug: 'peche',
+      description: 'Pêche artisanale et économie maritime',
+    },
+    {
+      nom: 'Énergie',
+      slug: 'energie',
+      description: 'Énergie et électrification',
+    },
+    {
+      nom: 'Jeunesse et Insertion professionnelle',
+      slug: 'jeunesse-insertion',
+      description: 'Insertion professionnelle des jeunes et des femmes (PAIJEF, PATIP-JF)',
+    },
+    {
+      nom: 'Culture et Patrimoine',
+      slug: 'culture-patrimoine',
+      description: 'Culture, patrimoine et cohésion sociale',
+    },
+    {
+      nom: 'Urbanisme et Aménagement',
+      slug: 'urbanisme-amenagement',
+      description: 'Urbanisme, aménagement du territoire et foncier',
     },
   ];
 

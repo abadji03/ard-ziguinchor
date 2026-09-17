@@ -18,6 +18,9 @@ import { DocumentUpload } from '@/components/ui/DocumentUpload';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { LoadingState } from '@/components/ui/Spinner';
 import { adminProjets, adminDocuments } from '@/services/admin.service';
+import { referencesService } from '@/services/references.service';
+import { partenairesService } from '@/services/partenaires.service';
+import { useQueryData } from '@/hooks/useQueryData';
 import api from '@/lib/api';
 import { slugify } from '@/lib/utils';
 import type { Projet } from '@/types';
@@ -34,6 +37,10 @@ const schema = z.object({
   dateDebut:       z.string().optional(),
   dateFin:         z.string().optional(),
   beneficiaires:   z.string().optional(),
+  partenaireIds:   z.array(z.string()).optional(),
+  partenairesRole: z.string().optional(),
+  departementId:   z.string().optional(),
+  communeId:       z.string().optional(),
   imagePrincipale: z.string().optional(),
 });
 type FormData = z.infer<typeof schema>;
@@ -62,6 +69,16 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
     resolver: zodResolver(schema),
   });
 
+  // Référentiel territorial (départements + communes filtrées par département) et partenaires
+  const departementId = watch('departementId');
+  const { data: departements = [] } = useQueryData(['departements'], () => referencesService.getDepartements());
+  const { data: communes = [] } = useQueryData(
+    ['communes-edit', departementId ?? 'all', id],
+    () => referencesService.getCommunes(departementId || undefined),
+  );
+  const { data: partenairesResp } = useQueryData(['partenaires-all'], () => partenairesService.getAll({ limit: 100 }));
+  const partenaires = partenairesResp?.data ?? [];
+
   useEffect(() => {
     if (projet) {
       reset({
@@ -76,6 +93,10 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
         dateDebut:        projet.dateDebut?.slice(0, 10) ?? '',
         dateFin:          projet.dateFin?.slice(0, 10) ?? '',
         beneficiaires:    projet.beneficiaires?.toString() ?? '',
+        partenaireIds:    (projet.partenaires ?? []).map((pp) => pp.partenaire.id),
+        partenairesRole:  projet.partenaires?.[0]?.role ?? '',
+        departementId:    projet.departement?.id ?? '',
+        communeId:        projet.commune?.id ?? '',
         imagePrincipale:  projet.imagePrincipale ?? '',
       });
     }
@@ -101,6 +122,10 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
       }
       return adminProjets.update(id, {
         ...data,
+        departementId: data.departementId || undefined,
+        communeId:     data.communeId || undefined,
+        partenaireIds: data.partenaireIds ?? [],
+        partenairesRole: data.partenairesRole || undefined,
         documentId,
         budget:           data.budget        ? parseFloat(data.budget)       : undefined,
         beneficiaires:    data.beneficiaires  ? parseInt(data.beneficiaires)  : undefined,
@@ -178,16 +203,86 @@ export default function EditProjetPage({ params }: { params: Promise<{ id: strin
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input label="Budget (FCFA)" type="number" {...register('budget')} />
-              <Input label="Bénéficiaires" type="number" {...register('beneficiaires')} />
+              <Input label="Nombre de bénéficiaires (personnes)" type="number" min={0} {...register('beneficiaires')} />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input label="Date de début" type="date" {...register('dateDebut')} />
               <Input label="Date de fin" type="date" {...register('dateFin')} />
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Select
+                label="Département"
+                options={departements.map((d) => ({ value: d.id, label: d.nom }))}
+                {...register('departementId')}
+                placeholder="Région entière"
+                onChange={(e) => { setValue('departementId', e.target.value); setValue('communeId', ''); }}
+              />
+              <Select
+                label="Commune"
+                options={communes.map((c) => ({ value: c.id, label: c.nom }))}
+                {...register('communeId')}
+                placeholder={departementId ? 'Aucune' : 'Choisir un département d’abord'}
+              />
+            </div>
             <ImageUpload
               label="Image principale"
               value={watch('imagePrincipale') || ''}
               onChange={(url) => setValue('imagePrincipale', url)}
+            />
+          </div>
+        </Card>
+        {/* Partenaires & portage */}
+        <Card>
+          <div className="p-5 border-b border-gray-100">
+            <h2 className="font-semibold">Partenaires &amp; Portage</h2>
+            <p className="text-xs text-gray-500 mt-1">
+              Cochez les partenaires associés au projet et précisez leur rôle.
+            </p>
+          </div>
+          <div className="p-5 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {partenaires.map((p) => {
+                const checked = (watch('partenaireIds') ?? []).includes(p.id);
+                return (
+                  <label
+                    key={p.id}
+                    className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-colors ${
+                      checked ? 'border-emerald-500 bg-emerald-50/60' : 'border-gray-200 hover:border-emerald-300'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 accent-emerald-700"
+                      checked={checked}
+                      onChange={(e) => {
+                        const current = new Set(watch('partenaireIds') ?? []);
+                        if (e.target.checked) current.add(p.id); else current.delete(p.id);
+                        setValue('partenaireIds', Array.from(current));
+                      }}
+                    />
+                    {p.logo ? (
+                      <img src={p.logo} alt={p.nom} className="h-6 w-6 object-contain" />
+                    ) : (
+                      <span className="h-6 w-6 rounded bg-gray-100 flex items-center justify-center text-[9px] font-bold text-gray-500">
+                        {(p.sigle || p.nom).slice(0, 3).toUpperCase()}
+                      </span>
+                    )}
+                    <span className="text-sm text-gray-800">{p.sigle || p.nom}</span>
+                  </label>
+                );
+              })}
+            </div>
+            <Select
+              label="Rôle des partenaires sélectionnés"
+              options={[
+                { value: 'financeur', label: 'Financeur' },
+                { value: 'porteur', label: 'Porteur / Maîtrise d’ouvrage' },
+                { value: 'executeur', label: 'Exécuteur / Maîtrise d’œuvre' },
+                { value: 'technique', label: 'Partenaire technique' },
+                { value: 'autre', label: 'Autre' },
+              ]}
+              {...register('partenairesRole')}
+              placeholder="—"
             />
           </div>
         </Card>

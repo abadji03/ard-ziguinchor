@@ -45,6 +45,9 @@ export default function AdminEquipePage() {
           <div>
             <p className="font-semibold text-slate-900">{row.prenom} {row.nom}</p>
             <p className="text-xs text-emerald-700 font-medium mt-0.5">{row.fonction}</p>
+            {row.direction && (
+              <p className="text-[11px] text-gray-400 mt-0.5">{row.direction}</p>
+            )}
           </div>
         </div>
       ),

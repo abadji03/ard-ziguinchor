@@ -19,8 +19,8 @@ export const mockParametresSite = {
 export const mockChiffresCles = [
   { id: '1', label: 'Départements', valeur: '3', description: 'Ziguinchor, Bignona, Oussouye', icone: '🏛️' },
   { id: '2', label: 'Communes', valeur: '30', description: 'Collectivités territoriales accompagnées', icone: '🗺️' },
-  { id: '3', label: 'Population', valeur: '612 000+', description: 'Habitants de la région', icone: '👥' },
-  { id: '4', label: 'Superficie', valeur: '7 339 km²', description: 'Basse-Casamance', icone: '📍' },
+  { id: '3', label: 'Population', valeur: '617 567', description: 'Estimation ANSD 2023', icone: '👥' },
+  { id: '4', label: 'Superficie', valeur: '7 329 km²', description: 'Région de Ziguinchor', icone: '📍' },
   { id: '5', label: 'Vallées réhabilitées', valeur: '3 300 ha', description: 'Programme PDEC', icone: '🌾' },
   { id: '6', label: 'Programmes actifs', valeur: '6', description: 'Appui au développement local', icone: '🚀' },
 ];
@@ -44,6 +44,16 @@ export const mockSecteurs = [
   { id: 'sec-sante', nom: 'Santé', slug: 'sante', description: 'Secteur de la santé communautaire', icone: 'HeartPulse', couleur: '#DC2626' },
   { id: 'sec-env', nom: 'Environnement', slug: 'environnement', description: 'Environnement, climat et biodiversité', icone: 'Trees', couleur: '#059669' },
   { id: 'sec-eco', nom: 'Économie', slug: 'economie', description: 'Développement économique et entrepreneuriat', icone: 'Briefcase', couleur: '#7C3AED' },
+  { id: 'sec-gouv', nom: 'Gouvernance', slug: 'gouvernance', description: 'Gouvernance locale, décentralisation et renforcement des capacités', icone: 'Landmark', couleur: '#334155' },
+  { id: 'sec-tourisme', nom: 'Tourisme', slug: 'tourisme', description: 'Tourisme, écotourisme et patrimoine', icone: 'Palmtree', couleur: '#0D9488' },
+  { id: 'sec-eau', nom: 'Eau et Assainissement', slug: 'eau-assainissement', description: 'Accès à l’eau potable, hydraulique et assainissement', icone: 'Droplets', couleur: '#2563EB' },
+  { id: 'sec-transport', nom: 'Transport et Mobilité', slug: 'transport-mobilite', description: 'Pistes, routes, transport et mobilité régionale', icone: 'Bus', couleur: '#B45309' },
+  { id: 'sec-elevage', nom: 'Élevage', slug: 'elevage', description: 'Élevage et filières pastorales', icone: 'Beef', couleur: '#92400E' },
+  { id: 'sec-peche', nom: 'Pêche', slug: 'peche', description: 'Pêche artisanale et économie maritime', icone: 'Fish', couleur: '#0891B2' },
+  { id: 'sec-energie', nom: 'Énergie', slug: 'energie', description: 'Énergie et électrification', icone: 'Zap', couleur: '#CA8A04' },
+  { id: 'sec-jeunesse', nom: 'Jeunesse et Insertion professionnelle', slug: 'jeunesse-insertion', description: 'Insertion professionnelle des jeunes et des femmes', icone: 'Users', couleur: '#7C2D12' },
+  { id: 'sec-culture', nom: 'Culture et Patrimoine', slug: 'culture-patrimoine', description: 'Culture, patrimoine et cohésion sociale', icone: 'Theater', couleur: '#9333EA' },
+  { id: 'sec-urbanisme', nom: 'Urbanisme et Aménagement', slug: 'urbanisme-amenagement', description: 'Urbanisme, aménagement du territoire et foncier', icone: 'MapPinned', couleur: '#475569' },
 ];
 
 export const mockCategoriesActualite = [
@@ -80,7 +90,7 @@ export const mockDepartements = [
     nom: 'Ziguinchor',
     code: 'ZG',
     superficie: 1153,
-    population: 274563,
+    population: 275501,
     description: "Chef-lieu régional et capitale historique de la Basse-Casamance, le département de Ziguinchor constitue le principal pôle administratif, économique et universitaire de la région.",
   },
   {
@@ -88,7 +98,7 @@ export const mockDepartements = [
     nom: 'Bignona',
     code: 'BN',
     superficie: 5295,
-    population: 284897,
+    population: 287499,
     description: "Plus grand département de la région par sa superficie et sa population, Bignona est le poumon agricole et forestier de la Basse-Casamance.",
   },
   {
@@ -96,7 +106,7 @@ export const mockDepartements = [
     nom: 'Oussouye',
     code: 'OY',
     superficie: 891,
-    population: 52883,
+    population: 54567,
     description: "Cœur historique du royaume diola du Kasa, le département d'Oussouye se distingue par ses traditions vivaces, sa biodiversité exceptionnelle et son attractivité touristique (Cap Skirring).",
   },
 ];
@@ -113,20 +123,20 @@ export const mockArrondissements = [
 ];
 
 export const mockCommunes = [
-  { id: 'com-zg', nom: 'Ziguinchor', code: 'ZG-COM-ZG', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: undefined, superficie: 156.8, population: 205294, latitude: 12.5833, longitude: -16.2719, description: "Capitale régionale de la Basse-Casamance, important centre économique, portuaire et universitaire." },
-  { id: 'com-adeane', nom: 'Adéane', code: 'ZG-COM-ADEANE', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 182.4, population: 28500, latitude: 12.63, longitude: -16.02, description: "Commune agricole réputée pour ses vergers d'agrumes et ses rizières." },
-  { id: 'com-boutoupa', nom: 'Boutoupa-Camaracounda', code: 'ZG-COM-BOUTOUPA', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 154.7, population: 14300, latitude: 12.52, longitude: -16.08, description: "Vastes terroirs agricoles et patrimoine culturel diola." },
-  { id: 'com-enampore', nom: 'Enampore', code: 'ZG-COM-ENAMPORE', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niassia', superficie: 78.3, population: 5600, latitude: 12.51, longitude: -16.45, description: "Célèbre pour ses cases à impluvium et son écotourisme intégré." },
-  { id: 'com-niaguis', nom: 'Niaguis', code: 'ZG-COM-NIAGUIS', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 98.5, population: 11200, latitude: 12.56, longitude: -16.19, description: "Commune fluviale bordant la rive gauche du fleuve Casamance." },
-  { id: 'com-niassia', nom: 'Niassia', code: 'ZG-COM-NIASSIA', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niassia', superficie: 112.6, population: 8900, latitude: 12.49, longitude: -16.35, description: "Zone forestière et rizicole au sud de Ziguinchor." },
-  { id: 'com-bignona', nom: 'Bignona', code: 'BN-COM-BIGNONA', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: undefined, superficie: 213.2, population: 46778, latitude: 12.81, longitude: -16.23, description: "Deuxième ville de la région, carrefour commercial stratégique vers la Gambie." },
-  { id: 'com-kafountine', nom: 'Kafountine', code: 'BN-COM-KAFOUNTINE', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-kataba1', superficie: 198.5, population: 32600, latitude: 12.93, longitude: -16.75, description: "Grand port de pêche artisanale et station touristique atlantique." },
-  { id: 'com-thionck', nom: 'Thionck-Essyl', code: 'BN-COM-THIONCK', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-tendouck', superficie: 182.7, population: 15800, latitude: 12.79, longitude: -16.51, description: "Cité historique du Blouf réputée pour ses bois sacrés et son dynamisme communautaire." },
-  { id: 'com-diouloulou', nom: 'Diouloulou', code: 'BN-COM-DIOULOULOU', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-kataba1', superficie: 187.6, population: 22500, latitude: 13.04, longitude: -16.65, description: "Carrefour frontalier avec la Gambie, centre commercial et de production de sel." },
-  { id: 'com-tenghory', nom: 'Tenghory', code: 'BN-COM-TENGHORY', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-tenghory', superficie: 172.3, population: 19800, latitude: 12.84, longitude: -16.22, description: "Bassin de production agricole entourant la commune urbaine de Bignona." },
-  { id: 'com-oussouye', nom: 'Oussouye', code: 'OY-COM-OUSSOUYE', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: undefined, superficie: 145.6, population: 16800, latitude: 12.48, longitude: -16.55, description: "Chef-lieu d'arrondissement et siège de la royauté traditionnelle diola (Maan)." },
-  { id: 'com-diembering', nom: 'Diembéring', code: 'OY-COM-DIEMBERING', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: 'arr-oy-cabrousse', superficie: 98.3, population: 10500, latitude: 12.42, longitude: -16.78, description: "Englobe la station balnéaire internationale de Cap Skirring et de magnifiques plages." },
-  { id: 'com-mlomp-oy', nom: 'Mlomp (Oussouye)', code: 'OY-COM-MLOMP', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: 'arr-oy-cabrousse', superficie: 72.5, population: 5400, latitude: 12.55, longitude: -16.58, description: "Célèbre pour ses fromagers géants et ses maisons traditionnelles à étages en terre cuite." },
+  { id: 'com-zg', nom: 'Ziguinchor', code: 'ZG-COM-ZG', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: undefined, superficie: 156.8, population: 214874, latitude: 12.5833, longitude: -16.2719, description: "Capitale régionale de la Basse-Casamance, important centre économique, portuaire et universitaire." },
+  { id: 'com-adeane', nom: 'Adéane', code: 'ZG-COM-ADEANE', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 182.4, population: 19728, latitude: 12.63, longitude: -16.02, description: "Commune agricole réputée pour ses vergers d'agrumes et ses rizières." },
+  { id: 'com-boutoupa', nom: 'Boutoupa-Camaracounda', code: 'ZG-COM-BOUTOUPA', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 154.7, population: 8682, latitude: 12.52, longitude: -16.08, description: "Vastes terroirs agricoles et patrimoine culturel diola." },
+  { id: 'com-enampore', nom: 'Enampore', code: 'ZG-COM-ENAMPORE', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niassia', superficie: 78.3, population: 4877, latitude: 12.51, longitude: -16.45, description: "Célèbre pour ses cases à impluvium et son écotourisme intégré." },
+  { id: 'com-niaguis', nom: 'Niaguis', code: 'ZG-COM-NIAGUIS', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niaguis', superficie: 98.5, population: 21671, latitude: 12.56, longitude: -16.19, description: "Commune fluviale bordant la rive gauche du fleuve Casamance." },
+  { id: 'com-niassia', nom: 'Niassia', code: 'ZG-COM-NIASSIA', departementId: 'dept-zg', departement: mockDepartements[0], arrondissementId: 'arr-zg-niassia', superficie: 112.6, population: 5669, latitude: 12.49, longitude: -16.35, description: "Zone forestière et rizicole au sud de Ziguinchor." },
+  { id: 'com-bignona', nom: 'Bignona', code: 'BN-COM-BIGNONA', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: undefined, superficie: 213.2, population: 28642, latitude: 12.81, longitude: -16.23, description: "Deuxième ville de la région, carrefour commercial stratégique vers la Gambie." },
+  { id: 'com-kafountine', nom: 'Kafountine', code: 'BN-COM-KAFOUNTINE', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-kataba1', superficie: 198.5, population: 41590, latitude: 12.93, longitude: -16.75, description: "Grand port de pêche artisanale et station touristique atlantique." },
+  { id: 'com-thionck', nom: 'Thionck-Essyl', code: 'BN-COM-THIONCK', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-tendouck', superficie: 182.7, population: 8961, latitude: 12.79, longitude: -16.51, description: "Cité historique du Blouf réputée pour ses bois sacrés et son dynamisme communautaire." },
+  { id: 'com-diouloulou', nom: 'Diouloulou', code: 'BN-COM-DIOULOULOU', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-kataba1', superficie: 187.6, population: 8109, latitude: 13.04, longitude: -16.65, description: "Carrefour frontalier avec la Gambie, centre commercial et de production de sel." },
+  { id: 'com-tenghory', nom: 'Tenghory', code: 'BN-COM-TENGHORY', departementId: 'dept-bn', departement: mockDepartements[1], arrondissementId: 'arr-bn-tenghory', superficie: 172.3, population: 39509, latitude: 12.84, longitude: -16.22, description: "Bassin de production agricole entourant la commune urbaine de Bignona." },
+  { id: 'com-oussouye', nom: 'Oussouye', code: 'OY-COM-OUSSOUYE', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: undefined, superficie: 145.6, population: 5705, latitude: 12.48, longitude: -16.55, description: "Chef-lieu du département et siège de la royauté traditionnelle diola (Maan)." },
+  { id: 'com-diembering', nom: 'Diembéring', code: 'OY-COM-DIEMBERING', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: 'arr-oy-cabrousse', superficie: 98.3, population: 25902, latitude: 12.42, longitude: -16.78, description: "Englobe la station balnéaire internationale de Cap Skirring et de magnifiques plages." },
+  { id: 'com-mlomp-oy', nom: 'Mlomp (Oussouye)', code: 'OY-COM-MLOMP', departementId: 'dept-oy', departement: mockDepartements[2], arrondissementId: 'arr-oy-cabrousse', superficie: 72.5, population: 11426, latitude: 12.55, longitude: -16.58, description: "Célèbre pour ses fromagers géants et ses maisons traditionnelles à étages en terre cuite." },
 ];
 
 export const mockProgrammes = [

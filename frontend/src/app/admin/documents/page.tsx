@@ -46,7 +46,21 @@ export default function AdminDocumentsPage() {
             {row.categorie && <p className="text-xs text-gray-400">{row.categorie.nom}</p>}
             {row.typePlanification && (
               <span className="text-[10px] px-1.5 py-px rounded bg-gray-100 text-gray-600 uppercase">
-                {row.typePlanification === 'TERRITORIALE' ? (row.sousType ?? 'Territorial') : row.typePlanification === 'REGIONALE' ? 'Régional' : 'Autre'}
+                {row.sousType
+                  ? row.sousType
+                  : row.typePlanification === 'TERRITORIALE'
+                    ? 'Territorial'
+                    : row.typePlanification === 'REGIONALE'
+                      ? 'Régional'
+                      : row.typePlanification === 'URBAIN'
+                        ? 'Urbain'
+                        : row.typePlanification === 'SECTORIEL'
+                          ? 'Sectoriel'
+                          : row.typePlanification === 'ENVIRONNEMENT'
+                            ? 'Environnement'
+                            : row.typePlanification === 'HISTORIQUE'
+                              ? 'Historique'
+                              : 'Autre'}
               </span>
             )}
           </div>

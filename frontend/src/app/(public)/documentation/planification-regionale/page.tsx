@@ -6,8 +6,12 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { formatDate, formatFileSize } from '@/lib/utils';
+import { DocumentCard } from '@/components/ui/DocumentCard';
 import { documentsService } from '@/services/documents.service';
 import Link from 'next/link';
+
+const isPdf = (fichier: string, format?: string) =>
+  format?.toLowerCase() === 'pdf' || /\.pdf(?:$|[?#])/i.test(fichier);
 
 const FORMAT_COLORS: Record<string, string> = {
   pdf: 'bg-rose-100 text-rose-700 border-rose-200',
@@ -86,6 +90,9 @@ export default function PlanificationRegionalePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {data.data.map((doc) => (
+                isPdf(doc.fichier, doc.format) ? (
+                  <DocumentCard key={doc.id} doc={doc} onDownload={handleDownload} />
+                ) : (
                 <div
                   key={doc.id}
                   className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-500/50 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group"
@@ -133,6 +140,7 @@ export default function PlanificationRegionalePage() {
                     </button>
                   </div>
                 </div>
+                )
               ))}
             </div>
           </>

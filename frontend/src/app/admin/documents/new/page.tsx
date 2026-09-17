@@ -16,6 +16,12 @@ import { Card } from '@/components/ui/Card';
 import { adminDocuments, uploadDocument } from '@/services/admin.service';
 import { referencesService } from '@/services/references.service';
 import { slugify, formatFileSize } from '@/lib/utils';
+import {
+  TYPE_PLANIFICATION_OPTIONS,
+  SOUSTYPES_PAR_TYPE,
+  TYPES_REQUIRANT_TERRITOIRE,
+  TYPES_REQUIRANT_SOUSTYPE,
+} from '@/lib/document-types';
 
 const schema = z.object({
   titre:           z.string().min(3, 'Titre requis'),
@@ -24,7 +30,7 @@ const schema = z.object({
   fichier:         z.string().min(1, 'Fichier requis'),
   format:          z.string().min(1, 'Format requis'),
   taille:          z.number().optional(),
-  typePlanification: z.enum(['REGIONALE', 'TERRITORIALE', 'AUTRE'], {
+  typePlanification: z.enum(['REGIONALE', 'TERRITORIALE', 'URBAIN', 'SECTORIEL', 'ENVIRONNEMENT', 'HISTORIQUE', 'AUTRE'], {
     required_error: 'Type de planification requis',
   }),
   sousType:        z.string().optional(),
@@ -36,19 +42,21 @@ const schema = z.object({
   langue:          z.string().min(1),
   statut:          z.enum(['brouillon', 'publie', 'archive']),
 }).superRefine((data, ctx) => {
-  if (data.typePlanification === 'TERRITORIALE') {
+  if (TYPES_REQUIRANT_TERRITOIRE.includes(data.typePlanification)) {
     if (!data.departementId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['departementId'],
-        message: 'Département requis pour la planification territoriale',
+        message: 'Département requis pour ce type de planification',
       });
     }
+  }
+  if (TYPES_REQUIRANT_SOUSTYPE.includes(data.typePlanification)) {
     if (!data.sousType) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['sousType'],
-        message: 'Sous-type requis pour la planification territoriale',
+        message: 'Sous-type (instrument de planification) requis',
       });
     }
   }
@@ -94,13 +102,7 @@ function sanitizeTerritoire<T extends TerritoireFields>(data: T): T & Territoire
   };
 }
 
-const SOUSTYPE_OPTIONS = [
-  { value: 'PDC',    label: 'PDC — Plan de Développement Communal' },
-  { value: 'PDD',    label: 'PDD — Plan Départemental de Développement' },
-  { value: 'PLD',    label: 'PLD — Plan Local de Développement' },
-  { value: 'PIC',    label: 'PIC — Plan d’Investissement Communal' },
-  { value: 'Schema', label: 'Schéma (Secteur, Eau-Assainissement…)' },
-];
+const SOUSTYPE_OPTIONS_DEPRECATED = null; // remplacé par SOUSTYPES_PAR_TYPE (lib/document-types)
 
 export default function NewDocumentPage() {
   const router  = useRouter();
@@ -128,13 +130,13 @@ export default function NewDocumentPage() {
   const { data: arrondissements = [] } = useQuery({
     queryKey: ['ref-arrondissements', departementId],
     queryFn: () => referencesService.getArrondissements(departementId),
-    enabled: !!departementId && typePlanification === 'TERRITORIALE',
+    enabled: !!departementId && TYPES_REQUIRANT_TERRITOIRE.includes(typePlanification),
   });
 
   const { data: allCommunes = [] } = useQuery({
     queryKey: ['ref-communes', departementId],
     queryFn: () => referencesService.getCommunes(departementId),
-    enabled: !!departementId && typePlanification === 'TERRITORIALE',
+    enabled: !!departementId && TYPES_REQUIRANT_TERRITOIRE.includes(typePlanification),
   });
 
   const communes = allCommunes.filter((c) => {
@@ -255,26 +257,30 @@ export default function NewDocumentPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Select
                 label="Type de planification"
-                options={[
-                  { value: 'AUTRE',       label: 'Autre document' },
-                  { value: 'REGIONALE',   label: 'Planification régionale' },
-                  { value: 'TERRITORIALE', label: 'Planification territoriale' },
-                ]}
+                options={TYPE_PLANIFICATION_OPTIONS}
                 {...register('typePlanification')}
                 error={errors.typePlanification?.message}
+                onChange={(e) => {
+                  setValue('typePlanification', e.target.value as FormData['typePlanification']);
+                  setValue('sousType', '');
+                  setValue('departementId', '');
+                  setValue('arrondissementId', '');
+                  setValue('communeId', '');
+                }}
               />
 
-              {typePlanification === 'TERRITORIALE' && (
+              {SOUSTYPES_PAR_TYPE[typePlanification]?.length > 0 && (
                 <Select
-                  label="Sous-type"
-                  options={SOUSTYPE_OPTIONS}
+                  label="Instrument de planification"
+                  options={SOUSTYPES_PAR_TYPE[typePlanification]}
                   {...register('sousType')}
-                  placeholder="Choisir un sous-type"
+                  placeholder="Choisir un instrument"
+                  error={errors.sousType?.message}
                 />
               )}
             </div>
 
-            {typePlanification === 'TERRITORIALE' && (
+            {TYPES_REQUIRANT_TERRITOIRE.includes(typePlanification) && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-blue-50/50 rounded-xl p-4">
                   <Select

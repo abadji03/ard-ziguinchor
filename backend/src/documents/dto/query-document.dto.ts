@@ -45,7 +45,7 @@ export class QueryDocumentDto extends PaginationDto {
 
   @ApiPropertyOptional({
     description:
-      'Filtrer par type de planification (REGIONALE, TERRITORIALE, AUTRE)',
+      'Filtrer par type de planification (REGIONALE, TERRITORIALE, URBAIN, SECTORIEL, ENVIRONNEMENT, HISTORIQUE, AUTRE)',
   })
   @IsOptional()
   @IsEnum(TypePlanification)

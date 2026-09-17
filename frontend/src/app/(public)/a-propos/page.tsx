@@ -381,6 +381,9 @@ export default function AProposPage() {
                       {m.prenom} {m.nom}
                     </h3>
                     <p className="text-xs font-semibold text-emerald-700 mt-1">{m.fonction}</p>
+                    {m.direction && (
+                      <p className="text-[11px] text-slate-500 mt-0.5">{m.direction}</p>
+                    )}
                   </div>
 
                   {m.email && (

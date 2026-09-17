@@ -140,7 +140,7 @@ export class ProjetsService {
   }
 
   async create(data: CreateProjetDto) {
-    const { dateDebut, dateFin, imagePrincipale, documentId, ...rest } = data;
+    const { dateDebut, dateFin, imagePrincipale, documentId, partenaireIds, partenairesRole, ...rest } = data;
     const projet = await this.prisma.projet.create({
       data: {
         ...rest,
@@ -148,6 +148,9 @@ export class ProjetsService {
         dateDebut: dateDebut ? new Date(dateDebut) : undefined,
         dateFin: dateFin ? new Date(dateFin) : undefined,
         documents: documentId ? { connect: { id: documentId } } : undefined,
+        partenaires: partenaireIds?.length
+          ? { create: partenaireIds.map((partenaireId) => ({ partenaireId, role: partenairesRole })) }
+          : undefined,
       },
       include: {
         secteur: true,
@@ -176,7 +179,7 @@ export class ProjetsService {
 
   async update(id: string, data: Partial<CreateProjetDto>) {
     await this.findOne(id);
-    const { dateDebut, dateFin, documentId, ...rest } = data;
+    const { dateDebut, dateFin, documentId, partenaireIds, partenairesRole, ...rest } = data;
     const updated = await this.prisma.projet.update({
       where: { id },
       data: {
@@ -184,6 +187,13 @@ export class ProjetsService {
         dateDebut: dateDebut ? new Date(dateDebut) : undefined,
         dateFin:   dateFin   ? new Date(dateFin)   : undefined,
         documents: documentId ? { connect: { id: documentId } } : undefined,
+        // Remplacement complet des liens partenaires si le champ est fourni
+        partenaires: Array.isArray(partenaireIds)
+          ? {
+              deleteMany: {},
+              create: partenaireIds.map((partenaireId) => ({ partenaireId, role: partenairesRole })),
+            }
+          : undefined,
       },
       include: { secteur: true, departement: true, commune: true },
     });

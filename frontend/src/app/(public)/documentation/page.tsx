@@ -15,13 +15,31 @@ const CATEGORIES = [
     color: 'emerald',
   },
   {
-    title: 'Planification Territoriale (PCD / PDD)',
+    title: 'Planification Territoriale (PDC / PDD / SDADT)',
     description:
-      'Plans Communaux de Développement (PCD) des 30 communes et Plans Départementaux de Développement (PDD) de Ziguinchor, Bignona et Oussouye.',
+      'Plans de Développement Communaux (PDC) des 30 communes, Plans Départementaux de Développement (PDD) et schémas d’aménagement (SDADT/SCADT).',
     href: '/documentation/planification-territoriale',
     icon: Building2,
     badge: '30 Communes & 3 Départements',
     color: 'amber',
+  },
+  {
+    title: 'Urbanisme & Aménagement',
+    description:
+      'PCU/PCUI, PUPA, PAZ, plans de lotissement et POAS : documents d’urbanisme issus du Code de l’urbanisme de 2023.',
+    href: '/documentation/urbanisme-amenagement',
+    icon: Map,
+    badge: 'Code de l’urbanisme 2023',
+    color: 'blue',
+  },
+  {
+    title: 'Archives Historiques de Planification',
+    description:
+      'SRAT, PRDI, PIC, PLD, PAR, PVD, PZD : les instruments antérieurs à l’Acte III, conservés à titre d’archive.',
+    href: '/documentation/archives-historiques',
+    icon: FolderOpen,
+    badge: 'Instruments antérieurs',
+    color: 'blue',
   },
   {
     title: 'Rapports, Études & Guides Techniques',

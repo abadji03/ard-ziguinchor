@@ -269,6 +269,19 @@ function CommuneSection() {
   const [form, setForm] = useState<Partial<Commune>>(emptyCommune);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Arrondissements filtrés selon le département choisi du formulaire
+  const arrondissementsFiltres = arrondissements.filter(
+    (a) => !form.departementId || a.departement?.id === form.departementId,
+  );
+
+  // Change le département et réinitialise l'arrondissement s'il n'appartient plus au département
+  const setDepartement = (departementId: string) => {
+    const arrOk = arrondissements.some(
+      (a) => a.id === form.arrondissementId && a.departement?.id === departementId,
+    );
+    setForm((f) => ({ ...f, departementId, arrondissementId: arrOk ? f.arrondissementId : '' }));
+  };
+
   const resetForm = () => { setForm(emptyCommune); setEditingId(null); };
 
   const set = (k: keyof typeof emptyCommune, v: string | number | undefined) =>
@@ -279,12 +292,19 @@ function CommuneSection() {
     qc.invalidateQueries({ queryKey: ARR_KEY });
   };
 
+  const sanitizeCommune = (d: Partial<Commune>) => ({
+    ...d,
+    // "" (placeholder des <Select>) n'est pas un id valide → undefined pour éviter une violation FK
+    departementId: d.departementId || undefined,
+    arrondissementId: d.arrondissementId || undefined,
+  });
+
   const createMutation = useMutation({
-    mutationFn: (d: Partial<Commune>) => api.post('/references/communes', d),
+    mutationFn: (d: Partial<Commune>) => api.post('/references/communes', sanitizeCommune(d)),
     onSuccess: () => { refresh(); resetForm(); },
   });
   const updateMutation = useMutation({
-    mutationFn: (v: { id: string; d: Partial<Commune> }) => api.patch(`/references/communes/${v.id}`, v.d),
+    mutationFn: (v: { id: string; d: Partial<Commune> }) => api.patch(`/references/communes/${v.id}`, sanitizeCommune(v.d)),
     onSuccess: refresh,
   });
   const deleteMutation = useMutation({
@@ -333,8 +353,17 @@ function CommuneSection() {
               label="Département"
               options={departements.map((d) => ({ value: d.id, label: d.nom }))}
               value={form.departementId}
-              onChange={(e) => set('departementId', e.target.value)}
+              onChange={(e) => setDepartement(e.target.value)}
               required
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Select
+              label="Arrondissement (facultatif)"
+              options={arrondissementsFiltres.map((a) => ({ value: a.id, label: a.nom }))}
+              value={form.arrondissementId ?? ''}
+              onChange={(e) => set('arrondissementId', e.target.value)}
+              placeholder={form.departementId ? 'Aucun (rattachée au département)' : 'Choisir un département d’abord'}
             />
           </div>
           <div className="flex gap-2 justify-end">
@@ -362,17 +391,17 @@ function CommuneSection() {
                       label="Département"
                       options={departements.map((d) => ({ value: d.id, label: d.nom }))}
                       value={form.departementId ?? ''}
-                      onChange={(e) => set('departementId', e.target.value)}
+                      onChange={(e) => setDepartement(e.target.value)}
                       required
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <Select
                       label="Arrondissement (facultatif)"
-                      options={arrondissements.map((a) => ({ value: a.id, label: a.nom }))}
+                      options={arrondissementsFiltres.map((a) => ({ value: a.id, label: a.nom }))}
                       value={form.arrondissementId ?? ''}
                       onChange={(e) => set('arrondissementId', e.target.value)}
-                      placeholder="Aucun"
+                      placeholder={form.departementId ? 'Aucun (rattachée au département)' : 'Choisir un département d’abord'}
                     />
                     <Input label="Latitude" type="number" step="any" value={form.latitude ?? ''} onChange={(e) => set('latitude', e.target.value ? Number(e.target.value) : undefined)} />
                     <Input label="Longitude" type="number" step="any" value={form.longitude ?? ''} onChange={(e) => set('longitude', e.target.value ? Number(e.target.value) : undefined)} />

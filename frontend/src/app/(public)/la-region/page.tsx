@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 };
 
 const CHIFFRES = [
-  { valeur: '7 339', unite: 'km²', label: 'Superficie régionale', icon: Map },
-  { valeur: '612 343', unite: 'hab.', label: 'Population (ANSD 2023)', icon: Users },
+  { valeur: '7 329', unite: 'km²', label: 'Superficie régionale', icon: Map },
+  { valeur: '617 567', unite: 'hab.', label: 'Estimation ANSD 2023', icon: Users },
   { valeur: '3', unite: 'Départements', label: 'Ziguinchor, Bignona, Oussouye', icon: Building2 },
-  { valeur: '60%', unite: 'Couverture', label: 'Forêts & Mangroves', icon: TreePine },
+  { valeur: '116 776', unite: 'ha', label: 'Domaine forestier classé (30 massifs)', icon: TreePine },
 ];
 
 const SOUS_PAGES = [
@@ -48,37 +48,37 @@ const POTENTIELS = [
   {
     titre: 'Agriculture & Pêche',
     description:
-      "Riziculture de vallée, mangues, anacarde, maraîchage bio et riche façade maritime font de Ziguinchor un grenier agroalimentaire.",
+      "Premières activités régionales : la production de riz a atteint 229 825 tonnes en 2022-2023 (ANSD) et les débarquements de la pêche artisanale 82 576,9 tonnes en 2023, valorisés à 39,4 milliards de FCFA.",
     icon: <Sparkles className="h-6 w-6 text-emerald-600" />,
   },
   {
     titre: 'Écotourisme & Patrimoine',
     description:
-      "Plages renommées du Cap Skirring, campements villageois intégrés, architecture en terre et traditions culturelles d'exception.",
+      "26 841 arrivées de touristes en 2023 (contre 11 355 en 2020) et 177 réceptifs hôteliers : la façade maritime, l'embouchure du fleuve Casamance et les atouts culturels portent une filière en forte croissance (ANSD 2023).",
     icon: <Waves className="h-6 w-6 text-blue-600" />,
   },
   {
     titre: 'Forêt & Biodiversité',
     description:
-      "Sanctuaire écologique d'Afrique de l'Ouest : forêts classées, parcs ornithologiques et mangroves vitales pour la résilience côtière.",
+      "Le domaine forestier classé couvre 116 776,3 hectares répartis dans 30 forêts classées : 20 massifs dans le département de Bignona (100 405,3 ha), 6 à Oussouye (6 469 ha) et 4 à Ziguinchor (9 902 ha).",
     icon: <TreePine className="h-6 w-6 text-emerald-700" />,
   },
   {
     titre: 'Carrefour Transfrontalier',
     description:
-      "Position géographique charnière limitrophe de la Gambie et de la Guinée-Bissau, propice aux corridors d'échanges sous-régionaux.",
+      "Limitrophe de la Gambie et de la Guinée-Bissau, la région est ouverte sur l'océan Atlantique et reliée à Kolda et Sédhiou à l'est.",
     icon: <Compass className="h-6 w-6 text-amber-600" />,
   },
   {
-    titre: 'Énergie Renouvelable & Climat',
+    titre: 'Commerce & Services',
     description:
-      "Ensoleillement généreux et biomasse offrant des opportunités d'électrification rurale solaire et d'économie verte.",
+      "Le RGE 2015 (ANSD) recensait 15 743 unités économiques dans la région, dont 54,8 % dans le commerce et 63,1 % concentrées dans le département de Ziguinchor.",
     icon: <Sun className="h-6 w-6 text-amber-500" />,
   },
   {
-    titre: 'Artisanat d’Art & Savoir-Faire',
+    titre: 'Eau, Fleuve et Littoral',
     description:
-      "Vannerie réputée, travail du bois, transformation locale des fruits et dynamisme d'une jeunesse créative et entreprenante.",
+      "Avec une façade maritime de 85 km, le fleuve Casamance (environ 300 km) et ses bolongs constituent des ressources territoriales structurantes pour la riziculture, la pêche et l'aquaculture.",
     icon: <Building2 className="h-6 w-6 text-purple-600" />,
   },
 ];

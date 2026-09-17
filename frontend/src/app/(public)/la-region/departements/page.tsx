@@ -30,17 +30,17 @@ const DEPT_CONFIG: Record<string, { badge: string; border: string; accent: strin
 const DEPT_DESCRIPTIONS: Record<string, { description: string; atouts: string[] }> = {
   Ziguinchor: {
     description:
-      "Chef-lieu et poumon économique de la région, le département de Ziguinchor est un carrefour stratégique doté d'infrastructures portuaires fluviales, universitaires et commerciales d'envergure sous-régionale.",
+      "Chef-lieu et poumon économique de la région, le département de Ziguinchor est un carrefour stratégique doté d'infrastructures portuaires fluviales, universitaires et commerciales d'envergure sous-régionale. Le plus dense de la région (296 hab./km² en 2023, ANSD), il concentre 63,1 % des unités économiques régionales.",
     atouts: ['Port fluvial sur la Casamance', 'Université Assane Seck (UASZ)', 'Carrefour commercial régional', 'Aéroport international'],
   },
   Bignona: {
     description:
-      "Plus vaste département de la région, Bignona se distingue par son potentiel agro-sylvo-pastoral exceptionnel, ses filières anacarde et mangue, ainsi que sa façade littorale touristique renommée.",
+      "Plus vaste département de la région, Bignona se distingue par son potentiel agro-sylvo-pastoral exceptionnel, ses filières anacarde et mangue, ainsi que sa façade littorale touristique renommée. Premier département par la population (287 499 habitants, 46,6 % de la région en 2023, ANSD), il abrite aussi 20 des 30 massifs forestiers classés.",
     atouts: ['Littoral touristique de Kafountine', 'Bassin rizicole et arboricole', 'Économie transfrontalière', 'Filière anacarde et maraîchage'],
   },
   Oussouye: {
     description:
-      "Cœur historique et culturel du Kassa, le département d'Oussouye conjugue traditions séculaires, écotourisme communautaire d'excellence, plages balnéaires du Cap Skirring et préservation des mangroves.",
+      "Cœur historique et culturel du Kassa, le département d'Oussouye conjugue traditions séculaires, écotourisme communautaire d'excellence, plages balnéaires du Cap Skirring et préservation des mangroves. Premier département touristique de la région en 2023 : 71 réceptifs hôteliers et 2 338 lits (ANSD).",
     atouts: ['Station balnéaire du Cap Skirring', 'Écotourisme villageois intégré', 'Patrimoine culturel du Kassa', 'Sanctuaire des bolongs et lamantins'],
   },
 };
@@ -125,8 +125,8 @@ export default function DepartementsPage() {
             <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 border border-purple-100 flex items-center justify-center mb-3">
               <Users className="h-5 w-5" />
             </div>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">612 343 hab.</p>
-            <p className="text-xs font-semibold text-slate-500 mt-1">Population globale (ANSD 2023)</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">617 567 hab.</p>
+            <p className="text-xs font-semibold text-slate-500 mt-1">Estimation ANSD 2023</p>
           </div>
         </div>
 

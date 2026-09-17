@@ -49,3 +49,10 @@ find_modified_files.ps1
 modified_files_aug17.txt
 modified_files_aug17.csv
 temp_sqlite/
+
+# Scratch / extraction PDF (non versionné)
+temp_pdf/
+gs.txt
+r.txt
+build-log.txt
+logos-log.txt

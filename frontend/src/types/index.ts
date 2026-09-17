@@ -206,7 +206,14 @@ export interface CategorieDocument {
   icone?: string;
 }
 
-export type TypePlanification = 'REGIONALE' | 'TERRITORIALE' | 'AUTRE';
+export type TypePlanification =
+  | 'REGIONALE'
+  | 'TERRITORIALE'
+  | 'URBAIN'
+  | 'SECTORIEL'
+  | 'ENVIRONNEMENT'
+  | 'HISTORIQUE'
+  | 'AUTRE';
 
 export interface Document {
   id: string;
@@ -332,6 +339,7 @@ export interface Membre {
   nom: string;
   prenom: string;
   fonction: string;
+  direction?: string;
   bio?: string;
   photo?: string;
   email?: string;

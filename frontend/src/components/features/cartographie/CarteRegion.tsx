@@ -39,6 +39,7 @@ export interface ProjetGeo {
   budget?: number;
   beneficiaires?: number;
   commune?: string;
+  localisationSource?: 'projet' | 'commune' | 'departement';
 }
 
 interface CarteRegionProps {
@@ -125,6 +126,16 @@ export function CarteRegion({ projets, height = '500px' }: CarteRegionProps) {
                       <div className="flex justify-between">
                         <span className="text-slate-400">Commune :</span>
                         <span className="font-medium text-slate-800">{projet.commune}</span>
+                      </div>
+                    )}
+                    {projet.localisationSource === 'commune' && (
+                      <div className="text-[10px] italic text-slate-400">
+                        Position indicative de la commune
+                      </div>
+                    )}
+                    {projet.localisationSource === 'departement' && (
+                      <div className="text-[10px] italic text-slate-400">
+                        Position indicative du département
                       </div>
                     )}
                     {projet.beneficiaires && (

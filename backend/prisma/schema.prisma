@@ -596,6 +596,7 @@ model Membre {
   nom       String
   prenom    String
   fonction  String
+  direction String?
   bio       String?  @db.Text
   photo     String?
   email     String?

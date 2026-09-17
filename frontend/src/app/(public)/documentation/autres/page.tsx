@@ -1,17 +1,21 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Download, FileText, FolderOpen, ArrowLeft, Search } from 'lucide-react';
+import { Download, FileText, FolderOpen, ArrowLeft, Search, Layers, Leaf } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Input } from '@/components/ui/Input';
 import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Pagination } from '@/components/ui/Pagination';
 import { formatDate, formatFileSize } from '@/lib/utils';
+import { DocumentCard } from '@/components/ui/DocumentCard';
 import { documentsService } from '@/services/documents.service';
 import { usePagination } from '@/hooks/usePagination';
 import { useState } from 'react';
 import Link from 'next/link';
+
+const isPdf = (fichier: string, format?: string) =>
+  format?.toLowerCase() === 'pdf' || /\.pdf(?:$|[?#])/i.test(fichier);
 
 const FORMAT_COLORS: Record<string, string> = {
   pdf: 'bg-rose-100 text-rose-700 border-rose-200',
@@ -20,17 +24,26 @@ const FORMAT_COLORS: Record<string, string> = {
   pptx: 'bg-amber-100 text-amber-700 border-amber-200',
 };
 
+const ONGLETS = [
+  { id: 'AUTRE', label: 'Rapports & guides', icon: FolderOpen },
+  { id: 'SECTORIEL', label: 'Plans sectoriels', icon: Layers },
+  { id: 'ENVIRONNEMENT', label: 'Environnement & climat', icon: Leaf },
+] as const;
+
+type OngletId = (typeof ONGLETS)[number]['id'];
+
 export default function AutresDocumentsPage() {
   const [search, setSearch] = useState('');
+  const [onglet, setOnglet] = useState<OngletId>('AUTRE');
   const { page, limit, goToPage, resetPage } = usePagination(12);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['documents-autres', { page, limit, search }],
+    queryKey: ['documents-autres', onglet, { page, limit, search }],
     queryFn: () => documentsService.getAll({
       page,
       limit,
       search: search || undefined,
-      typePlanification: 'AUTRE',
+      typePlanification: onglet,
       statut: 'publie',
     }),
     staleTime: 3 * 60 * 1000,
@@ -81,6 +94,28 @@ export default function AutresDocumentsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* Onglets par famille */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {ONGLETS.map((o) => {
+            const Icon = o.icon;
+            const active = onglet === o.id;
+            return (
+              <button
+                key={o.id}
+                type="button"
+                onClick={() => { setOnglet(o.id); resetPage(); }}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border transition-colors ${
+                  active
+                    ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm'
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-emerald-400 hover:text-emerald-700'
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                {o.label}
+              </button>
+            );
+          })}
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-8">
           <div className="max-w-md w-full">
             <Input
@@ -112,6 +147,9 @@ export default function AutresDocumentsPage() {
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {data.data.map((doc) => (
+                isPdf(doc.fichier, doc.format) ? (
+                  <DocumentCard key={doc.id} doc={doc} onDownload={handleDownload} />
+                ) : (
                 <div
                   key={doc.id}
                   className="bg-white rounded-2xl border border-slate-200/90 hover:border-emerald-500/50 p-6 flex flex-col justify-between shadow-xs hover:shadow-md transition-all group"
@@ -159,6 +197,7 @@ export default function AutresDocumentsPage() {
                     </button>
                   </div>
                 </div>
+                )
               ))}
             </div>
 

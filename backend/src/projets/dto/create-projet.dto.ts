@@ -94,4 +94,13 @@ export class CreateProjetDto {
   @IsOptional()
   @IsString()
   documentId?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  partenaireIds?: string[];
+
+  @IsOptional()
+  @IsString()
+  partenairesRole?: string;
 }

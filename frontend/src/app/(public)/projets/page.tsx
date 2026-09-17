@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
-import { Search, Filter, X } from 'lucide-react';
+import { Search, Filter, X, MapPinned } from 'lucide-react';
 import { ProjetCard } from '@/components/features/projets/ProjetCard';
 import { Pagination } from '@/components/ui/Pagination';
 import { LoadingState } from '@/components/ui/Spinner';
@@ -73,6 +74,16 @@ export default function ProjetsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* Accès cartographie des projets */}
+        <div className="mb-8 flex justify-end">
+          <Link
+            href="/projets/cartographie"
+            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-sm"
+          >
+            <MapPinned className="h-4 w-4" />
+            Cartographie des projets
+          </Link>
+        </div>
         {/* Barre de filtre & recherche moderne */}
         <div className="vitrine-card rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
           <div className="flex flex-col md:flex-row gap-4">

@@ -95,6 +95,7 @@ L'arrondissement de Kataba 1 est l'un des quatre arrondissements du département
 L'arrondissement de Kataba 1 comprend les communes suivantes :
 
 - Diouloulou
+- Djinaky
 - Kafountine
 - Kataba 1 (chef-lieu)
 
@@ -135,9 +136,9 @@ L'arrondissement de Tenghory est l'un des quatre arrondissements du département
 
 L'arrondissement de Tenghory comprend les communes suivantes :
 
-- Diégoune
-- Mlomp
-- Oulampane
+- Coubalan
+- Niamone
+- Ouonck
 - Tenghory (chef-lieu)
 
 ## Situation géographique
@@ -175,12 +176,11 @@ L'arrondissement de Tendouck est l'un des quatre arrondissements du département
 
 L'arrondissement de Tendouck comprend les communes suivantes :
 
-- Coubalan
-- Djinaky
+- Balinghore
+- Diégoune
 - Kartiack
 - Mangagoulack
-- Suelle
-- Thionck-Essyl
+- Mlomp
 
 ## Situation géographique
 
@@ -217,11 +217,10 @@ L'arrondissement de Sindian est l'un des quatre arrondissements du département 
 
 L'arrondissement de Sindian comprend les communes suivantes :
 
-- Balinghore
 - Djibidione
-- Niamone
-- Ouonck
+- Oulampane
 - Sindian (chef-lieu)
+- Suelle
 
 ## Situation géographique
 
@@ -260,7 +259,7 @@ L'arrondissement de Cabrousse est l'un des deux arrondissements du département 
 L'arrondissement de Cabrousse comprend les communes suivantes :
 
 - Diembéring
-- Mlomp
+- Santhiaba Manjacque
 
 ## Situation géographique
 
@@ -297,8 +296,8 @@ L'arrondissement de Loudia Ouoloff est le deuxième arrondissement du départeme
 
 L'arrondissement de Loudia Ouoloff comprend les communes suivantes :
 
+- Mlomp
 - Oukout
-- Santhiaba Manjacque
 
 ## Situation géographique
 
