@@ -49,14 +49,16 @@ export default function ProjetsPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: 'Projets Territoriaux' }]} />
           </div>
 
           <div className="max-w-3xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
               Portefeuille d'Investissements
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
@@ -72,7 +74,7 @@ export default function ProjetsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
         {/* Barre de filtre & recherche moderne */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-xs mb-8 space-y-4">
+        <div className="vitrine-card rounded-2xl p-4 sm:p-5 mb-8 space-y-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />

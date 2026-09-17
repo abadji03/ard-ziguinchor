@@ -16,7 +16,7 @@ export function ProjetCard({ projet }: ProjetCardProps) {
   };
 
   return (
-    <div className="flex flex-col bg-white rounded-2xl border border-slate-200/90 overflow-hidden hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all duration-200 group h-full">
+    <div className="flex flex-col vitrine-card rounded-2xl border-slate-200/90 overflow-hidden hover-lift group h-full">
       {/* Image avec badges superposés */}
       <div className="relative h-52 bg-slate-100 shrink-0 overflow-hidden">
         {projet.imagePrincipale ? (

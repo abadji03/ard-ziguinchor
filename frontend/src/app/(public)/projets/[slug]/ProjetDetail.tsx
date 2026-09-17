@@ -32,10 +32,12 @@ export function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) 
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-primary py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10">
           <Breadcrumb items={[{ label: 'Projets', href: '/projets' }, { label: projet.titre }]} />
-          <h1 className="mt-4 text-2xl md:text-3xl font-bold text-white leading-tight max-w-3xl">
+          <h1 className="mt-4 text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl">
             {projet.titre}
           </h1>
           <div className="flex flex-wrap items-center gap-3 mt-4">
@@ -56,7 +58,7 @@ export function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) 
               </div>
             )}
 
-            <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="vitrine-card rounded-xl p-6">
               <div className="flex justify-between mb-2 text-sm font-medium">
                 <span className="text-gray-700">Niveau d&apos;avancement</span>
                 <span className="text-primary">{projet.niveauAvancement}%</span>
@@ -69,20 +71,20 @@ export function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) 
               </div>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="vitrine-card rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
               <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: projet.description }} />
             </div>
 
             {projet.objectifs && (
-              <div className="bg-white rounded-xl p-6 border border-gray-100">
+              <div className="vitrine-card rounded-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Objectifs</h2>
                 <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: projet.objectifs }} />
               </div>
             )}
 
             {projet.resultats && (
-              <div className="bg-white rounded-xl p-6 border border-gray-100">
+              <div className="vitrine-card rounded-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Résultats</h2>
                 <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: projet.resultats }} />
               </div>
@@ -90,7 +92,7 @@ export function ProjetDetail({ params }: { params: Promise<{ slug: string }> }) 
           </div>
 
           <aside className="space-y-6">
-            <div className="bg-white rounded-xl p-6 border border-gray-100 space-y-4">
+            <div className="vitrine-card rounded-xl p-6 space-y-4">
               <h3 className="font-semibold text-gray-900">Informations clés</h3>
 
               {projet.departement && (

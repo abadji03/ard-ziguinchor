@@ -31,8 +31,10 @@ export function ActualiteDetail({ params }: { params: Promise<{ slug: string }> 
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-primary py-10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-10">
           <Breadcrumb items={[{ label: 'Actualités', href: '/actualites' }, { label: actu.titre }]} />
           {actu.categorie && (
             <span
@@ -42,7 +44,7 @@ export function ActualiteDetail({ params }: { params: Promise<{ slug: string }> 
               {actu.categorie.nom}
             </span>
           )}
-          <h1 className="mt-3 text-2xl md:text-3xl font-bold text-white leading-tight">{actu.titre}</h1>
+          <h1 className="mt-3 text-2xl md:text-4xl font-extrabold text-white leading-tight">{actu.titre}</h1>
 
           <div className="flex flex-wrap items-center gap-4 mt-4 text-blue-100 text-sm">
             {actu.datePublication && (
@@ -64,7 +66,7 @@ export function ActualiteDetail({ params }: { params: Promise<{ slug: string }> 
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         {actu.imagePrincipale && (
-          <div className="relative h-72 md:h-96 rounded-xl overflow-hidden mb-8">
+          <div className="relative h-72 md:h-96 rounded-xl overflow-hidden mb-8 shadow-xl shadow-slate-900/10">
             <Image src={actu.imagePrincipale} alt={actu.titre} fill className="object-cover" priority />
           </div>
         )}
@@ -75,7 +77,7 @@ export function ActualiteDetail({ params }: { params: Promise<{ slug: string }> 
           </p>
         )}
 
-        <article className="prose-content bg-white rounded-xl p-6 md:p-8 border border-gray-100">
+        <article className="prose-content vitrine-card rounded-xl p-6 md:p-8">
           <div dangerouslySetInnerHTML={{ __html: actu.contenu }} />
         </article>
 

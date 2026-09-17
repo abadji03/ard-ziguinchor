@@ -38,14 +38,16 @@ export default function DocumentationPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: 'Documentation & Bibliothèque' }]} />
           </div>
 
           <div className="max-w-3xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
               Ressources & Publications Officielles
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
@@ -65,7 +67,7 @@ export default function DocumentationPage() {
             const Icon = cat.icon;
             return (
               <Link key={cat.href} href={cat.href} className="group">
-                <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 hover:border-emerald-500/60 hover:shadow-xl hover:shadow-slate-900/5 transition-all flex flex-col justify-between h-full">
+                <div className="vitrine-card hover-lift rounded-2xl p-6 sm:p-7 border-slate-200/90 flex flex-col justify-between h-full">
                   <div>
                     <div className="flex items-center justify-between mb-5">
                       <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
@@ -95,7 +97,7 @@ export default function DocumentationPage() {
         </div>
 
         {/* Bloc d'aide d'accès aux données */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-5 shadow-xs">
+        <div className="vitrine-card rounded-2xl border-slate-200 p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-5">
           <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0">
             <DownloadCloud className="h-6 w-6 text-emerald-400" />
           </div>

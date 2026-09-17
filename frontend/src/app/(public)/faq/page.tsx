@@ -56,8 +56,10 @@ export default function FaqPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: 'Foire Aux Questions' }]} />
           </div>
@@ -80,7 +82,7 @@ export default function FaqPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14">
         {isLoading ? (
           <div className="py-16">
-            <LoadingState message="Chargement des questions fréquentes…" />
+            <LoadingState message="Chargement des questions fréquentes�?�" />
           </div>
         ) : !faqs?.length ? (
           <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">

@@ -20,7 +20,7 @@ const CarteContact = dynamic(
     ssr: false,
     loading: () => (
       <div className="h-64 flex items-center justify-center bg-slate-100 rounded-xl text-xs text-slate-400">
-        Chargement de la carte territoriale…
+        Chargement de la carte territoriale�?�
       </div>
     ),
   }
@@ -65,8 +65,10 @@ export default function ContactPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: 'Contact & Accès' }]} />
           </div>
@@ -167,7 +169,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="mt-3 block text-center text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:underline"
               >
-                Ouvrir dans Google Maps ↗
+                Ouvrir dans Google Maps �?-
               </a>
             </div>
           </aside>
@@ -260,7 +262,7 @@ export default function ContactPage() {
                   {...register('message')}
                   error={errors.message?.message}
                   required
-                  placeholder="Décrivez votre demande, les collectivités concernées ou le projet en question…"
+                  placeholder="Décrivez votre demande, les collectivités concernées ou le projet en question�?�"
                 />
 
                 <div className="flex items-center justify-between pt-2">

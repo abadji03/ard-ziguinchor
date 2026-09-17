@@ -10,7 +10,7 @@ interface ActualiteCardProps {
 
 export function ActualiteCard({ actualite }: ActualiteCardProps) {
   return (
-    <article className="flex flex-col bg-white rounded-2xl border border-slate-200/90 overflow-hidden hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all duration-200 group h-full">
+    <article className="flex flex-col vitrine-card rounded-2xl border-slate-200/90 overflow-hidden hover-lift group h-full">
       {/* Image principale */}
       <div className="relative h-48 bg-slate-100 shrink-0 overflow-hidden">
         {actualite.imagePrincipale ? (

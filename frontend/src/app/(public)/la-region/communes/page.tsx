@@ -62,8 +62,10 @@ export default function CommunesPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-90" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/60 via-transparent to-primary-dark" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <Breadcrumb
             items={[
               { label: 'La Région', href: '/la-region' },
@@ -79,7 +81,7 @@ export default function CommunesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-        <div className="bg-white rounded-xl border border-gray-100 p-4 mb-8 flex flex-col sm:flex-row gap-4">
+        <div className="vitrine-card rounded-xl border border-gray-100 p-4 mb-8 flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
@@ -128,7 +130,7 @@ export default function CommunesPage() {
                         <Link
                           key={commune.id}
                           href={`/la-region/communes/${commune.id}`}
-                          className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all group block"
+                          className="vitrine-card hover-lift rounded-xl overflow-hidden border border-gray-100 group block"
                         >
                           {commune.image && (
                             <div className="relative h-28 w-full bg-gray-100">
@@ -184,7 +186,7 @@ export default function CommunesPage() {
                         <Link
                           key={commune.id}
                           href={`/la-region/communes/${commune.id}`}
-                          className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all group block"
+                          className="vitrine-card hover-lift rounded-xl overflow-hidden border border-gray-100 group block"
                         >
                           {commune.image && (
                             <div className="relative h-28 w-full bg-gray-100">

@@ -23,13 +23,13 @@ export function HeroSection() {
             src="/img_banniere.jpg"
             alt="Paysage et développement territorial de Ziguinchor Casamance"
             fill
-            className="object-cover object-center brightness-[0.45] scale-105 transition-transform duration-1000"
+            className="object-cover object-center brightness-[0.35] scale-105 transition-transform duration-1000"
             priority
             sizes="100vw"
           />
-          {/* Dégradés d'ombrage pour une lisibilité irréprochable */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-900/60" />
-          <div className="absolute inset-0 bg-radial from-transparent via-slate-950/40 to-slate-950/90" />
+          {/* Dégradé d'ombrage uniquement à gauche pour préserver la lisibilité du texte */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/55 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-950/70 to-transparent" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-20 md:pt-24 md:pb-28 lg:pt-28 lg:pb-32">

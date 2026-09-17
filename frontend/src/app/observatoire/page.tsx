@@ -42,14 +42,16 @@ export default function ObservatoirePage() {
     <PublicLayout>
       <div className="bg-slate-50 min-h-screen">
         {/* En-tête Institutionnel */}
-        <div className="bg-slate-900 text-white border-b border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+        <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+          <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
             <div className="text-slate-400 mb-4">
               <Breadcrumb items={[{ label: 'Observatoire Territorial' }]} />
             </div>
 
             <div className="max-w-3xl">
-              <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+              <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
                 Données & Aide à la Décision
               </span>
               <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
@@ -65,7 +67,7 @@ export default function ObservatoirePage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
           {/* Sélecteur d'année */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 vitrine-card p-4 sm:p-5">
             <div>
               <h2 className="text-sm font-bold text-slate-900">Millésime des données</h2>
               <p className="text-xs text-slate-500">
@@ -136,7 +138,7 @@ export default function ObservatoirePage() {
                   return (
                     <div
                       key={i}
-                      className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-xs"
+                      className="vitrine-card hover-lift p-5"
                     >
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 border ${stat.color}`}
@@ -154,7 +156,7 @@ export default function ObservatoirePage() {
 
               {/* Graphique de distribution */}
               {chartData.length > 0 && (
-                <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 shadow-xs">
+                <div className="vitrine-card p-6 sm:p-7">
                   <div className="mb-6">
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
                       Répartition Sectorielle
@@ -197,7 +199,7 @@ export default function ObservatoirePage() {
               )}
 
               {/* Tableau de consultation */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
+              <div className="vitrine-card overflow-hidden">
                 <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
                   <div>
                     <h2 className="text-base font-bold text-slate-900">

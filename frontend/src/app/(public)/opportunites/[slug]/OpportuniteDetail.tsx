@@ -34,8 +34,10 @@ export function OpportuniteDetail({ params }: { params: Promise<{ slug: string }
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="bg-primary py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-10">
           <Breadcrumb items={[{ label: 'Opportunités', href: '/opportunites' }, { label: opp.titre }]} />
           <div className="flex flex-wrap items-center gap-3 mt-4">
             <span className="text-xs font-medium bg-white/20 text-white px-3 py-1 rounded-full">
@@ -45,7 +47,7 @@ export function OpportuniteDetail({ params }: { params: Promise<{ slug: string }
               {statut.label}
             </span>
           </div>
-          <h1 className="mt-3 text-2xl md:text-3xl font-bold text-white leading-tight max-w-3xl">
+          <h1 className="mt-3 text-2xl md:text-4xl font-extrabold text-white leading-tight max-w-3xl">
             {opp.titre}
           </h1>
           <p className="text-blue-200 mt-2 flex items-center gap-2">
@@ -62,12 +64,12 @@ export function OpportuniteDetail({ params }: { params: Promise<{ slug: string }
                 <p className="text-blue-800 text-sm leading-relaxed italic">{opp.resume}</p>
               </div>
             )}
-            <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="vitrine-card rounded-xl p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
               <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: opp.description }} />
             </div>
             {opp.conditions && (
-              <div className="bg-white rounded-xl p-6 border border-gray-100">
+              <div className="vitrine-card rounded-xl p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Conditions de participation</h2>
                 <div className="prose-content text-sm" dangerouslySetInnerHTML={{ __html: opp.conditions }} />
               </div>
@@ -75,7 +77,7 @@ export function OpportuniteDetail({ params }: { params: Promise<{ slug: string }
           </div>
 
           <aside className="space-y-5">
-            <div className="bg-white rounded-xl p-6 border border-gray-100 space-y-4">
+            <div className="vitrine-card rounded-xl p-6 space-y-4">
               <h3 className="font-semibold text-gray-900">Informations clés</h3>
               <div className="flex gap-3 text-sm">
                 <Calendar className="h-4 w-4 text-primary mt-0.5 shrink-0" />

@@ -122,6 +122,7 @@ const STATUT_LABELS: Record<string, { label: string; color: string; bg: string }
 export default function CartographiePage() {
   const [statutFilter, setStatutFilter] = useState<string>('tous');
   const [secteurFilter, setSecteurFilter] = useState<string>('tous');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const secteurs = Array.from(new Set(PROJETS_DEMO.map((p) => p.secteur).filter(Boolean) as string[]));
 
@@ -134,19 +135,34 @@ export default function CartographiePage() {
   return (
     <div className="bg-background min-h-screen">
       {/* Hero */}
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary-dark/40" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <Breadcrumb
             items={[
               { label: 'La Région', href: '/la-region' },
               { label: 'Cartographie' },
             ]}
           />
-          <SectionTitle
-            title="Cartographie interactive"
-            subtitle="Visualisez les projets de développement géolocalisés dans la région de Ziguinchor"
-            className="mt-4 mb-0 [&_h2]:text-white [&_p]:text-blue-100"
-          />
+          <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <SectionTitle
+              title="Cartographie interactive"
+              subtitle="Visualisez les projets de développement géolocalisés dans la région de Ziguinchor"
+              className="mb-0 [&_h2]:text-white [&_p]:text-blue-100"
+            />
+            {/* Statistiques clés */}
+            <div className="flex flex-wrap gap-3 shrink-0">
+              <div className="glass-card rounded-xl px-4 py-2.5 text-center">
+                <div className="text-xl font-black text-white leading-none">{projetsFiltres.length}</div>
+                <div className="text-[11px] font-medium text-blue-200">Projets affichés</div>
+              </div>
+              <div className="glass-card rounded-xl px-4 py-2.5 text-center">
+                <div className="text-xl font-black text-white leading-none">{secteurs.length}</div>
+                <div className="text-[11px] font-medium text-blue-200">Secteurs</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -191,7 +207,12 @@ export default function CartographiePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Carte */}
           <div className="lg:col-span-3">
-            <CarteRegion projets={projetsFiltres} height="520px" />
+            <CarteRegion
+              projets={projetsFiltres}
+              height="520px"
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+            />
 
             {/* Légende */}
             <div className="mt-4 bg-white rounded-xl border border-gray-100 p-4">
@@ -222,20 +243,36 @@ export default function CartographiePage() {
               <div className="divide-y divide-gray-50 max-h-[460px] overflow-y-auto">
                 {projetsFiltres.map((projet) => {
                   const s = STATUT_LABELS[projet.statut];
+                  const isActive = projet.id === selectedId;
                   return (
-                    <div key={projet.id} className="p-3 hover:bg-gray-50 transition-colors">
-                      <div className="text-xs font-medium text-gray-900 leading-snug mb-1.5">
-                        {projet.titre}
-                      </div>
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs text-gray-400">{projet.commune}</span>
+                    <button
+                      key={projet.id}
+                      type="button"
+                      onClick={() => setSelectedId(projet.id)}
+                      className={`w-full text-left p-3 transition-colors cursor-pointer ${
+                        isActive ? 'bg-blue-50' : 'hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-start gap-2">
                         <span
-                          className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${s?.bg || 'bg-gray-100 text-gray-600'}`}
-                        >
-                          {s?.label || projet.statut}
-                        </span>
+                          className="mt-1 w-2 h-2 rounded-full shrink-0"
+                          style={{ background: s?.color || '#94a3b8' }}
+                        />
+                        <div className="min-w-0">
+                          <div className={`text-xs font-medium leading-snug mb-1.5 ${isActive ? 'text-blue-800' : 'text-gray-900'}`}>
+                            {projet.titre}
+                          </div>
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs text-gray-400">{projet.commune}</span>
+                            <span
+                              className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${s?.bg || 'bg-gray-100 text-gray-600'}`}
+                            >
+                              {s?.label || projet.statut}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
                 {projetsFiltres.length === 0 && (

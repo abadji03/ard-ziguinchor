@@ -1,12 +1,16 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #0A5CCF;
+  --color-primary: #0A58CA;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #062D6B;
   --color-secondary: #F4B400;
-  --color-background: #F8FAFC;
-  --color-text: #1F2937;
+  --color-accent: #0FA47A;
+  --color-background: #F6F8FB;
+  --color-text: #0F172A;
   --color-success: #16A34A;
   --color-error: #DC2626;
+  --color-ink: #0B1220;
 
   /* Polices auto-hébergées via next/font (définies dans layout.tsx).
      @theme inline conserve les var() pour résoudre au runtime. */
@@ -68,4 +72,66 @@
 
   /* Leaflet overrides */
   .leaflet-container { border-radius: 0.75rem; }
+
+  /* Étiquettes cartographiques vitrine */
+  .vitrine-flex-center { display: flex; align-items: center; justify-content: center; }
 }
+
+/* ============================================================
+   Vitrine ARD - épinglettes carto animées
+============================================================ */
+.map-pin { --pin:#0A58CA; position:relative; display:flex; align-items:center; justify-content:center; width:30px; height:30px; }
+.map-pin__pulse { position:absolute; inset:0; border-radius:9999px; background:radial-gradient(circle, color-mix(in srgb, var(--pin) 45%, transparent) 0%, transparent 68%); animation:pinPulse 2.2s ease-out infinite; }
+.map-pin__ring { position:absolute; inset:5px; border-radius:9999px; background:var(--pin); border:2.5px solid #fff; box-shadow:0 2px 10px rgba(2,6,23,.45), 0 0 0 4px color-mix(in srgb, var(--pin) 22%, transparent); transition:transform .2s ease, box-shadow .2s ease; }
+.map-pin.is-active .map-pin__ring { transform:scale(1.25); box-shadow:0 0 0 6px color-mix(in srgb, var(--pin) 36%, transparent), 0 4px 14px rgba(2,6,23,.55); }
+.map-pin__core { position:absolute; inset:9px; border-radius:9999px; background:#fff; }
+.map-pin:hover .map-pin__ring { transform:scale(1.15); }
+@keyframes pinPulse { 0% { transform:scale(.5); opacity:.9; } 70%,100% { transform:scale(2.3); opacity:0; } }
+@media (prefers-reduced-motion: reduce) { .map-pin__pulse { animation:none; } }
+
+/* Popups vitrine */
+.carte-pop__num { width:26px; height:26px; border-radius:9999px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:700; margin-right:8px; flex-shrink:0; }
+.carte-pop__head { padding:10px 48px 10px 14px; }
+.carte-pop__body { padding:12px 14px 14px; }
+
+/* ============================================================
+   Utilitaires vitrine (utilisés par toutes les pages publiques)
+============================================================ */
+.hero-pattern {
+  background-image:
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--color-secondary, #f4b400) 20%, transparent) 0, transparent 42%),
+    radial-gradient(circle at 85% 18%, color-mix(in srgb, var(--color-primary-light, #3b82f6) 30%, transparent) 0, transparent 45%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.text-gradient {
+  background: linear-gradient(96deg, #60a5fa 0%, #22d3ee 60%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 42px -16px rgba(2, 6, 23, 0.28);
+  border-color: color-mix(in srgb, var(--color-primary, #0A58CA) 40%, transparent);
+}
+
+.vitrine-card {
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 10px 30px -14px rgba(2, 6, 23, 0.14);
+}
+/* Masquer la barre de défilement horizontale des carrousels (clarinet moderne) */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

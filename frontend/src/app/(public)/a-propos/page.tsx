@@ -112,14 +112,16 @@ export default function AProposPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: "L'ARD Ziguinchor" }]} />
           </div>
 
           <div className="max-w-3xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
               Institution Publique Territoriale
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
@@ -133,7 +135,7 @@ export default function AProposPage() {
           </div>
 
           {/* Sous-navigation rapide d'ancres */}
-          <div className="flex flex-wrap gap-2 pt-8 mt-8 border-t border-slate-800/80">
+          <div className="flex flex-wrap gap-2 pt-8 mt-8 border-t border-slate-700/60">
             {[
               { href: '#presentation', label: 'Présentation' },
               { href: '#missions', label: 'Nos Missions' },
@@ -144,7 +146,7 @@ export default function AProposPage() {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 text-slate-200 hover:bg-emerald-600 hover:text-white transition-colors border border-slate-700/80"
+                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white/10 text-slate-100 hover:bg-emerald-600 hover:text-white transition-colors border border-white/15"
               >
                 {link.label}
               </a>
@@ -356,7 +358,7 @@ export default function AProposPage() {
               {membres.map((m) => (
                 <div
                   key={m.id}
-                  className="bg-white rounded-2xl p-6 border border-slate-200/90 text-center hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all group flex flex-col justify-between"
+                  className="vitrine-card hover-lift rounded-2xl p-6 border-slate-200/90 text-center flex flex-col justify-between group"
                 >
                   <div>
                     <div className="w-24 h-24 rounded-full bg-slate-100 mx-auto mb-4 overflow-hidden border-2 border-slate-200 group-hover:border-emerald-500 transition-colors">

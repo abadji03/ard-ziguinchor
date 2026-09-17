@@ -56,37 +56,41 @@ export default function DepartementsPage() {
   return (
     <div className="bg-background min-h-screen">
       {/* Hero */}
-      <div className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="relative bg-primary-dark overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-90" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/60 via-transparent to-primary-dark" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <Breadcrumb
             items={[
               { label: 'La Région', href: '/la-region' },
               { label: 'Départements' },
             ]}
           />
-          <SectionTitle
-            title="Les Départements"
-            subtitle={`La région de Ziguinchor est divisée en 3 départements, ${totalArrondissements} arrondissements et ${totalCommunes} communes`}
-            className="mt-4 mb-0 [&_h2]:text-white [&_p]:text-blue-100"
-          />
+          <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <SectionTitle
+              title="Les Départements"
+              subtitle={`La région de Ziguinchor est divisée en 3 départements, ${totalArrondissements} arrondissements et ${totalCommunes} communes`}
+              className="mb-0 [&_h2]:text-white [&_p]:text-blue-100"
+            />
+          </div>
         </div>
       </div>
 
       {/* Stats rapides */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-3xl font-bold text-primary">3</div>
-              <div className="text-sm text-gray-500 mt-1">Départements</div>
+      <div className="relative -mt-8 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <div className="vitrine-card hover-lift text-center px-3 py-5">
+              <div className="text-3xl font-black text-primary">3</div>
+              <div className="text-xs sm:text-sm text-gray-500 mt-1">Départements</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-primary">{totalArrondissements}</div>
-              <div className="text-sm text-gray-500 mt-1">Arrondissements</div>
+            <div className="vitrine-card hover-lift text-center px-3 py-5">
+              <div className="text-3xl font-black text-primary">{totalArrondissements}</div>
+              <div className="text-xs sm:text-sm text-gray-500 mt-1">Arrondissements</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-primary">{totalCommunes}</div>
-              <div className="text-sm text-gray-500 mt-1">Communes</div>
+            <div className="vitrine-card hover-lift text-center px-3 py-5">
+              <div className="text-3xl font-black text-primary">{totalCommunes}</div>
+              <div className="text-xs sm:text-sm text-gray-500 mt-1">Communes</div>
             </div>
           </div>
         </div>
@@ -106,7 +110,7 @@ export default function DepartementsPage() {
               <Link
                 key={dep.id}
                 href={`/la-region/departements/${dep.id}`}
-                className={cn('rounded-2xl border-l-4 overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow block', colors.border, colors.bg)}
+                className={cn('vitrine-card hover-lift rounded-2xl border-l-4 overflow-hidden block', colors.border, colors.bg)}
               >
                 {dep.image && (
                   <div className="relative h-56 w-full bg-gray-100">
@@ -122,7 +126,7 @@ export default function DepartementsPage() {
                 <div className="p-6 md:p-8">
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-xl bg-white/70 border border-slate-100 shadow-sm flex items-center justify-center">
                         <Building2 className="h-6 w-6 text-primary" />
                       </div>
                       <div>
@@ -139,7 +143,7 @@ export default function DepartementsPage() {
                   </div>
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                    <div className="rounded-xl p-4 text-center bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
                       <div className="text-xl font-bold text-primary">{dep.superficie?.toLocaleString('fr-FR') ?? '—'}</div>
                       <div className="text-xs text-gray-500 mt-1">km²</div>
                     </div>

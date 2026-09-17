@@ -24,7 +24,14 @@ export const authService = {
   getCurrentUser: (): User | null => {
     if (typeof window === 'undefined') return null;
     const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    if (!user) return null;
+    try {
+      return JSON.parse(user) as User;
+    } catch {
+      // Valeur corrompue dans le localStorage : on nettoie et on ignore.
+      localStorage.removeItem('user');
+      return null;
+    }
   },
 
   isAuthenticated: (): boolean => {

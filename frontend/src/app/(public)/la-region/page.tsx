@@ -87,14 +87,16 @@ export default function LaRegionPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
-      <div className="bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
+      <div className="relative bg-primary-dark text-white border-b border-slate-800 overflow-hidden">
+        <div className="absolute inset-0 hero-pattern opacity-80" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/50 via-transparent to-primary-dark/80" aria-hidden="true" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-8 pb-14 md:pt-12 md:pb-16">
           <div className="text-slate-400 mb-4">
             <Breadcrumb items={[{ label: 'La Région de Ziguinchor' }]} />
           </div>
 
           <div className="max-w-3xl">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/30 mb-3">
+            <span className="inline-block text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/30 mb-3">
               Territoire & Géographie
             </span>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
@@ -110,15 +112,15 @@ export default function LaRegionPage() {
       </div>
 
       {/* Bandeau Chiffres Clés Territoriaux */}
-      <div className="bg-white border-b border-slate-200/80 py-8">
+      <div className="relative -mt-6 z-10 pb-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {CHIFFRES.map((c) => {
               const Icon = c.icon;
               return (
-                <div key={c.label} className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-center mb-3">
-                    <Icon className="h-5 w-5 text-emerald-700" />
+                <div key={c.label} className="vitrine-card hover-lift p-4">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-3">
+                    <Icon className="h-5 w-5 text-primary" />
                   </div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 leading-none">
                     {c.valeur}{' '}
@@ -266,10 +268,10 @@ export default function LaRegionPage() {
             {POTENTIELS.map((item) => (
               <div
                 key={item.titre}
-                className="bg-white rounded-2xl p-6 border border-slate-200/90 hover:border-slate-300 hover:shadow-md transition-all flex flex-col justify-between"
+                className="vitrine-card hover-lift p-6 flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-4">
                     {item.icon}
                   </div>
                   <h3 className="font-bold text-slate-900 text-base mb-2">{item.titre}</h3>
