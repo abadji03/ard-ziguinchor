@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import api from '@/lib/api';
 import type { ParametreSite, ChiffreCle } from '@/types';
+import { ContenusSection } from './ContenusSection';
 
 // ─── Schéma paramètres généraux ─────────────────────────────────────────────
 
@@ -400,6 +401,9 @@ export default function AdminParametresPage() {
 
       {/* Chiffres clés — section indépendante, pas dans le form principal */}
       <ChiffresSection />
+
+      {/* Contenus éditoriaux — textes et listes des pages publiques */}
+      <ContenusSection />
     </div>
   );
 }

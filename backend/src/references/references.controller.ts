@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { ReferencesService } from './references.service';
@@ -691,7 +692,61 @@ export class ReferencesController {
     return this.referencesService.removeReseauSocial(id);
   }
 
-  // ─── Paramètres du site ─────────────────────────────────────────────────────
+  // ── Contenus éditoriaux ────────────────────────────────────────────────────
+
+  @Public()
+  @Get('contenus-editoriaux')
+  @ApiOperation({
+    summary:
+      'Liste des contenus éditoriaux (filtrable par type, section ; includeInactifs=true pour l’admin)',
+  })
+  findAllContenusEditoriaux(
+    @Query('type') type?: string,
+    @Query('section') section?: string,
+    @Query('includeInactifs') includeInactifs?: string,
+  ) {
+    return this.referencesService.findAllContenusEditoriaux({
+      type,
+      section,
+      includeInactifs: includeInactifs === 'true',
+    });
+  }
+
+  @Public()
+  @Get('contenus-editoriaux/:id')
+  @ApiOperation({ summary: "Détail d'un contenu éditorial" })
+  findOneContenuEditorial(@Param('id') id: string) {
+    return this.referencesService.findOneContenuEditorial(id);
+  }
+
+  @Post('contenus-editoriaux')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Créer un contenu éditorial' })
+  createContenuEditorial(@Body() data: Record<string, unknown>) {
+    return this.referencesService.createContenuEditorial(data);
+  }
+
+  @Patch('contenus-editoriaux/:id')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Modifier un contenu éditorial' })
+  updateContenuEditorial(
+    @Param('id') id: string,
+    @Body() data: Record<string, unknown>,
+  ) {
+    return this.referencesService.updateContenuEditorial(id, data);
+  }
+
+  @Delete('contenus-editoriaux/:id')
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Supprimer un contenu éditorial' })
+  removeContenuEditorial(@Param('id') id: string) {
+    return this.referencesService.removeContenuEditorial(id);
+  }
+
+  // ── Paramètres du site ─────────────────────────────────────────────────────
 
   @Public()
   @Get('parametres-site')

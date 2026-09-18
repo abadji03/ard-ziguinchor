@@ -629,6 +629,52 @@ export class ReferencesService {
     return this.prisma.reseauSocial.delete({ where: { id } });
   }
 
+  // ─── Contenus éditoriaux ───────────────────────────────────────────────────
+  // Textes et listes affichés sur le site, gérés depuis Paramètres (admin).
+  // `type` = nature du bloc, `section` = page/emplacement qui le consomme.
+
+  async findAllContenusEditoriaux(params?: {
+    type?: string;
+    section?: string;
+    includeInactifs?: boolean;
+  }) {
+    return this.prisma.contenuEditorial.findMany({
+      where: {
+        ...(params?.type ? { type: params.type } : {}),
+        ...(params?.section ? { section: params.section } : {}),
+        ...(params?.includeInactifs ? {} : { actif: true }),
+      },
+      orderBy: [{ ordre: 'asc' }, { titre: 'asc' }],
+    });
+  }
+
+  async findOneContenuEditorial(id: string) {
+    const item = await this.prisma.contenuEditorial.findUnique({
+      where: { id },
+    });
+    if (!item)
+      throw new NotFoundException(`Contenu éditorial #${id} introuvable`);
+    return item;
+  }
+
+  async createContenuEditorial(data: Record<string, unknown>) {
+    return this.prisma.contenuEditorial.create({
+      data: data as Parameters<
+        typeof this.prisma.contenuEditorial.create
+      >[0]['data'],
+    });
+  }
+
+  async updateContenuEditorial(id: string, data: Record<string, unknown>) {
+    await this.findOneContenuEditorial(id);
+    return this.prisma.contenuEditorial.update({ where: { id }, data });
+  }
+
+  async removeContenuEditorial(id: string) {
+    await this.findOneContenuEditorial(id);
+    return this.prisma.contenuEditorial.delete({ where: { id } });
+  }
+
   // ─── Paramètres du site ─────────────────────────────────────────────────────
 
   async findParametresSite() {

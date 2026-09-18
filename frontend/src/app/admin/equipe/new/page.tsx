@@ -15,7 +15,7 @@ import { ImageUpload } from '@/components/ui/ImageUpload';
 import { adminMembres } from '@/services/admin.service';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { Select } from '@/components/ui/Select';
-import { DIRECTIONS_ARD } from '@/lib/directions';
+import { useDirectionsArd } from '@/hooks/useContenus';
 
 const schema = z.object({
   nom:       z.string().min(2, 'Nom requis'),
@@ -33,6 +33,7 @@ type FormData = z.infer<typeof schema>;
 export default function NewMembrePage() {
   const router = useRouter();
   const qc     = useQueryClient();
+  const directions = useDirectionsArd();
 
   const { register, handleSubmit, watch, setValue, control, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -75,7 +76,7 @@ export default function NewMembrePage() {
             <Input label="Fonction / Poste" {...register('fonction')} error={errors.fonction?.message} required />
             <Select
               label="Direction rattachée"
-              options={DIRECTIONS_ARD.map((d) => ({ value: d.value, label: d.label }))}
+              options={directions.map((d) => ({ value: d.value, label: d.label }))}
               {...register('direction')}
               placeholder="Non renseignée"
             />

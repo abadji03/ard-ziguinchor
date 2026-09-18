@@ -26,6 +26,8 @@ import { ReferencesModule } from './references/references.module';
 import { ContactModule } from './contact/contact.module';
 import { UsersModule } from './users/users.module';
 import { AuditModule } from './audit/audit.module';
+import { ContenusModule } from './contenus/contenus.module';
+
 
 @Module({
   imports: [
@@ -54,6 +56,7 @@ import { AuditModule } from './audit/audit.module';
     EmailModule,
     ReferencesModule,
     ContactModule,
+    ContenusModule,
   ],
   controllers: [AppController],
   providers: [AppService],

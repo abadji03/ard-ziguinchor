@@ -1,58 +1,68 @@
 'use client';
 
 import Link from 'next/link';
-import { Map, Building2, FolderOpen, ArrowRight, FileText, DownloadCloud, ShieldCheck } from 'lucide-react';
+import { ArrowRight, DownloadCloud } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { useContenusSection } from '@/hooks/useContenus';
+import { blocsOu, type BlocVue } from '@/lib/contenus';
+import { ContenuIcon, resolveContenuCouleur } from '@/lib/contenu-icons';
 
-const CATEGORIES = [
+/**
+ * Repli utilisé uniquement si aucun bloc `CATEGORIE_DOC` n'est défini en base
+ * (Admin → Paramètres → Contenus & textes → Catégorie documentaire).
+ */
+const CATEGORIES: BlocVue[] = [
   {
-    title: 'Planification Régionale (SRAT / PRD)',
+    titre: 'Planification Régionale (SRAT / PRD)',
     description:
       'Documents cadres et schémas régionaux d’aménagement du territoire, diagnostics prospectifs et plans directeurs sectoriels.',
-    href: '/documentation/planification-regionale',
-    icon: Map,
-    badge: 'Niveau Régional',
-    color: 'emerald',
+    lien: '/documentation/planification-regionale',
+    icone: 'Map',
+    sousTitre: 'Niveau Régional',
+    couleur: 'emerald',
   },
   {
-    title: 'Planification Territoriale (PDC / PDD / SDADT)',
+    titre: 'Planification Territoriale (PDC / PDD / SDADT)',
     description:
       'Plans de Développement Communaux (PDC) des 30 communes, Plans Départementaux de Développement (PDD) et schémas d’aménagement (SDADT/SCADT).',
-    href: '/documentation/planification-territoriale',
-    icon: Building2,
-    badge: '30 Communes & 3 Départements',
-    color: 'amber',
+    lien: '/documentation/planification-territoriale',
+    icone: 'Building2',
+    sousTitre: '30 Communes & 3 Départements',
+    couleur: 'amber',
   },
   {
-    title: 'Urbanisme & Aménagement',
+    titre: 'Urbanisme & Aménagement',
     description:
       'PCU/PCUI, PUPA, PAZ, plans de lotissement et POAS : documents d’urbanisme issus du Code de l’urbanisme de 2023.',
-    href: '/documentation/urbanisme-amenagement',
-    icon: Map,
-    badge: 'Code de l’urbanisme 2023',
-    color: 'blue',
+    lien: '/documentation/urbanisme-amenagement',
+    icone: 'Map',
+    sousTitre: 'Code de l’urbanisme 2023',
+    couleur: 'blue',
   },
   {
-    title: 'Archives Historiques de Planification',
+    titre: 'Archives Historiques de Planification',
     description:
       'SRAT, PRDI, PIC, PLD, PAR, PVD, PZD : les instruments antérieurs à l’Acte III, conservés à titre d’archive.',
-    href: '/documentation/archives-historiques',
-    icon: FolderOpen,
-    badge: 'Instruments antérieurs',
-    color: 'blue',
+    lien: '/documentation/archives-historiques',
+    icone: 'FolderOpen',
+    sousTitre: 'Instruments antérieurs',
+    couleur: 'slate',
   },
   {
-    title: 'Rapports, Études & Guides Techniques',
+    titre: 'Rapports, Études & Guides Techniques',
     description:
       'Études socio-économiques, bilans d’exécution, guides méthodologiques de gestion municipale et manuels de procédures.',
-    href: '/documentation/autres',
-    icon: FolderOpen,
-    badge: 'Publications Spécialisées',
-    color: 'blue',
+    lien: '/documentation/autres',
+    icone: 'FileText',
+    sousTitre: 'Publications Spécialisées',
+    couleur: 'blue',
   },
 ];
 
 export default function DocumentationPage() {
+  const { data } = useContenusSection('documentation');
+  const categories = blocsOu(CATEGORIES, data?.CATEGORIE_DOC);
+
   return (
     <div className="bg-slate-50 min-h-screen">
       {/* En-tête Institutionnel */}
@@ -81,23 +91,27 @@ export default function DocumentationPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {CATEGORIES.map((cat) => {
-            const Icon = cat.icon;
+          {categories.map((cat, i) => {
+            const coul = resolveContenuCouleur(cat.couleur);
             return (
-              <Link key={cat.href} href={cat.href} className="group">
+              <Link key={cat.lien || i} href={cat.lien || '#'} className="group">
                 <div className="vitrine-card hover-lift rounded-2xl p-6 sm:p-7 border-slate-200/90 flex flex-col justify-between h-full">
                   <div>
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
-                        <Icon className="h-6 w-6" />
+                      <div
+                        className={`w-12 h-12 rounded-xl ${coul.bg} ${coul.text} flex items-center justify-center transition-colors`}
+                      >
+                        <ContenuIcon nom={cat.icone} className="h-6 w-6" />
                       </div>
-                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                        {cat.badge}
-                      </span>
+                      {cat.sousTitre ? (
+                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                          {cat.sousTitre}
+                        </span>
+                      ) : null}
                     </div>
 
                     <h2 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors mb-2 leading-snug">
-                      {cat.title}
+                      {cat.titre}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                       {cat.description}

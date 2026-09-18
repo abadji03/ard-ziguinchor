@@ -391,6 +391,36 @@ export interface Banniere {
 }
 
 // ============================================
+// CONTENUS ÉDITORIAUX
+// Textes et listes affichés sur le site, pilotés depuis l'admin (Paramètres).
+// ============================================
+
+export interface ContenuEditorial {
+  id: string;
+  /** Nature du bloc : ORGANE, MISSION, AXE, JALON, POTENTIEL, SOUS_PAGE, CATEGORIE_DOC, DIRECTION, LIEN_SITE… */
+  type: string;
+  /** Page ou emplacement qui consomme le bloc : accueil, a-propos, la-region, documentation… */
+  section?: string | null;
+  titre: string;
+  sousTitre?: string | null;
+  description?: string | null;
+  /** Nom d'icône Lucide (ex. "Target") ou emoji. */
+  icone?: string | null;
+  couleur?: string | null;
+  /** Lien de destination (sous-pages, liens utiles). */
+  lien?: string | null;
+  ordre: number;
+  actif: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type ContenuFormData = Omit<
+  ContenuEditorial,
+  'id' | 'createdAt' | 'updatedAt'
+>;
+
+// ============================================
 // PARAMÈTRES DU SITE
 // ============================================
 

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Map, Users, TreePine, Building2, ArrowRight, Compass, Waves, Sun, Sparkles } from 'lucide-react';
+import { ArrowRight, Compass } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { RegionDepartements } from '@/components/features/region/RegionDepartements';
+import { RegionChiffres, RegionPotentiels, RegionSousPages } from './RegionContenus';
 
 export const metadata: Metadata = {
   title: 'La Région de Ziguinchor | Territoire et Potentialités',
@@ -10,79 +11,11 @@ export const metadata: Metadata = {
     'Découvrez la région de Ziguinchor : ses 3 départements, 30 communes, données démographiques et cartographie interactive.',
 };
 
-const CHIFFRES = [
-  { valeur: '7 329', unite: 'km²', label: 'Superficie régionale', icon: Map },
-  { valeur: '617 567', unite: 'hab.', label: 'Estimation ANSD 2023', icon: Users },
-  { valeur: '3', unite: 'Départements', label: 'Ziguinchor, Bignona, Oussouye', icon: Building2 },
-  { valeur: '116 776', unite: 'ha', label: 'Domaine forestier classé (30 massifs)', icon: TreePine },
-];
-
-const SOUS_PAGES = [
-  {
-    href: '/la-region/departements',
-    titre: 'Départements',
-    description:
-      'Les spécificités démographiques et économiques des départements de Ziguinchor, Bignona et Oussouye.',
-    icon: Building2,
-    badge: '3 Départements',
-  },
-  {
-    href: '/la-region/communes',
-    titre: 'Communes & Arrondissements',
-    description:
-      "Annuaire complet des 30 communes de la région, leurs coordonnées administratives et maires.",
-    icon: Users,
-    badge: '30 Communes',
-  },
-  {
-    href: '/la-region/cartographie',
-    titre: 'Système d’Information Géographique (SIG)',
-    description:
-      'Visualisez en direct la répartition spatiale des investissements et infrastructures.',
-    icon: Compass,
-    badge: 'Cartes Interactives',
-  },
-];
-
-const POTENTIELS = [
-  {
-    titre: 'Agriculture & Pêche',
-    description:
-      "Premières activités régionales : la production de riz a atteint 229 825 tonnes en 2022-2023 (ANSD) et les débarquements de la pêche artisanale 82 576,9 tonnes en 2023, valorisés à 39,4 milliards de FCFA.",
-    icon: <Sparkles className="h-6 w-6 text-emerald-600" />,
-  },
-  {
-    titre: 'Écotourisme & Patrimoine',
-    description:
-      "26 841 arrivées de touristes en 2023 (contre 11 355 en 2020) et 177 réceptifs hôteliers : la façade maritime, l'embouchure du fleuve Casamance et les atouts culturels portent une filière en forte croissance (ANSD 2023).",
-    icon: <Waves className="h-6 w-6 text-blue-600" />,
-  },
-  {
-    titre: 'Forêt & Biodiversité',
-    description:
-      "Le domaine forestier classé couvre 116 776,3 hectares répartis dans 30 forêts classées : 20 massifs dans le département de Bignona (100 405,3 ha), 6 à Oussouye (6 469 ha) et 4 à Ziguinchor (9 902 ha).",
-    icon: <TreePine className="h-6 w-6 text-emerald-700" />,
-  },
-  {
-    titre: 'Carrefour Transfrontalier',
-    description:
-      "Limitrophe de la Gambie et de la Guinée-Bissau, la région est ouverte sur l'océan Atlantique et reliée à Kolda et Sédhiou à l'est.",
-    icon: <Compass className="h-6 w-6 text-amber-600" />,
-  },
-  {
-    titre: 'Commerce & Services',
-    description:
-      "Le RGE 2015 (ANSD) recensait 15 743 unités économiques dans la région, dont 54,8 % dans le commerce et 63,1 % concentrées dans le département de Ziguinchor.",
-    icon: <Sun className="h-6 w-6 text-amber-500" />,
-  },
-  {
-    titre: 'Eau, Fleuve et Littoral',
-    description:
-      "Avec une façade maritime de 85 km, le fleuve Casamance (environ 300 km) et ses bolongs constituent des ressources territoriales structurantes pour la riziculture, la pêche et l'aquaculture.",
-    icon: <Building2 className="h-6 w-6 text-purple-600" />,
-  },
-];
-
+/**
+ * Les chiffres clés (CHIFFRE), les cartes de navigation (SOUS_PAGE) et les
+ * pôles de compétitivité (POTENTIEL) sont désormais pilotés depuis
+ * Admin -> Paramètres -> Contenus & textes (voir `RegionContenus.tsx`).
+ */
 export default function LaRegionPage() {
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -112,27 +45,7 @@ export default function LaRegionPage() {
       </div>
 
       {/* Bandeau Chiffres Clés Territoriaux */}
-      <div className="relative -mt-6 z-10 pb-2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {CHIFFRES.map((c) => {
-              const Icon = c.icon;
-              return (
-                <div key={c.label} className="vitrine-card hover-lift p-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-3">
-                    <Icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="text-2xl sm:text-3xl font-black text-slate-900 leading-none">
-                    {c.valeur}{' '}
-                    {c.unite && <span className="text-xs font-bold text-slate-500">{c.unite}</span>}
-                  </div>
-                  <div className="text-xs font-semibold text-slate-600 mt-2">{c.label}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <RegionChiffres />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 space-y-16">
         {/* Section 1 : Portrait géographique */}
@@ -218,39 +131,7 @@ export default function LaRegionPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {SOUS_PAGES.map((p) => {
-              const Icon = p.icon;
-              return (
-                <Link
-                  key={p.href}
-                  href={p.href}
-                  className="group bg-white rounded-2xl border border-slate-200/90 p-6 hover:border-emerald-500/60 hover:shadow-xl hover:shadow-slate-900/5 transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">
-                        {p.badge}
-                      </span>
-                    </div>
-
-                    <h3 className="font-bold text-base text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors">
-                      {p.titre}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{p.description}</p>
-                  </div>
-
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex items-center gap-1 text-xs font-bold text-emerald-700 group-hover:text-emerald-800">
-                    <span>Accéder à la section</span>
-                    <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <RegionSousPages />
         </section>
 
         {/* Section 4 : Potentiels économiques et naturels */}
@@ -264,24 +145,7 @@ export default function LaRegionPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {POTENTIELS.map((item) => (
-              <div
-                key={item.titre}
-                className="vitrine-card hover-lift p-6 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/10 flex items-center justify-center mb-4">
-                    {item.icon}
-                  </div>
-                  <h3 className="font-bold text-slate-900 text-base mb-2">{item.titre}</h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <RegionPotentiels />
         </section>
       </div>
     </div>

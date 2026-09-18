@@ -8,8 +8,13 @@ export default defineConfig({
   migrations: {
     path: "prisma/migrations",
     // Seed exécuté par `prisma db seed` (Prisma 7 : configuration ici,
-    // et non plus dans package.json)
-    seed: "npx ts-node prisma/seed.ts",
+    // et non plus dans package.json).
+    //
+    // Deux étapes, toutes deux idempotentes :
+    //   1. seed.ts            → référentiel territorial, secteurs, paramètres…
+    //   2. seed-contenus.ts   → contenus éditoriaux (textes, listes, directions)
+    //      modifiables ensuite dans Admin → Paramètres → Contenus & textes.
+    seed: "npx ts-node prisma/seed.ts && npx ts-node prisma/seed-contenus.ts",
   },
   datasource: {
     url: process.env["DATABASE_URL"],

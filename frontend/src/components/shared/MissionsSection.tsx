@@ -1,40 +1,61 @@
 'use client';
 
 import Link from 'next/link';
-import { Target, Users, BarChart3, Handshake, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useContenusSection } from '@/hooks/useContenus';
+import { blocsOu, type BlocVue } from '@/lib/contenus';
+import { ContenuIcon, resolveContenuCouleur } from '@/lib/contenu-icons';
 
-const MISSIONS = [
+/**
+ * Missions / axes stratégiques.
+ *
+ * Les blocs affichés proviennent de la base (section « accueil », type
+ * `MISSION`) et sont modifiables depuis Admin → Paramètres → Contenus &
+ * textes. Le tableau ci-dessous n'est qu'un repli si la base est vide.
+ */
+const MISSIONS_DEFAUT: BlocVue[] = [
   {
-    icon: <Target className="h-6 w-6" />,
-    badge: 'Axe 01',
+    icone: 'Target',
+    sousTitre: 'Axe 01',
     titre: 'Planification Territoriale',
-    desc: "Appui à l'élaboration, la révision et la cohérence des Schémas Régionaux d'Aménagement du Territoire (SRAT), Plans Départementaux et Communaux de Développement (PCD).",
-    color: 'emerald',
+    description:
+      "Appui à l'élaboration, la révision et la cohérence des Schémas Régionaux d'Aménagement du Territoire (SRAT), Plans Départementaux et Communaux de Développement (PCD).",
+    couleur: 'emerald',
+    lien: '/a-propos',
   },
   {
-    icon: <Users className="h-6 w-6" />,
-    badge: 'Axe 02',
+    icone: 'Users',
+    sousTitre: 'Axe 02',
     titre: 'Renforcement des Capacités',
-    desc: "Formation continue, ingénierie administrative et assistance technique aux élus locaux, agents territoriaux et commissions de passation des marchés.",
-    color: 'amber',
+    description:
+      "Formation continue, ingénierie administrative et assistance technique aux élus locaux, agents territoriaux et commissions de passation des marchés.",
+    couleur: 'amber',
+    lien: '/a-propos',
   },
   {
-    icon: <BarChart3 className="h-6 w-6" />,
-    badge: 'Axe 03',
+    icone: 'BarChart3',
+    sousTitre: 'Axe 03',
     titre: 'Mobilisation des Financements',
-    desc: "Montage de dossiers bancables, recherche de partenariats techniques et financiers (PTF) nationaux et internationaux, et cofinancement de projets d'intérêt régional.",
-    color: 'blue',
+    description:
+      "Montage de dossiers bancables, recherche de partenariats techniques et financiers (PTF) nationaux et internationaux, et cofinancement de projets d'intérêt régional.",
+    couleur: 'blue',
+    lien: '/a-propos',
   },
   {
-    icon: <Handshake className="h-6 w-6" />,
-    badge: 'Axe 04',
+    icone: 'Handshake',
+    sousTitre: 'Axe 04',
     titre: 'Concertation & Synergie',
-    desc: "Animation du dialogue territorial entre l'Administration centrale, les collectivités territoriales, la société civile et le secteur privé pour une convergence des actions.",
-    color: 'purple',
+    description:
+      "Animation du dialogue territorial entre l'Administration centrale, les collectivités territoriales, la société civile et le secteur privé pour une convergence des actions.",
+    couleur: 'purple',
+    lien: '/a-propos',
   },
 ];
 
 export function MissionsSection() {
+  const { data } = useContenusSection('accueil');
+  const missions = blocsOu(MISSIONS_DEFAUT, data?.MISSION);
+
   return (
     <section className="py-16 md:py-24 bg-slate-50 border-b border-slate-200/80" aria-label="Nos missions">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -61,34 +82,42 @@ export function MissionsSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {MISSIONS.map((m, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all flex flex-col justify-between group"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-700 group-hover:text-white transition-colors">
-                    {m.icon}
+          {missions.map((m, i) => {
+            const coul = resolveContenuCouleur(m.couleur);
+            return (
+              <Link
+                key={i}
+                href={m.lien || '/a-propos'}
+                className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-5">
+                    <div
+                      className={`w-12 h-12 rounded-xl border ${coul.bg} ${coul.text} ${coul.border} flex items-center justify-center group-hover:bg-emerald-700 group-hover:border-emerald-700 group-hover:text-white transition-colors`}
+                    >
+                      <ContenuIcon nom={m.icone} className="h-6 w-6" />
+                    </div>
+                    {m.sousTitre ? (
+                      <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover:bg-amber-100 group-hover:text-amber-800 transition-colors">
+                        {m.sousTitre}
+                      </span>
+                    ) : null}
                   </div>
-                  <span className="text-xs font-bold font-mono px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover:bg-amber-100 group-hover:text-amber-800 transition-colors">
-                    {m.badge}
-                  </span>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2.5 group-hover:text-emerald-800 transition-colors">
+                    {m.titre}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {m.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2.5 group-hover:text-emerald-800 transition-colors">
-                  {m.titre}
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {m.desc}
-                </p>
-              </div>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-700 group-hover:text-emerald-800">
-                <span>Découvrir ce pôle</span>
-                <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
-          ))}
+                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-700 group-hover:text-emerald-800">
+                  <span>Découvrir ce pôle</span>
+                  <ArrowRight className="h-3.5 w-3.5 transform group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

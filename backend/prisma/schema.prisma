@@ -768,6 +768,35 @@ model ReseauSocial {
 // PARAMÈTRES DU SITE
 // ============================================
 
+// ============================================
+// CONTENUS ÉDITORIAUX
+// Textes et listes éditoriales gérés depuis l'admin (Paramètres)
+// afin d'éviter toute modification de code pour un changement de contenu.
+// ============================================
+
+/// Bloc de contenu éditorial générique.
+/// `type` identifie la nature du bloc, `section` la page qui le consomme.
+/// Types utilisés : ORGANE, MISSION, AXE, JALON, POTENTIEL,
+///                  CATEGORIE_DOC, SOUS_PAGE, LIEN_SITE
+model ContenuEditorial {
+  id          String   @id @default(cuid())
+  type        String
+  section     String?
+  titre       String
+  sousTitre   String?
+  description String?  @db.Text
+  icone       String?
+  couleur     String?
+  lien        String?
+  ordre       Int      @default(0)
+  actif       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type, section, ordre])
+  @@map("contenus_editoriaux")
+}
+
 model ParametreSite {
   id                String   @id @default(cuid())
   nomSite           String   @default("ARD Ziguinchor")

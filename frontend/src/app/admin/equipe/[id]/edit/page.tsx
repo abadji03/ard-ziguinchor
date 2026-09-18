@@ -19,7 +19,7 @@ import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import api from '@/lib/api';
 import type { Membre } from '@/types';
 import { Select } from '@/components/ui/Select';
-import { DIRECTIONS_ARD } from '@/lib/directions';
+import { useDirectionsArd } from '@/hooks/useContenus';
 
 const schema = z.object({
   nom:       z.string().min(2, 'Nom requis'),
@@ -38,6 +38,7 @@ export default function EditMembrePage({ params }: { params: Promise<{ id: strin
   const { id } = use(params);
   const router = useRouter();
   const qc     = useQueryClient();
+  const directions = useDirectionsArd();
 
   const { data: membre, isLoading } = useQuery<Membre>({
     queryKey: ['membre-edit', id],
@@ -102,7 +103,7 @@ export default function EditMembrePage({ params }: { params: Promise<{ id: strin
             <Input label="Fonction / Poste" {...register('fonction')} error={errors.fonction?.message} required />
             <Select
               label="Direction rattachée"
-              options={DIRECTIONS_ARD.map((d) => ({ value: d.value, label: d.label }))}
+              options={directions.map((d) => ({ value: d.value, label: d.label }))}
               {...register('direction')}
               placeholder="Non renseignée"
             />

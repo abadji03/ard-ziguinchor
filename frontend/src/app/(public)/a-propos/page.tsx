@@ -6,100 +6,139 @@ import { useQueryData } from '@/hooks/useQueryData';
 import { referencesService } from '@/services/references.service';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { LoadingState } from '@/components/ui/Spinner';
-import {
-  Target,
-  Users,
-  BarChart3,
-  Handshake,
-  Landmark,
-  Network,
-  Cog,
-  FileText,
-  Building,
-  ShieldCheck,
-  ChevronRight,
-  Mail,
-} from 'lucide-react';
+import { Building, ShieldCheck, ChevronRight, Mail } from 'lucide-react';
+import { useContenusSection } from '@/hooks/useContenus';
+import { ContenuIcon } from '@/lib/contenu-icons';
+import { blocsOu, type BlocVue } from '@/lib/contenus';
 
-const ORGANISATION = [
+/**
+ * Replis codés en dur — utilisés uniquement si la base ne renvoie aucun bloc.
+ * En fonctionnement normal, ces listes sont pilotées depuis
+ * Admin → Paramètres → Contenus & textes (types ORGANE, MISSION, JALON).
+ */
+const FALLBACK_ORGANISATION: BlocVue[] = [
   {
-    icon: <Landmark className="h-6 w-6" />,
+    icone: 'Landmark',
     titre: "Conseil d'Administration",
-    desc: "Organe de délibération et de gouvernance suprême réunissant les représentants des départements et communes de Ziguinchor.",
-    role: 'Orientation & Contrôle',
+    sousTitre: 'Orientation & Contrôle',
+    description:
+      'Organe de délibération et de gouvernance suprême réunissant les représentants des départements et communes de Ziguinchor.',
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <Network className="h-6 w-6" />,
+    icone: 'Network',
     titre: 'Direction Générale',
-    desc: "Assure le management opérationnel, la coordination des pôles d'ingénierie et la représentation légale de l'Agence.",
-    role: 'Pilotage Opérationnel',
+    sousTitre: 'Pilotage Opérationnel',
+    description:
+      "Assure le management opérationnel, la coordination des pôles d'ingénierie et la représentation légale de l'Agence.",
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <Cog className="h-6 w-6" />,
+    icone: 'Cog',
     titre: 'Division Planification & Projets',
-    desc: "Assistance technique aux collectivités, élaboration des PCD/PDD/SRAT et suivi-évaluation des investissements physiques.",
-    role: 'Ingénierie de Développement',
+    sousTitre: 'Ingénierie de Développement',
+    description:
+      'Assistance technique aux collectivités, élaboration des PCD/PDD/SRAT et suivi-évaluation des investissements physiques.',
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <FileText className="h-6 w-6" />,
+    icone: 'FileText',
     titre: 'Division Administrative & Financière',
-    desc: "Supervision budgétaire, gestion des procédures de passation des marchés publics et ressources humaines.",
-    role: 'Gestion & Conformité',
+    sousTitre: 'Gestion & Conformité',
+    description:
+      'Supervision budgétaire, gestion des procédures de passation des marchés publics et ressources humaines.',
+    couleur: '',
+    lien: '',
   },
 ];
 
-const MISSIONS = [
+const FALLBACK_MISSIONS: BlocVue[] = [
   {
-    icon: <Target className="h-6 w-6" />,
-    num: '01',
+    icone: 'Target',
     titre: 'Planification Territoriale',
-    desc: "Appui à l'élaboration et à la révision des Schémas Régionaux (SRAT), Plans Départementaux (PDD) et Plans Communaux de Développement (PCD).",
+    sousTitre: '01',
+    description:
+      "Appui à l'élaboration et à la révision des Schémas Régionaux (SRAT), Plans Départementaux (PDD) et Plans Communaux de Développement (PCD).",
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <Users className="h-6 w-6" />,
-    num: '02',
+    icone: 'Users',
     titre: 'Renforcement des Capacités',
-    desc: 'Sessions de formation des élus locaux, perfectionnement des secrétaires municipaux et appui aux commissions techniques.',
+    sousTitre: '02',
+    description:
+      'Sessions de formation des élus locaux, perfectionnement des secrétaires municipaux et appui aux commissions techniques.',
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <BarChart3 className="h-6 w-6" />,
-    num: '03',
+    icone: 'BarChart3',
     titre: 'Mobilisation des Ressources',
-    desc: 'Structuration de dossiers bancables, négociation de financements avec les bailleurs et coopération décentralisée.',
+    sousTitre: '03',
+    description:
+      'Structuration de dossiers bancables, négociation de financements avec les bailleurs et coopération décentralisée.',
+    couleur: '',
+    lien: '',
   },
   {
-    icon: <Handshake className="h-6 w-6" />,
-    num: '04',
+    icone: 'Handshake',
     titre: 'Coordination & Concertation',
-    desc: 'Animation des cadres territoriaux de concertation, mise en réseau des acteurs et harmonisation des interventions en Casamance.',
+    sousTitre: '04',
+    description:
+      'Animation des cadres territoriaux de concertation, mise en réseau des acteurs et harmonisation des interventions en Casamance.',
+    couleur: '',
+    lien: '',
   },
 ];
 
-const TIMELINE = [
+const FALLBACK_TIMELINE: BlocVue[] = [
   {
-    annee: '2001',
+    icone: '',
     titre: "Décret Fondateur de l'ARD",
-    desc: "Création des Agences Régionales de Développement au Sénégal pour opérationnaliser la décentralisation en Casamance.",
+    sousTitre: '2001',
+    description:
+      "Création des Agences Régionales de Développement au Sénégal pour opérationnaliser la décentralisation en Casamance.",
+    couleur: '',
+    lien: '',
   },
   {
-    annee: '2008',
+    icone: '',
     titre: 'Généralisation des PCD',
-    desc: 'Accompagnement de l’ensemble des communes de la région dans l’adoption de leurs premiers plans de développement.',
+    sousTitre: '2008',
+    description:
+      'Accompagnement de l’ensemble des communes de la région dans l’adoption de leurs premiers plans de développement.',
+    couleur: '',
+    lien: '',
   },
   {
-    annee: '2014',
+    icone: '',
     titre: 'Mise en œuvre de l’Acte III',
-    desc: 'Refonte institutionnelle suite à la communalisation intégrale et à la départementalisation au Sénégal.',
+    sousTitre: '2014',
+    description:
+      'Refonte institutionnelle suite à la communalisation intégrale et à la départementalisation au Sénégal.',
+    couleur: '',
+    lien: '',
   },
   {
-    annee: '2019',
+    icone: '',
     titre: 'Observatoire Territorial & SIG',
-    desc: 'Mise en place d’un Système d’Information Géographique régional et publication des premières banques de données.',
+    sousTitre: '2019',
+    description:
+      'Mise en place d’un Système d’Information Géographique régional et publication des premières banques de données.',
+    couleur: '',
+    lien: '',
   },
   {
-    annee: '2024',
+    icone: '',
     titre: 'Cap Vision Sénégal 2050',
-    desc: 'Alignement stratégique sur les pôles territoriaux de développement et l’industrialisation agro-écologique de la Casamance.',
+    sousTitre: '2024',
+    description:
+      'Alignement stratégique sur les pôles territoriaux de développement et l’industrialisation agro-écologique de la Casamance.',
+    couleur: '',
+    lien: '',
   },
 ];
 
@@ -108,6 +147,28 @@ export default function AProposPage() {
     ['membres'],
     () => referencesService.getMembres()
   );
+  // Blocs éditoriaux pilotés depuis Admin → Paramètres → Contenus & textes.
+  const { data: contenus } = useContenusSection('a-propos');
+
+  const organisation = blocsOu(FALLBACK_ORGANISATION, contenus?.ORGANE).map((b) => ({
+    titre: b.titre,
+    role: b.sousTitre,
+    desc: b.description,
+    icon: <ContenuIcon nom={b.icone} className="h-6 w-6" />,
+  }));
+
+  const missions = blocsOu(FALLBACK_MISSIONS, contenus?.MISSION).map((b) => ({
+    num: b.sousTitre,
+    titre: b.titre,
+    desc: b.description,
+    icon: <ContenuIcon nom={b.icone} className="h-6 w-6" />,
+  }));
+
+  const timeline = blocsOu(FALLBACK_TIMELINE, contenus?.JALON).map((b) => ({
+    annee: b.sousTitre,
+    titre: b.titre,
+    desc: b.description,
+  }));
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -235,7 +296,7 @@ export default function AProposPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {MISSIONS.map((m) => (
+            {missions.map((m) => (
               <div
                 key={m.num}
                 className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 hover:border-emerald-500/50 hover:shadow-xl hover:shadow-slate-900/5 transition-all group flex flex-col justify-between"
@@ -276,7 +337,7 @@ export default function AProposPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ORGANISATION.map((org) => (
+            {organisation.map((org) => (
               <div
                 key={org.titre}
                 className="bg-slate-50/70 rounded-2xl p-6 border border-slate-200 hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all"
@@ -308,7 +369,7 @@ export default function AProposPage() {
           </div>
 
           <div className="relative border-l-2 border-emerald-300/60 ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-8">
-            {TIMELINE.map((item, idx) => (
+            {timeline.map((item, idx) => (
               <div key={idx} className="relative group">
                 <div className="absolute -left-[33px] sm:-left-[41px] top-1 w-5 h-5 rounded-full bg-white border-4 border-emerald-600 shadow-sm group-hover:scale-125 transition-transform" />
                 <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-all">

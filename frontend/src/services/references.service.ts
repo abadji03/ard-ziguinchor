@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import type { ChiffreCle, Banniere, Membre, Departement, Arrondissement, Commune, Faq, Secteur } from '@/types';
+import type { ChiffreCle, Banniere, Membre, Departement, Arrondissement, Commune, Faq, Secteur, ContenuEditorial } from '@/types';
 
 export const referencesService = {
   getChiffresCles: async (): Promise<ChiffreCle[]> => {
@@ -73,5 +73,59 @@ export const referencesService = {
   getFaqs: async (): Promise<Faq[]> => {
     const { data } = await api.get('/faq');
     return data.data ?? data;
+  },
+
+  /**
+   * Contenus éditoriaux (textes/listes pilotés depuis Paramètres).
+   * @param includeInactifs réservé à l'admin (affiche aussi les blocs masqués)
+   */
+  getContenusEditoriaux: async (params?: {
+    type?: string;
+    section?: string;
+    includeInactifs?: boolean;
+  }): Promise<ContenuEditorial[]> => {
+    const { data } = await api.get('/contenus', {
+      params: {
+        limit: 200,
+        ...(params?.type ? { type: params.type } : {}),
+        ...(params?.section ? { section: params.section } : {}),
+        // Côté admin on veut aussi les blocs masqués (actif = false).
+        ...(params?.includeInactifs ? { includeInactifs: 'true' } : {}),
+      },
+    });
+    return data.data ?? data;
+  },
+
+  /** Blocs actifs d'une page, regroupés par type (usage public). */
+  getContenusSection: async (
+    section: string,
+  ): Promise<Record<string, ContenuEditorial[]>> => {
+    const { data } = await api.get(`/contenus/section/${section}`);
+    return data;
+  },
+
+  /** Blocs actifs d'un type (ex. DIRECTIONS pour un select de formulaire). */
+  getContenusByType: async (type: string): Promise<ContenuEditorial[]> => {
+    const { data } = await api.get(`/contenus/type/${type}`);
+    return data;
+  },
+
+  createContenuEditorial: async (
+    data: Partial<ContenuEditorial>,
+  ): Promise<ContenuEditorial> => {
+    const res = await api.post('/contenus', data);
+    return res.data;
+  },
+
+  updateContenuEditorial: async (
+    id: string,
+    data: Partial<ContenuEditorial>,
+  ): Promise<ContenuEditorial> => {
+    const res = await api.patch(`/contenus/${id}`, data);
+    return res.data;
+  },
+
+  deleteContenuEditorial: async (id: string): Promise<void> => {
+    await api.delete(`/contenus/${id}`);
   },
 };
