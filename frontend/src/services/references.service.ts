@@ -86,7 +86,7 @@ export const referencesService = {
   }): Promise<ContenuEditorial[]> => {
     const { data } = await api.get('/contenus', {
       params: {
-        limit: 200,
+        limit: 100, // max accepté par le backend (ValidationPipe)
         ...(params?.type ? { type: params.type } : {}),
         ...(params?.section ? { section: params.section } : {}),
         // Côté admin on veut aussi les blocs masqués (actif = false).

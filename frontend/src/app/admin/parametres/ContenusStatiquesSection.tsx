@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Save, X, Globe, Power } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
-import { Textarea } from '@/components/ui/Textarea';
+import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { Card } from '@/components/ui/Card';
 import api from '@/lib/api';
 import type { ContenuStatique } from '@/types';
@@ -64,12 +64,12 @@ function InlineForm({
         value={form.titre}
         onChange={(e) => setForm({ ...form, titre: e.target.value })}
       />
-      <Textarea
-        label="Contenu (HTML autorisé)"
-        rows={5}
-        placeholder="<p>Votre texte institutionnel…</p>"
+      <RichTextEditor
+        label="Contenu"
+        placeholder="Votre texte institutionnel…"
         value={form.contenu}
-        onChange={(e) => setForm({ ...form, contenu: e.target.value })}
+        onChange={(html) => setForm({ ...form, contenu: html })}
+        minHeight="220px"
       />
       <div className="flex items-center gap-3">
         <label className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">

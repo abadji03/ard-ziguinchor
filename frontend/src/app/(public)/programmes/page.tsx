@@ -8,17 +8,24 @@ import { LoadingState } from '@/components/ui/Spinner';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Pagination } from '@/components/ui/Pagination';
 import { ProgrammeCard } from '@/components/features/programmes/ProgrammeCard';
+import { ProjetCard } from '@/components/features/projets/ProjetCard';
 import { programmesService } from '@/services/programmes.service';
+import { projetsService } from '@/services/projets.service';
 import { usePagination } from '@/hooks/usePagination';
+import { FolderKanban, LayoutGrid } from 'lucide-react';
+import type { PaginatedResponse, Programme, Projet } from '@/types';
 
 export default function ProgrammesPage() {
+  const [onglet, setOnglet] = useState<'programmes' | 'projets'>('programmes');
   const [search, setSearch] = useState('');
   const { page, limit, goToPage, resetPage } = usePagination(9);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['programmes', { page, limit, search }],
+  const { data, isLoading } = useQuery<PaginatedResponse<Programme | Projet>>({
+    queryKey: [onglet, { page, limit, search }],
     queryFn: () =>
-      programmesService.getAll({ page, limit, search: search || undefined }),
+      onglet === 'programmes'
+        ? programmesService.getAll({ page, limit, search: search || undefined })
+        : projetsService.getAll({ page, limit, search: search || undefined }),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -49,6 +56,42 @@ export default function ProgrammesPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+        {/* Onglets Programmes / Projets */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex bg-white rounded-2xl border border-slate-200 shadow-xs p-1.5 gap-1">
+            <button
+              type="button"
+              onClick={() => {
+                setOnglet('programmes');
+                resetPage();
+              }}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                onglet === 'programmes'
+                  ? 'bg-primary-dark text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <LayoutGrid className="h-4 w-4" />
+              Programmes
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setOnglet('projets');
+                resetPage();
+              }}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                onglet === 'projets'
+                  ? 'bg-primary-dark text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <FolderKanban className="h-4 w-4" />
+              Projets
+            </button>
+          </div>
+        </div>
+
         {/* Recherche */}
         <div className="vitrine-card rounded-2xl p-4 sm:p-5 mb-8">
           <div className="relative max-w-xl">
@@ -86,23 +129,30 @@ export default function ProgrammesPage() {
         ) : !data?.data?.length ? (
           <div className="bg-white rounded-2xl p-12 border border-slate-200 text-center">
             <EmptyState
-              title="Aucun programme trouvé"
-              description="Aucun programme ne correspond à votre recherche pour le moment."
+              title={onglet === 'programmes' ? 'Aucun programme trouvé' : 'Aucun projet trouvé'}
+              description={
+                onglet === 'programmes'
+                  ? 'Aucun programme ne correspond à votre recherche pour le moment.'
+                  : 'Aucun projet ne correspond à votre recherche pour le moment.'
+              }
             />
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-6">
               <p className="text-xs sm:text-sm font-semibold text-slate-500">
-                <span className="font-bold text-slate-900">{data.total}</span> programme
+                <span className="font-bold text-slate-900">{data.total}</span>{' '}
+                {onglet === 'programmes' ? 'programme' : 'projet'}
                 {data.total > 1 ? 's' : ''}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-              {data.data.map((prog) => (
-                <ProgrammeCard key={prog.id} programme={prog} />
-              ))}
+              {onglet === 'programmes'
+                ? data.data.map((prog) => (
+                    <ProgrammeCard key={prog.id} programme={prog as Programme} />
+                  ))
+                : data.data.map((p) => <ProjetCard key={p.id} projet={p as Projet} />)}
             </div>
 
             <div className="pt-4 flex justify-center">

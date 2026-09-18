@@ -7,6 +7,12 @@ import { LoadingState } from '@/components/ui/Spinner';
 interface Props {
   cle: string;
   fallbackClassName?: string;
+  /**
+   * Classes appliquées au conteneur du contenu DB (la grille parente attend
+   * souvent des classes comme `lg:col-span-8` — sans elles le rendu DB casserait
+   * la mise en page alors que le fallback JSX les porte sur son propre nœud).
+   */
+  contentClassName?: string;
   children: ReactNode;
 }
 
@@ -19,7 +25,7 @@ interface Props {
  * Utilisation serveur/prérendu — le hook est en mode client mais SSR-safe
  * grâce à `useQueryData` configuré en `initialData`/`suspense: false`.
  */
-export function ContenuStatiqueRenderer({ cle, children, fallbackClassName }: Props) {
+export function ContenuStatiqueRenderer({ cle, children, fallbackClassName, contentClassName }: Props) {
   const { data: contenu, isLoading } = useContenuStatique(cle);
 
   if (isLoading) {
@@ -30,7 +36,7 @@ export function ContenuStatiqueRenderer({ cle, children, fallbackClassName }: Pr
   if (contenu?.actif && contenu.contenu) {
     return (
       <div
-        className={fallbackClassName}
+        className={contentClassName ?? fallbackClassName}
         dangerouslySetInnerHTML={{ __html: contenu.contenu }}
       />
     );

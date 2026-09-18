@@ -6,7 +6,7 @@ import { useQueryData } from '@/hooks/useQueryData';
 import { referencesService } from '@/services/references.service';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { LoadingState } from '@/components/ui/Spinner';
-import { Building, ShieldCheck, ChevronRight, Mail } from 'lucide-react';
+import { Building, ShieldCheck, ChevronRight, Mail, Quote, Phone, ArrowRight } from 'lucide-react';
 import { useContenusSection } from '@/hooks/useContenus';
 import { ContenuIcon } from '@/lib/contenu-icons';
 import { blocsOu, type BlocVue } from '@/lib/contenus';
@@ -155,6 +155,11 @@ export default function AProposPage() {
     role: b.sousTitre,
     desc: b.description,
     icon: <ContenuIcon nom={b.icone} className="h-6 w-6" />,
+    // Mots-clés de rattachement des membres : champ « lien » du bloc (séparés
+    // par des virgules), à défaut les mots significatifs du titre.
+    motsCles: b.lien
+      ? b.lien.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean)
+      : b.titre.toLowerCase().split(/[\s'’]+/).filter((w) => w.length > 3),
   }));
 
   const missions = blocsOu(FALLBACK_MISSIONS, contenus?.MISSION).map((b) => ({
@@ -212,6 +217,13 @@ export default function AProposPage() {
                 {link.label}
               </a>
             ))}
+            <Link
+              href="/a-propos/mot-du-directeur"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white hover:bg-emerald-400 transition-colors border border-emerald-400/50 inline-flex items-center gap-1.5"
+            >
+              <Quote className="h-3.5 w-3.5" />
+              Mot du Directeur Général
+            </Link>
           </div>
         </div>
       </div>
@@ -336,22 +348,99 @@ export default function AProposPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {organisation.map((org) => (
-              <div
-                key={org.titre}
-                className="bg-slate-50/70 rounded-2xl p-6 border border-slate-200 hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all"
-              >
-                <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center mb-4 shadow-sm">
-                  {org.icon}
+          {/* Organigramme arborescent : Direction Générale → ramifications */}
+          <div className="max-w-5xl mx-auto">
+            {/* Niveau 1 : Direction Générale */}
+            <div className="flex justify-center">
+              <div className="bg-slate-900 text-white rounded-2xl px-8 py-6 text-center shadow-xl border border-slate-700 min-w-[280px]">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-600 flex items-center justify-center mx-auto mb-3">
+                  <Building className="h-7 w-7 text-white" />
                 </div>
-                <div className="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
-                  {org.role}
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-2">{org.titre}</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{org.desc}</p>
+                <h3 className="text-lg font-extrabold">Direction Générale</h3>
+                <p className="text-xs text-slate-300 mt-1 leading-relaxed max-w-xs mx-auto">
+                  Pilotage stratégique, représentation institutionnelle et supervision de l'ensemble des pôles techniques.
+                </p>
+                <Link
+                  href="/a-propos/mot-du-directeur"
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-emerald-400 hover:text-emerald-300"
+                >
+                  Mot du Directeur <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
-            ))}
+            </div>
+
+            {/* Connecteur vertical */}
+            <div className="flex justify-center">
+              <div className="w-0.5 h-8 bg-slate-300" />
+            </div>
+            <div className="hidden lg:block mx-24 border-t-2 border-slate-300" />
+
+            {/* Niveau 2 : ramifications (organes + divisions), membres rattachés */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:-mt-px lg:pt-8">
+              {organisation.map((org) => {
+                const membresOrg = membres?.filter(
+                  (m) =>
+                    (org.motsCles ?? []).some((mot) =>
+                      `${m.direction ?? ''} ${m.fonction ?? ''}`.toLowerCase().includes(mot),
+                    ),
+                ) ?? [];
+                return (
+                  <div key={org.titre} className="relative flex flex-col">
+                    {/* Connecteur vers la racine (desktop) */}
+                    <div className="hidden lg:block absolute -top-8 left-1/2 w-0.5 h-8 bg-slate-300" />
+
+                    <div className="bg-slate-50/70 rounded-2xl p-6 border border-slate-200 hover:bg-white hover:border-slate-300 hover:shadow-lg transition-all flex-1 flex flex-col">
+                      <div className="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center mb-4 shadow-sm">
+                        {org.icon}
+                      </div>
+                      <div className="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+                        {org.role}
+                      </div>
+                      <h3 className="text-base font-bold text-slate-900 mb-2">{org.titre}</h3>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{org.desc}</p>
+
+                      {/* Membres rattachés à cette entité */}
+                      {membresOrg.length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-slate-200 space-y-2">
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            {membresOrg.length} membre{membresOrg.length > 1 ? 's' : ''}
+                          </p>
+                          {membresOrg.slice(0, 3).map((m) => (
+                            <Link
+                              key={m.id}
+                              href={`/a-propos/equipe/${m.id}`}
+                              className="flex items-center gap-2.5 group/member"
+                            >
+                              <span className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-[10px] font-extrabold shrink-0 overflow-hidden">
+                                {m.photo ? (
+                                  <Image src={m.photo} alt="" width={32} height={32} className="w-full h-full object-cover" />
+                                ) : (
+                                  `${m.prenom?.[0] ?? ''}${m.nom?.[0] ?? ''}`
+                                )}
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block text-xs font-bold text-slate-800 group-hover/member:text-emerald-700 truncate">
+                                  {m.prenom} {m.nom}
+                                </span>
+                                <span className="block text-[10px] text-slate-500 truncate">{m.fonction}</span>
+                              </span>
+                            </Link>
+                          ))}
+                          {membresOrg.length > 3 && (
+                            <Link
+                              href="/a-propos#equipe"
+                              className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 hover:text-emerald-800"
+                            >
+                              Voir toute l'équipe <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -445,19 +534,39 @@ export default function AProposPage() {
                     {m.direction && (
                       <p className="text-[11px] text-slate-500 mt-0.5">{m.direction}</p>
                     )}
+                    {m.bio && (
+                      <p className="text-[11px] text-slate-500 leading-relaxed mt-2 line-clamp-3">
+                        {m.bio}
+                      </p>
+                    )}
                   </div>
 
-                  {m.email && (
-                    <div className="mt-4 pt-3 border-t border-slate-100">
+                  <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+                    {m.email && (
                       <a
                         href={`mailto:${m.email}`}
-                        className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-emerald-700 font-medium truncate max-w-full"
+                        className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-emerald-700 font-medium"
                       >
                         <Mail className="h-3.5 w-3.5 shrink-0 text-slate-400" />
                         <span className="truncate">{m.email}</span>
                       </a>
-                    </div>
-                  )}
+                    )}
+                    {m.telephone && (
+                      <a
+                        href={`tel:${m.telephone.replace(/\s/g, '')}`}
+                        className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-emerald-700 font-medium"
+                      >
+                        <Phone className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+                        <span>{m.telephone}</span>
+                      </a>
+                    )}
+                    <Link
+                      href={`/a-propos/equipe/${m.id}`}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 mt-1"
+                    >
+                      Voir le profil <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>

@@ -2,7 +2,7 @@
 
 import { useQueryData } from '@/hooks/useQueryData';
 import { referencesService } from '@/services/references.service';
-import { Building, Map, Award, TrendingUp } from 'lucide-react';
+import { Building, Map, Award, TrendingUp, BarChart3 } from 'lucide-react';
 
 const FALLBACK_STATS = [
   {
@@ -64,7 +64,16 @@ export function ChiffresClés() {
                   key={c.id}
                   className="p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-emerald-500/50 hover:bg-white hover:shadow-lg hover:shadow-emerald-950/5 transition-all group"
                 >
-                  <div className="text-3xl font-black text-slate-900 mb-2 group-hover:text-emerald-700 transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    {c.icone ? (
+                      <span className="text-2xl leading-none" role="img" aria-label={c.label}>
+                        {c.icone}
+                      </span>
+                    ) : (
+                      <BarChart3 className="h-6 w-6 text-emerald-600" />
+                    )}
+                  </div>
+                  <div className="text-3xl font-black text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors">
                     {c.valeur}
                   </div>
                   <div className="text-sm font-bold text-slate-800">{c.label}</div>

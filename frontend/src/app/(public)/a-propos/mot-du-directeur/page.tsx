@@ -129,7 +129,7 @@ export default function MotDuDirecteurPage() {
           </aside>
 
           {/* Colonne principale : Discours & Vision — priorite au contenu externalise */}
-          <ContenuStatiqueRenderer cle="mot-du-directeur">
+          <ContenuStatiqueRenderer cle="mot-du-directeur" contentClassName="lg:col-span-8 space-y-8">
             <article className="lg:col-span-8 space-y-8">
             {/* Citation solennelle */}
             <div className="relative bg-emerald-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm overflow-hidden">
