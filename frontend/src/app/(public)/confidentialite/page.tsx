@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { Lock, Shield, Eye, Cookie, UserCheck } from 'lucide-react';
+import { ContenuStatiqueRenderer } from '@/components/shared/ContenuStatiqueRenderer';
 
 export const metadata: Metadata = {
   title: 'Politique de Confidentialité | ARD Ziguinchor',
@@ -31,8 +32,10 @@ export default function ConfidentialitePage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14">
-        <div className="space-y-6">
+      {/* Contenu : priorite au contenu externalise en base → fallback JSX dur */}
+      <ContenuStatiqueRenderer cle="politique-confidentialite">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+          <div className="space-y-6">
           <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
@@ -107,6 +110,7 @@ export default function ConfidentialitePage() {
           </section>
         </div>
       </div>
+      </ContenuStatiqueRenderer>
     </div>
   );
 }

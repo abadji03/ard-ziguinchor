@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
 import { SectionTitle } from '@/components/ui/SectionTitle';
+import { ContenuStatiqueRenderer } from '@/components/shared/ContenuStatiqueRenderer';
 
 export const metadata: Metadata = {
   title: 'Accessibilité',
@@ -33,6 +34,8 @@ export default function AccessibilitePage() {
         </div>
       </div>
 
+      {/* Contenu : priorite au contenu externalise en base → fallback JSX dur */}
+      <ContenuStatiqueRenderer cle="accessibilite">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 md:py-14 space-y-6">
         <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-10 shadow-xs space-y-8 text-slate-700">
 
@@ -133,6 +136,7 @@ export default function AccessibilitePage() {
           </p>
         </div>
       </div>
+      </ContenuStatiqueRenderer>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Quote, ArrowLeft, Building2, Target, CheckCircle2, Phone, Mail, Compass, Award, FileText } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Breadcrumb';
+import { ContenuStatiqueRenderer } from '@/components/shared/ContenuStatiqueRenderer';
 
 export const metadata: Metadata = {
   title: 'Mot du Directeur Général',
@@ -127,8 +128,9 @@ export default function MotDuDirecteurPage() {
             </div>
           </aside>
 
-          {/* Colonne principale : Discours & Vision */}
-          <article className="lg:col-span-8 space-y-8">
+          {/* Colonne principale : Discours & Vision — priorite au contenu externalise */}
+          <ContenuStatiqueRenderer cle="mot-du-directeur">
+            <article className="lg:col-span-8 space-y-8">
             {/* Citation solennelle */}
             <div className="relative bg-emerald-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm overflow-hidden">
               <Quote className="absolute -bottom-4 -right-4 h-32 w-32 text-emerald-800/30 pointer-events-none" />
@@ -263,6 +265,7 @@ export default function MotDuDirecteurPage() {
               </Link>
             </div>
           </article>
+          </ContenuStatiqueRenderer>
         </div>
       </div>
     </div>
