@@ -482,7 +482,7 @@ export function Header() {
 
                       {isExpanded && (
                         <div className="bg-slate-50/80 px-3 py-1.5 border-t border-slate-100 space-y-1">
-                          {link.children.map((child) => (
+                          {link.children?.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}

@@ -77,7 +77,7 @@ function InlineForm({
       <Select
         label="Section"
         value={form.section}
-        onChange={(v) => setForm({ ...form, section: v })}
+        onChange={(e) => setForm({ ...form, section: e.target.value })}
         options={[
           { value: 'header', label: 'Header' },
           { value: 'footer', label: 'Footer' },
@@ -87,7 +87,7 @@ function InlineForm({
       <Select
         label="Icône (optionnel)"
         value={form.icone}
-        onChange={(v) => setForm({ ...form, icone: v })}
+        onChange={(e) => setForm({ ...form, icone: e.target.value })}
         options={[
           { value: '', label: 'Aucune' },
           ...ICONES_DISPONIBLES.map((i) => ({ value: i, label: i })),
@@ -96,7 +96,7 @@ function InlineForm({
       <Select
         label="Parent (sous-menu)"
         value={form.parentId || ''}
-        onChange={(v) => setForm({ ...form, parentId: v || undefined })}
+        onChange={(e) => setForm({ ...form, parentId: e.target.value || undefined })}
         options={[
           { value: '', label: 'Aucun (élément racine)' },
           ...parents.map((p) => ({ value: p.id, label: p.label })),

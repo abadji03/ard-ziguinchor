@@ -270,7 +270,7 @@ export function ContenusStatiquesSection() {
                 editing={false}
                 onEdit={() => setEditingId(item.id)}
                 onCancelEdit={() => setEditingId(null)}
-                onSave={() => undefined}
+                onSave={async () => {}}
                 onRemove={() => handleDelete(item.id, item.cle)}
                 onToggle={() => handleToggle(item.id, item.actif)}
               />

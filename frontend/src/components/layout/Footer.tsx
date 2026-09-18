@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
 import { useSiteParams } from '@/contexts/SiteParamsContext';
-import { SOCIAL_LINKS } from '@/constants';
 import { useNavigation } from '@/hooks/useContenus';
 import { buildNavigationTree } from '@/lib/contenus';
 
@@ -30,6 +29,35 @@ const YoutubeIcon = () => (
     <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
   </svg>
 );
+
+// Repli silencieux si aucune navigation « footer » n'est définie en base.
+const FALLBACK_COLONNES = [
+  {
+    title: "L'Institution",
+    links: [
+      { href: '/', label: 'Accueil' },
+      { href: '/a-propos', label: 'Présentation & Missions' },
+      { href: '/a-propos/mot-du-directeur', label: 'Mot du Directeur' },
+      { href: '/la-region', label: 'La Région Ziguinchor' },
+      { href: '/la-region/departements', label: 'Départements' },
+      { href: '/la-region/communes', label: 'Communes' },
+      { href: '/la-region/cartographie', label: 'Cartographie SIG' },
+    ],
+  },
+  {
+    title: 'Actions & Ressources',
+    links: [
+      { href: '/programmes', label: 'Programmes de Développement' },
+      { href: '/projets', label: 'Projets Territoriaux' },
+      { href: '/actualites', label: 'Actualités & Communiqués' },
+      { href: '/documentation', label: 'Documentation & Plans' },
+      { href: '/opportunites', label: "Appels d'offres & Recrutement" },
+      { href: '/observatoire', label: 'Observatoire Territorial' },
+      { href: '/agenda', label: 'Agenda des Rencontres' },
+      { href: '/galerie', label: 'Médiathèque & Réalisations' },
+    ],
+  },
+];
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -81,11 +109,12 @@ export function Footer() {
   }, [navLegal]);
 
   const socials = useMemo(
-    () => [
-      { key: 'facebook', href: facebook || SOCIAL_LINKS.facebook, Icon: FacebookIcon, label: 'Facebook' },
-      { key: 'twitter', href: twitter || SOCIAL_LINKS.twitter, Icon: TwitterIcon, label: 'Twitter' },
-      { key: 'linkedin', href: linkedin || SOCIAL_LINKS.linkedin, Icon: LinkedinIcon, label: 'LinkedIn' },
-    ].filter((s) => s.href && s.href.trim()),
+    () =>
+      [
+        { key: 'facebook', href: facebook, Icon: FacebookIcon, label: 'Facebook' },
+        { key: 'twitter', href: twitter, Icon: TwitterIcon, label: 'Twitter' },
+        { key: 'linkedin', href: linkedin, Icon: LinkedinIcon, label: 'LinkedIn' },
+      ].filter((s) => s.href && s.href.trim()),
     [facebook, twitter, linkedin],
   );
   const adresseComplete =
@@ -218,63 +247,33 @@ export function Footer() {
                   <YoutubeIcon />
                 </a>
               )}
-            </div>
-                    {/* Colonne 2 – Navigation Institutionnelle (2 cols) */}
-          <div className="lg:col-span-2 sm:pl-4">
-            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4 text-emerald-400">
-              L'Institution
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              {[
-                { href: '/', label: 'Accueil' },
-                { href: '/a-propos', label: 'Présentation & Missions' },
-                { href: '/a-propos/mot-du-directeur', label: 'Mot du Directeur' },
-                { href: '/la-region', label: 'La Région Ziguinchor' },
-                { href: '/la-region/departements', label: 'Départements' },
-                { href: '/la-region/communes', label: 'Communes' },
-                { href: '/la-region/cartographie', label: 'Cartographie SIG' },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
-                  >
-                    <span className="text-slate-600">›</span>
-                    <span>{l.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
-          {/* Colonne 3 – Pôles & Services (3 cols) */}
-          <div className="lg:col-span-3">
-            <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4 text-emerald-400">
-              Actions & Ressources
-            </h4>
-            <ul className="space-y-2.5 text-sm">
-              {[
-                { href: '/programmes', label: 'Programmes de Développement' },
-                { href: '/projets', label: 'Projets Territoriaux' },
-                { href: '/actualites', label: 'Actualités & Communiqués' },
-                { href: '/documentation', label: 'Documentation & Plans' },
-                { href: '/opportunites', label: "Appels d'offres & Recrutement" },
-                { href: '/observatoire', label: 'Observatoire Territorial' },
-                { href: '/agenda', label: 'Agenda des Rencontres' },
-                { href: '/galerie', label: 'Médiathèque & Réalisations' },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
-                  >
-                    <span className="text-slate-600">›</span>
-                    <span>{l.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            </div>
+          {/* Colonnes 2 & 3 – Navigation depuis la base (repli : constantes) */}
+          {(footerLinks ?? FALLBACK_COLONNES).map((col, i) => (
+            <div
+              key={col.title}
+              className={i === 0 ? 'lg:col-span-2 sm:pl-4' : 'lg:col-span-3'}
+            >
+              <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4 text-emerald-400">
+                {col.title}
+              </h4>
+              <ul className="space-y-2.5 text-sm">
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="text-slate-600">›</span>
+                      <span>{l.label}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* Colonne 4 – Contact & Accès (3 cols) */}
           <div className="lg:col-span-3">
@@ -306,7 +305,7 @@ export function Footer() {
 
             <div className="mt-5 p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-400">
               <div className="font-bold text-slate-200 mb-1">Permanence administrative</div>
-              <div>Lundi au Vendredi : 08h00 – 17h00</div>
+              <div>{horaires || 'Lundi au Vendredi : 08h00 – 17h00'}</div>
               <div className="text-[11px] text-emerald-400 mt-1">Accueil collectivités sur rendez-vous</div>
             </div>
           </div>
@@ -320,21 +319,19 @@ export function Footer() {
             <span className="italic text-slate-400 hidden sm:inline">« Un Peuple - Un But - Une Foi »</span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 text-slate-400">
-            <Link href="/mentions-legales" className="hover:text-slate-200 transition-colors">
-              Mentions légales
-            </Link>
-            <span>•</span>
-            <Link href="/confidentialite" className="hover:text-slate-200 transition-colors">
-              Confidentialité
-            </Link>
-            <span>•</span>
-            <Link href="/accessibilite" className="hover:text-slate-200 transition-colors">
-              Accessibilité
-            </Link>
-            <span>•</span>
-            <Link href="/plan-du-site" className="hover:text-slate-200 transition-colors">
-              Plan du site
-            </Link>
+            {(legalLinks ?? [
+              { href: '/mentions-legales', label: 'Mentions légales' },
+              { href: '/confidentialite', label: 'Confidentialité' },
+              { href: '/accessibilite', label: 'Accessibilité' },
+              { href: '/plan-du-site', label: 'Plan du site' },
+            ]).map((item, idx, arr) => (
+              <span key={item.href} className="flex items-center gap-4">
+                <Link href={item.href} className="hover:text-slate-200 transition-colors">
+                  {item.label}
+                </Link>
+                {idx < arr.length - 1 && <span>•</span>}
+              </span>
+            ))}
           </div>
         </div>
       </div>

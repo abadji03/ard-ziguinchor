@@ -207,19 +207,20 @@ export function buildNavigationTree(
       roots.push(node);
     }
   });
-  const sort = (a: (NavNode & { _order: number })[]) =>
-    a.sort((x, y) => (x._order ?? 0) - (y._order ?? 0));
-  const walk = (n: NavNode & { _order: number }) => {
+  type InternalNode = NavNode & { _order: number; _id: string };
+  const sort = (a: NavNode[]) =>
+    a.sort((x, y) => ((x as InternalNode)._order ?? 0) - ((y as InternalNode)._order ?? 0));
+  const walk = (n: NavNode) => {
     if (n.children) sort(n.children);
     n.children?.forEach(walk);
   };
   sort(roots);
   roots.forEach(walk);
   // Nettoie les propriétés internes avant le retour (omet `children` vide).
-  const clean = (nodes: (NavNode & { _order: number; _id: string })[]): NavNode[] =>
+  const clean = (nodes: InternalNode[]): NavNode[] =>
     nodes.map(({ _order, _id, children, ...rest }) => {
-      const kids = children && children.length > 0 ? clean(children) : undefined;
+      const kids = children && children.length > 0 ? clean(children as InternalNode[]) : undefined;
       return kids ? { ...rest, children: kids } : { ...rest };
     });
-  return clean(roots);
+  return clean(roots as InternalNode[]);
 }
