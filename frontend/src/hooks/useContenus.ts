@@ -1,4 +1,4 @@
-import type { ContenuEditorial } from '@/types';
+import type { ContenuEditorial, ContenuStatique, NavigationItem } from '@/types';
 import { referencesService } from '@/services/references.service';
 import { useQueryData } from './useQueryData';
 import { toBlocs } from '@/lib/contenus';
@@ -52,4 +52,29 @@ export function useDirectionsArd(): OptionContenu[] {
     label: b.titre,
     description: b.description || undefined,
   }));
+}
+
+/**
+ * Contenu statique (texte long) adressable par clé (mentions légales,
+ * confidentialité, accessibilité, mot du directeur…).
+ *
+ * La donnée provient de la base (Admin → Paramètres → Contenus & textes).
+ * Si la clé est absente ou désactivée, `data` vaut null → la page utilise
+ * son repli codé en dur.
+ */
+export function useContenuStatique(cle: string) {
+  return useQueryData<ContenuStatique | null>(
+    ['contenu-statique', cle],
+    () => referencesService.getContenuStatique(cle),
+    { staleTime: 10 * 60 * 1000 },
+  );
+}
+
+/** Navigation d'une section (header / footer / legal) — liste plate. */
+export function useNavigation(section = 'header') {
+  return useQueryData<NavigationItem[]>(
+    ['navigation', section],
+    () => referencesService.getNavigation(section),
+    { staleTime: 10 * 60 * 1000 },
+  );
 }

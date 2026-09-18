@@ -690,8 +690,138 @@ export class ReferencesService {
         data,
       });
     }
-    return this.prisma.parametreSite.create({
+        return this.prisma.parametreSite.create({
       data: data,
     });
+  }
+
+  // ─── Contenus statiques ─────────────────────────────────────────────────────
+  // Textes institutionnels adressables par clé (mentions légales, etc.).
+  // Une page publique lit son texte par clé : si la clé n'existe ou est désactivée,
+  // on renvoie null et l'interface utilise son repli codé en dur.
+
+  async findContenuStatiqueByCle(cle: string) {
+    const item = await this.prisma.contenuStatique.findUnique({
+      where: { cle, actif: true },
+    });
+    // null → la page publique bascule sur son fallback (jamais de page blanche).
+    return item ?? null;
+  }
+
+  async findAllContenusStatiques(includeInactifs = false) {
+    return this.prisma.contenuStatique.findMany({
+      where: includeInactifs ? {} : { actif: true },
+      orderBy: { cle: 'asc' },
+    });
+  }
+
+  async createContenuStatique(data: {
+    cle: string;
+    titre?: string;
+    contenu: string;
+    actif?: boolean;
+  }) {
+    return this.prisma.contenuStatique.create({
+      data: {
+        cle: data.cle,
+        titre: data.titre ?? null,
+        contenu: data.contenu,
+        actif: data.actif ?? true,
+      },
+    });
+  }
+
+  async updateContenuStatique(
+    id: string,
+    data: { titre?: string; contenu?: string; actif?: boolean },
+  ) {
+    const existing = await this.prisma.contenuStatique.findUnique({
+      where: { id },
+    });
+    if (!existing)
+      throw new NotFoundException(`Contenu statique #${id} introuvable`);
+    return this.prisma.contenuStatique.update({ where: { id }, data });
+  }
+
+  async removeContenuStatique(id: string) {
+    const existing = await this.prisma.contenuStatique.findUnique({
+      where: { id },
+    });
+    if (!existing)
+      throw new NotFoundException(`Contenu statique #${id} introuvable`);
+    return this.prisma.contenuStatique.delete({ where: { id } });
+  }
+
+  // ─── Navigation ──────────────────────────────────────────────────────────────
+  // Menu du site (header / footer / juridique). Retourne une liste plate
+  // ; le frontend construit l'arbre à partir de `parentId`.
+
+  async findAllNavigation(
+    section?: string,
+    includeInactifs = false,
+  ) {
+    return this.prisma.navigationItem.findMany({
+      where: {
+        ...(section ? { section } : {}),
+        ...(includeInactifs ? {} : { actif: true }),
+      },
+      orderBy: [{ section: 'asc' }, { ordre: 'asc' }, { label: 'asc' }],
+    });
+  }
+
+  async createNavigationItem(data: {
+    label: string;
+    href: string;
+    icone?: string;
+    ordre?: number;
+    parentId?: string;
+    section?: string;
+    actif?: boolean;
+  }) {
+    return this.prisma.navigationItem.create({
+      data: {
+        label: data.label,
+        href: data.href,
+        icone: data.icone ?? null,
+        ordre: data.ordre ?? 0,
+        parentId: data.parentId ?? null,
+        section: data.section ?? 'header',
+        actif: data.actif ?? true,
+      },
+    });
+  }
+
+  async updateNavigationItem(
+    id: string,
+    data: {
+      label?: string;
+      href?: string;
+      icone?: string;
+      ordre?: number;
+      parentId?: string;
+      section?: string;
+      actif?: boolean;
+    },
+  ) {
+    const existing = await this.prisma.navigationItem.findUnique({
+      where: { id },
+    });
+    if (!existing)
+      throw new NotFoundException(`Élément de navigation #${id} introuvable`);
+    return this.prisma.navigationItem.update({ where: { id }, data });
+  }
+
+  async removeNavigationItem(id: string) {
+    const existing = await this.prisma.navigationItem.findUnique({
+      where: { id },
+    });
+    if (!existing)
+      throw new NotFoundException(`Élément de navigation #${id} introuvable`);
+    // Les éventuels enfants sont "désassignés" (parentId → null) plutôt supprimés.
+    await this.prisma.navigationItem.updateMany({
+      where: { parentId: id },
+      data: { parentId: null },
+    });
+    return this.prisma.navigationItem.delete({ where: { id } });
   }
 }

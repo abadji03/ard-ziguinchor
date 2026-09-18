@@ -12,9 +12,13 @@ export default defineConfig({
     //
     // Deux étapes, toutes deux idempotentes :
     //   1. seed.ts            → référentiel territorial, secteurs, paramètres…
-    //   2. seed-contenus.ts   → contenus éditoriaux (textes, listes, directions)
+        //   2. seed-contenus.ts   → contenus éditoriaux (textes, listes, directions)
     //      modifiables ensuite dans Admin → Paramètres → Contenus & textes.
-    seed: "npx ts-node prisma/seed.ts && npx ts-node prisma/seed-contenus.ts",
+    //   3. seed-contenus-statiques.ts → contenus statiques (pages légales,
+    //      discours…) et navigation (header / pied de page), modifiables dans
+    //      Admin → Paramètres. Idempotent : sans risque de lancer à chaque déploiement.
+    seed:
+      "npx ts-node prisma/seed.ts && npx ts-node prisma/seed-contenus.ts && npx ts-node prisma/seed-contenus-statiques.ts",
   },
   datasource: {
     url: process.env["DATABASE_URL"],

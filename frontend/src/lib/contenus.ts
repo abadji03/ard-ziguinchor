@@ -168,3 +168,59 @@ export const ICONES_DISPONIBLES = [
   'Scale',
   'Globe',
 ] as const;
+
+// ── Construction de l'arbre de navigation ──────────────────────────────────────
+
+import type { NavigationItem } from '@/types';
+
+interface NavNode {
+  label: string;
+  href: string;
+  icone?: string;
+  ordre?: number;
+  children?: NavNode[];
+}
+
+/**
+ * Transforme la liste plate (issue de la base) en arbre imbriqué, filtrée par
+ * section et triée par `ordre`. Permet au Header de reproduire la structure
+ * d'origine de `NAV_LINKS` (racines + sous-menus déroulés).
+ */
+export function buildNavigationTree(
+  items: NavigationItem[],
+  section = 'header',
+): NavNode[] {
+  const ofSection = items.filter((i) => i.section === section && i.actif !== false);
+  const map = new Map<string, NavNode & { _order: number; _id: string }>();
+  ofSection.forEach((i) =>
+    map.set(i.id, { label: i.label, href: i.href, icone: i.icone ?? undefined, _order: i.ordre, _id: i.id }),
+  );
+  const roots: (NavNode & { _order: number; _id: string })[] = [];
+  map.forEach((node) => {
+    const item = ofSection.find((i) => i.id === node._id);
+    const parentId = item?.parentId;
+    if (parentId && map.has(parentId)) {
+      const parent = map.get(parentId)!;
+      parent.children = parent.children ?? [];
+      parent.children.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+  const sort = (a: (NavNode & { _order: number })[]) =>
+    a.sort((x, y) => (x._order ?? 0) - (y._order ?? 0));
+  const walk = (n: NavNode & { _order: number }) => {
+    if (n.children) sort(n.children);
+    n.children?.forEach(walk);
+  };
+  sort(roots);
+  roots.forEach(walk);
+  // Nettoie les propriétés internes avant le retour.
+  return roots.map(({ _order, _id, children, ...rest }) => ({
+    ...rest,
+    children: children?.map(({ _order, _id, children, ...r }) => ({
+      ...r,
+      children: children,
+    })),
+  }));
+}

@@ -430,7 +430,8 @@ export interface ParametreSite {
   email?: string;
   telephone?: string;
   adresse?: string;
-  ville?: string;
+    ville?: string;
+  horaires?: string;
   latitude?: number;
   longitude?: number;
   logo?: string;
@@ -438,7 +439,42 @@ export interface ParametreSite {
   twitter?: string;
   linkedin?: string;
   youtube?: string;
-  instagram?: string;
+    instagram?: string;
+}
+
+// ============================================
+// CONTENUS STATIQUES
+// Textes institutionnels adressables par clé (pages légales, discours…).
+// ============================================
+
+export interface ContenuStatique {
+  id: string;
+  cle: string;
+  titre?: string | null;
+  contenu: string;
+  actif: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// ============================================
+// NAVIGATION
+// Éléments de menu du site (header / footer / juridique).
+// `parentId` rattache un sous-menu ; `children` est enrichi par le frontend.
+// ============================================
+
+export interface NavigationItem {
+  id: string;
+  label: string;
+  href: string;
+  icone?: string | null;
+  ordre: number;
+  parentId?: string | null;
+  children?: NavigationItem[];
+  section: string;
+  actif: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // ============================================

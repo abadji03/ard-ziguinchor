@@ -755,11 +755,92 @@ export class ReferencesController {
     return this.referencesService.findParametresSite();
   }
 
-  @Patch('parametres-site')
+    @Patch('parametres-site')
   @Roles(Role.SUPER_ADMIN, Role.ADMIN)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Mettre à jour les paramètres du site' })
   updateParametresSite(@Body() data: Record<string, unknown>) {
     return this.referencesService.updateParametresSite(data);
+  }
+
+  // ── Contenus statiques ───────────────────────────────────────────────────────
+  // Textes institutionnels adressables par clé (pages légales, discours…).
+  @Public()
+  @Get('contenus-statiques/cle/:cle')
+  @ApiOperation({ summary: 'Contenu statique par clé (public, fallback sur le code si absent)' })
+  findContenuStatiqueByCle(@Param('cle') cle: string) {
+    return this.referencesService.findContenuStatiqueByCle(cle);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @Get('contenus-statiques')
+  @ApiOperation({ summary: 'Liste des contenus statiques (admin, inclut les inactifs)' })
+  findAllContenusStatiques(@Query('includeInactifs') includeInactifs?: string) {
+    return this.referencesService.findAllContenusStatiques(
+      includeInactifs === 'true',
+    );
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @Post('contenus-statiques')
+  @ApiOperation({ summary: 'Créer un contenu statique' })
+  createContenuStatique(@Body() data: Record<string, unknown>) {
+    return this.referencesService.createContenuStatique(data as any);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @Patch('contenus-statiques/:id')
+  @ApiOperation({ summary: 'Modifier un contenu statique' })
+  updateContenuStatique(
+    @Param('id') id: string,
+    @Body() data: Record<string, unknown>,
+  ) {
+    return this.referencesService.updateContenuStatique(id, data as any);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiBearerAuth()
+  @Delete('contenus-statiques/:id')
+  @ApiOperation({ summary: 'Supprimer un contenu statique' })
+  removeContenuStatique(@Param('id') id: string) {
+    return this.referencesService.removeContenuStatique(id);
+  }
+
+  // ── Navigation ───────────────────────────────────────────────────────────────
+  @Public()
+  @Get('navigation')
+  @ApiOperation({ summary: "Navigation du site (header/footer/legal) — publique" })
+  findNavigation(@Query('section') section?: string) {
+    return this.referencesService.findAllNavigation(section);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @Post('navigation')
+  @ApiOperation({ summary: 'Créer un élément de navigation' })
+  createNavigationItem(@Body() data: Record<string, unknown>) {
+    return this.referencesService.createNavigationItem(data as any);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN, Role.EDITEUR)
+  @ApiBearerAuth()
+  @Patch('navigation/:id')
+  @ApiOperation({ summary: 'Modifier un élément de navigation' })
+  updateNavigationItem(
+    @Param('id') id: string,
+    @Body() data: Record<string, unknown>,
+  ) {
+    return this.referencesService.updateNavigationItem(id, data as any);
+  }
+
+  @Roles(Role.SUPER_ADMIN, Role.ADMIN)
+  @ApiBearerAuth()
+  @Delete('navigation/:id')
+  @ApiOperation({ summary: 'Supprimer un élément de navigation' })
+  removeNavigationItem(@Param('id') id: string) {
+    return this.referencesService.removeNavigationItem(id);
   }
 }

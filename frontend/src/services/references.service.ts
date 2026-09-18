@@ -1,5 +1,5 @@
 import api from '@/lib/api';
-import type { ChiffreCle, Banniere, Membre, Departement, Arrondissement, Commune, Faq, Secteur, ContenuEditorial } from '@/types';
+import type { ChiffreCle, Banniere, Membre, Departement, Arrondissement, Commune, Faq, Secteur, ContenuEditorial, ContenuStatique, NavigationItem } from '@/types';
 
 export const referencesService = {
   getChiffresCles: async (): Promise<ChiffreCle[]> => {
@@ -125,7 +125,62 @@ export const referencesService = {
     return res.data;
   },
 
-  deleteContenuEditorial: async (id: string): Promise<void> => {
+    deleteContenuEditorial: async (id: string): Promise<void> => {
     await api.delete(`/contenus/${id}`);
+  },
+
+  // ── Contenus statiques ───────────────────────────────────────────────────────
+  getContenuStatique: async (cle: string): Promise<ContenuStatique> => {
+    const { data } = await api.get(`/references/contenus-statiques/cle/${cle}`);
+    return data;
+  },
+  getContenusStatiques: async (): Promise<ContenuStatique[]> => {
+    const { data } = await api.get('/references/contenus-statiques', {
+      params: { includeInactifs: 'true' },
+    });
+    return data?.data ?? data;
+  },
+  createContenuStatique: async (
+    data: Partial<ContenuStatique>,
+  ): Promise<ContenuStatique> => {
+    const res = await api.post('/references/contenus-statiques', data);
+    return res.data;
+  },
+  updateContenuStatique: async (
+    id: string,
+    data: Partial<ContenuStatique>,
+  ): Promise<ContenuStatique> => {
+    const res = await api.patch(`/references/contenus-statiques/${id}`, data);
+    return res.data;
+  },
+  deleteContenuStatique: async (id: string): Promise<void> => {
+    await api.delete(`/references/contenus-statiques/${id}`);
+  },
+
+  // ── Navigation ───────────────────────────────────────────────────────────────
+  /** Retourne la liste plate des items d'une section (header / footer / legal). */
+  getNavigation: async (
+    section?: string,
+  ): Promise<NavigationItem[]> => {
+    const { data } = await api.get('/references/navigation', {
+      params: section ? { section } : undefined,
+    });
+    return data?.data ?? data;
+  },
+  createNavigationItem: async (
+    data: Partial<NavigationItem>,
+  ): Promise<NavigationItem> => {
+    const res = await api.post('/references/navigation', data);
+    return res.data;
+  },
+  updateNavigationItem: async (
+    id: string,
+    data: Partial<NavigationItem>,
+  ): Promise<NavigationItem> => {
+    const res = await api.patch(`/references/navigation/${id}`, data);
+    return res.data;
+  },
+  deleteNavigationItem: async (id: string): Promise<void> => {
+    await api.delete(`/references/navigation/${id}`);
   },
 };

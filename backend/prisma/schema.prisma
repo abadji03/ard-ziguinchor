@@ -804,7 +804,8 @@ model ParametreSite {
   email             String?
   telephone         String?
   adresse           String?
-  ville             String?
+    ville             String?
+  horaires          String?
   boitePostale      String?
   latitude          Float?
   longitude         Float?
@@ -816,11 +817,55 @@ model ParametreSite {
   facebook          String?
   twitter           String?
   youtube           String?
-  instagram         String?
+    instagram         String?
   googleAnalytics   String?
   matomo            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   @@map("parametres_site")
+}
+
+// =============================================================================
+// CONTENUS STATIQUES
+// Textes institutionnels adressables par clé unique (`cle`).
+// Pages légales, confidentialité, accessibilité, mot du directeur,
+// présentation de l'ARD, texte d'accueil, etc.
+// Modifiables depuis Admin → Paramètres → Contenus & textes.
+// =============================================================================
+
+model ContenuStatique {
+  id        String   @id @default(cuid())
+  cle       String   @unique
+  titre     String?
+  contenu   String   @db.Text
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("contenus_statiques")
+}
+
+// =============================================================================
+// NAVIGATION
+// Menu du site (header / footer / liens juridiques). Hiérarchie via `parentId`
+// (sous-menus déroulés). Modifiable depuis Admin → Paramètres → Navigation.
+// =============================================================================
+
+model NavigationItem {
+  id        String   @id @default(cuid())
+  label     String
+  href      String
+  icone     String?  // Nom d'icône Lucide (ex. "Globe") ou emoji.
+  ordre     Int      @default(0)
+  parentId  String?
+  parent    NavigationItem?  @relation("NavigationTree", fields: [parentId], references: [id])
+  children  NavigationItem[] @relation("NavigationTree")
+  section   String   @default("header")  // header | footer | legal
+  actif     Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([section, ordre])
+  @@map("navigation_items")
 }
