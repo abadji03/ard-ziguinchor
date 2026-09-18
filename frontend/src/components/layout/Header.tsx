@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -21,9 +21,24 @@ import {
 import { cn } from '@/lib/utils';
 import { NAV_LINKS } from '@/constants';
 import { useSiteParams } from '@/contexts/SiteParamsContext';
+import { useNavigation } from '@/hooks/useContenus';
+import { buildNavigationTree } from '@/lib/contenus';
 
 export function Header() {
   const { telephone, email, adresse, villes: ville } = useSiteParams();
+  const { data: navHeader } = useNavigation('header');
+  // Navigation prioritaire depuis la base, repli sur les liens codés en dur.
+  const navLinks = useMemo(() => {
+    if (navHeader && navHeader.length > 0) {
+      try {
+        const tree = buildNavigationTree(navHeader, 'header');
+        if (tree.length > 0) return tree;
+      } catch {
+        // Repli silencieux sur NAV_LINKS
+      }
+    }
+    return NAV_LINKS as unknown as { label: string; href: string; children?: { label: string; href: string }[] }[];
+  }, [navHeader]);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -192,8 +207,9 @@ export function Header() {
               className="hidden lg:flex items-center gap-1"
               aria-label="Navigation principale"
             >
-              {NAV_LINKS.map((link) =>
-                'children' in link ? (
+              {/* Navigation dynamique (DB → fallback codé en dur) */}
+              {navLinks.map((link) =>
+                link.children && link.children.length > 0 ? (
                   <div
                     key={link.href}
                     className="relative"
@@ -434,8 +450,9 @@ export function Header() {
               <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">
                 Rubriques
               </div>
-              {NAV_LINKS.map((link) => {
-                const isGroup = 'children' in link;
+              {/* Navigation dynamique (DB → fallback codé en dur) */}
+              {navLinks.map((link) => {
+                const isGroup = !!link.children && link.children.length > 0;
                 const isExpanded = mobileExpandedGroup === link.href;
 
                 if (isGroup) {

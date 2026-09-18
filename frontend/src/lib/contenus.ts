@@ -215,12 +215,11 @@ export function buildNavigationTree(
   };
   sort(roots);
   roots.forEach(walk);
-  // Nettoie les propriétés internes avant le retour.
-  return roots.map(({ _order, _id, children, ...rest }) => ({
-    ...rest,
-    children: children?.map(({ _order, _id, children, ...r }) => ({
-      ...r,
-      children: children,
-    })),
-  }));
+  // Nettoie les propriétés internes avant le retour (omet `children` vide).
+  const clean = (nodes: (NavNode & { _order: number; _id: string })[]): NavNode[] =>
+    nodes.map(({ _order, _id, children, ...rest }) => {
+      const kids = children && children.length > 0 ? clean(children) : undefined;
+      return kids ? { ...rest, children: kids } : { ...rest };
+    });
+  return clean(roots);
 }

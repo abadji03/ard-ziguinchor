@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import api from '@/lib/api';
 import type { ParametreSite } from '@/types';
-import { CONTACT_INFO } from '@/constants';
+import { CONTACT_INFO, SOCIAL_LINKS } from '@/constants';
 
 interface SiteParamsContextValue {
   params: ParametreSite;
@@ -12,6 +12,10 @@ interface SiteParamsContextValue {
   email: string;
   adresse: string;
   villes: string;
+  horaires: string;
+  facebook: string;
+  twitter: string;
+  linkedin: string;
   logo?: string;
 }
 
@@ -29,6 +33,10 @@ const SiteParamsContext = createContext<SiteParamsContextValue>({
   email: CONTACT_INFO.email,
   adresse: CONTACT_INFO.adresse,
   villes: '',
+  horaires: CONTACT_INFO.horaires,
+  facebook: SOCIAL_LINKS.facebook,
+  twitter: SOCIAL_LINKS.twitter,
+  linkedin: SOCIAL_LINKS.linkedin,
 });
 
 export function SiteParamsProvider({ children }: { children: ReactNode }) {
@@ -52,6 +60,10 @@ export function SiteParamsProvider({ children }: { children: ReactNode }) {
     email: valeur(params.email, CONTACT_INFO.email),
     adresse: valeur(params.adresse, CONTACT_INFO.adresse),
     villes: valeur(params.ville, ''),
+    horaires: valeur(params.horaires, CONTACT_INFO.horaires),
+    facebook: valeur(params.facebook, SOCIAL_LINKS.facebook),
+    twitter: valeur(params.twitter, SOCIAL_LINKS.twitter),
+    linkedin: valeur(params.linkedin, SOCIAL_LINKS.linkedin),
     logo: params.logo ?? undefined,
   };
 

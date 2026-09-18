@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react';
 import { useSiteParams } from '@/contexts/SiteParamsContext';
 import { SOCIAL_LINKS } from '@/constants';
+import { useNavigation } from '@/hooks/useContenus';
+import { buildNavigationTree } from '@/lib/contenus';
 
 const FacebookIcon = () => (
   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -31,10 +33,61 @@ const YoutubeIcon = () => (
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const { telephone, email, adresse, villes: ville } = useSiteParams();
+  const {
+    telephone,
+    email,
+    adresse,
+    villes: ville,
+    horaires,
+    facebook,
+    twitter,
+    linkedin,
+    params,
+  } = useSiteParams();
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
+  const { data: navFooter } = useNavigation('footer');
+  const { data: navLegal } = useNavigation('legal');
+
+  // Colonnes du pied de page lues en priorité depuis la base.
+  const footerLinks = useMemo(() => {
+    if (navFooter && navFooter.length > 0) {
+      try {
+        const tree = buildNavigationTree(navFooter, 'footer');
+        // Regroupe les enfants sous le label de leur item parent (colonne).
+        const cols = tree.slice(0, 3).map((node) => ({
+          title: node.label,
+          links: (node.children ?? []).map((c) => ({ href: c.href, label: c.label })),
+        }));
+        if (cols.some((c) => c.links.length > 0)) return cols;
+      } catch {
+        // Repli silencieux sur les colonnes codées en dur
+      }
+    }
+    return null;
+  }, [navFooter]);
+
+  const legalLinks = useMemo(() => {
+    if (navLegal && navLegal.length > 0) {
+      try {
+        const tree = buildNavigationTree(navLegal, 'legal');
+        if (tree.length > 0) return tree;
+      } catch {
+        // Repli silencieux
+      }
+    }
+    return null;
+  }, [navLegal]);
+
+  const socials = useMemo(
+    () => [
+      { key: 'facebook', href: facebook || SOCIAL_LINKS.facebook, Icon: FacebookIcon, label: 'Facebook' },
+      { key: 'twitter', href: twitter || SOCIAL_LINKS.twitter, Icon: TwitterIcon, label: 'Twitter' },
+      { key: 'linkedin', href: linkedin || SOCIAL_LINKS.linkedin, Icon: LinkedinIcon, label: 'LinkedIn' },
+    ].filter((s) => s.href && s.href.trim()),
+    [facebook, twitter, linkedin],
+  );
   const adresseComplete =
     [adresse, ville].filter(Boolean).join(', ') || 'Boulevard des 54m, BP 321, Ziguinchor, Sénégal';
 
@@ -140,44 +193,23 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Réseaux sociaux */}
+            {/* Reseaux sociaux : DB prioritaire, repli constantes */}
             <div className="flex items-center gap-2 pt-2">
-              {SOCIAL_LINKS.facebook && (
+              {socials.map(({ key, href, Icon, label }) => (
                 <a
-                  href={SOCIAL_LINKS.facebook}
+                  key={key}
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Facebook ARD Ziguinchor"
+                  aria-label={`${label} ARD Ziguinchor`}
                   className="p-2 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white transition-colors"
                 >
-                  <FacebookIcon />
+                  <Icon />
                 </a>
-              )}
-              {SOCIAL_LINKS.twitter && (
+              ))}
+              {params.youtube && (
                 <a
-                  href={SOCIAL_LINKS.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter / X ARD Ziguinchor"
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white transition-colors"
-                >
-                  <TwitterIcon />
-                </a>
-              )}
-              {SOCIAL_LINKS.linkedin && (
-                <a
-                  href={SOCIAL_LINKS.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn ARD Ziguinchor"
-                  className="p-2 rounded-lg bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white transition-colors"
-                >
-                  <LinkedinIcon />
-                </a>
-              )}
-              {SOCIAL_LINKS.youtube && (
-                <a
-                  href={SOCIAL_LINKS.youtube}
+                  href={params.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube ARD Ziguinchor"
@@ -187,9 +219,7 @@ export function Footer() {
                 </a>
               )}
             </div>
-          </div>
-
-          {/* Colonne 2 – Navigation Institutionnelle (2 cols) */}
+                    {/* Colonne 2 – Navigation Institutionnelle (2 cols) */}
           <div className="lg:col-span-2 sm:pl-4">
             <h4 className="font-bold text-white text-sm uppercase tracking-wider mb-4 text-emerald-400">
               L'Institution
