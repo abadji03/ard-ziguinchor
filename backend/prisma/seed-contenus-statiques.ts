@@ -34,8 +34,6 @@ const CONTENUS_STATIQUES_SEED: {
   },
   {
     cle: 'mentions-legales',
-  {
-    cle: 'mentions-legales',
     titre: 'Mentions légales',
     contenu: `<section>
 <h2>Éditeur du site</h2>
