@@ -28,6 +28,13 @@ const CONTENUS_STATIQUES_SEED: {
   contenu: string;
 }[] = [
   {
+    cle: 'accueil-hero',
+    titre: "L'accélérateur du développement territorial de Ziguinchor",
+    contenu: `Bras technique des collectivités locales de Casamance : nous accompagnons la planification stratégique, structurons les projets d'investissement, mobilisons les financements et mesurons la transformation socio-économique régionale.`,
+  },
+  {
+    cle: 'mentions-legales',
+  {
     cle: 'mentions-legales',
     titre: 'Mentions légales',
     contenu: `<section>

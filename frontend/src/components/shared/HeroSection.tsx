@@ -12,8 +12,13 @@ import {
   Layers,
 } from 'lucide-react';
 import { ActualitesTicker } from '@/components/shared/ActualitesTicker';
+import { useContenuStatique } from '@/hooks/useContenus';
 
 export function HeroSection() {
+  // Titre & accroche externalisés en base (clé `accueil-hero`), repli codé en dur.
+  const { data: hero } = useContenuStatique('accueil-hero');
+  const titre = hero?.titre ?? "L'accélérateur du développement territorial de Ziguinchor";
+
   return (
     <div className="relative bg-slate-900 text-white">
       <section className="relative overflow-hidden" aria-label="Bannière principale">
@@ -43,18 +48,31 @@ export function HeroSection() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12] mb-6">
-              L'accélérateur du{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200">
-                développement
-              </span>{' '}
-              territorial de Ziguinchor
+              {hero?.titre ? (
+                titre
+              ) : (
+                <>
+                  L'accélérateur du{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200">
+                    développement
+                  </span>{' '}
+                  territorial de Ziguinchor
+                </>
+              )}
             </h1>
 
-            <p className="text-slate-200 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-normal">
-              Bras technique des collectivités locales de Casamance : nous accompagnons la planification
-              stratégique, structurons les projets d'investissement, mobilisons les financements et
-              mesurons la transformation socio-économique régionale.
-            </p>
+            {hero?.contenu ? (
+              <p
+                className="text-slate-200 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-normal"
+                dangerouslySetInnerHTML={{ __html: hero.contenu }}
+              />
+            ) : (
+              <p className="text-slate-200 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-2xl font-normal">
+                Bras technique des collectivités locales de Casamance : nous accompagnons la planification
+                stratégique, structurons les projets d'investissement, mobilisons les financements et
+                mesurons la transformation socio-économique régionale.
+              </p>
+            )}
 
             {/* Boutons d'action prioritaires */}
             <div className="flex flex-wrap gap-3.5 mb-10">
